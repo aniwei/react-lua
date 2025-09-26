@@ -1,6 +1,5 @@
 sourcemap.json
 rotriever.lock
-Packages/*
 !Packages/.robloxrc
 !Packages/_Workspace/
 Packages/_Workspace/*
