@@ -36,7 +36,8 @@ public:
   virtual void commitUpdate(
       std::shared_ptr<HostInstance> instance,
       const facebook::jsi::Object& oldProps,
-      const facebook::jsi::Object& newProps) = 0;
+      const facebook::jsi::Object& newProps,
+      const facebook::jsi::Object& updatePayload) = 0;
 
   // ... other HostConfig methods like getPublicInstance, prepareUpdate, etc.
 };

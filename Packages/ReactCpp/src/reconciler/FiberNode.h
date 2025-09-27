@@ -1,14 +1,6 @@
 #pragma once
 
 #include "jsi/jsi.h"
-#include <memory>
-
-namespace react {
-
-// Forward declarations
-#pragma once
-
-#include "jsi/jsi.h"
 #include <cstdint>
 #include <memory>
 #include <vector>
@@ -93,6 +85,7 @@ public:
   jsi::Value pendingState;
   jsi::Value memoizedState;
   std::shared_ptr<UpdateQueue> updateQueue;
+  jsi::Value updatePayload;
   std::unique_ptr<FiberDependencies> dependencies;
 
   uint32_t mode{0};
@@ -114,4 +107,5 @@ public:
 
   FiberNode(WorkTag tag, jsi::Value pendingProps, jsi::Value key, uint32_t mode = 0, Lanes lanes = 0);
 };
-    // The associated host instance (e.g., a DOM node proxy).
+
+} // namespace react

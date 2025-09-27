@@ -51,11 +51,12 @@
     -   `src/reconciler/UpdateQueue.h`: 引入更新链表、队列初始化与入队工具函数。
     -   ✅ Fiber/UpdateQueue 结构已落地，等待与工作循环联动。
 
--   [ ] **2.2. Wasm 二进制桥接实现**:
+-   [x] **2.2. Wasm 二进制桥接实现**:
     -   **C++ 侧**:
         -   [x] `ReactWasmLayout.h`: 新增 `WasmReactArray` 结构，统一数组布局。
         -   [x] `ReactWasmBridge.cpp`: 支持 Element/Array 反序列化、`key/ref/children` 映射，并返回 `jsi::Value`。
         -   [x] 导出 `react_hydrate`、容器注册/重置、JSI/Runtime 注入接口，形成可扩展的宿主桥接层。
+    -   [x] `testBridgeRenderRegistersRoot` 覆盖桥接入口 `react_render` 与根容器注册流程。
     -   **JS 侧**:
         -   [x] `test/bridge.js`: 构建写入引擎 `writeElementTreeToWasmMemory(element)`，序列化字符串、布尔、数字、数组与嵌套 Element。
 
@@ -65,8 +66,9 @@
     -   [x] 为 Fiber Root 创建与调度提供真实实现，连通 HostInstance 映射。
     -   [ ] `ReactRuntime::hydrate`：偏移量入口已建立（占位实现），待补齐 hydration pipeline。
 
--   [ ] **2.4. 初步验证**:
+-   [x] **2.4. 初步验证**:
     -   JS 调用 `render`，C++ 能接收到偏移量，并成功将二进制数据转换回 `jsi::Value`。
+    -   ✅ 新增 `testRenderConvertsWasmLayout` 覆盖二进制布局到宿主树的端到端验证。
 
 ### 阶段 3: Reconciler 工作循环与 Diffing (预计 3-4 周)
 
@@ -77,10 +79,17 @@
 -   [ ] **3.2. `reconcileChildren` (Diffing 算法) 实现**:
     -   严格参照 React 的 Diffing 逻辑，生成 `Placement`, `Update`, `Deletion` 等副作用。
     -   ⏳ 占位版 `reconcileChildrenPlaceholder` 已接入工作循环，覆盖单节点、文本与数组的 Fiber 构建与 Placement 记录。
+    -   ⏳ 数组协调支持按 `key` 复用宿主节点，并为剩余旧节点累积 `ChildDeletion` 副作用以驱动提交阶段。 
+    -   [x] 后续：为 HostComponent/HostText 复用路径比较 `pendingProps` 与 `memoizedProps`，设置 `Update` flag。
+    -   [x] 后续：补充数组调和与副作用链路的最小测试覆盖（`testReconcileArrayKeyedReuseAndUpdate`、`testReconcileArrayHandlesDeletionAndPlacement`）。
+    -   [x] 后续：提炼 HostComponent props diff，生成精细化变更 payload 供 `commitUpdate` 使用。
 
 -   [ ] **3.3. Commit 阶段实现**:
     -   实现 `commitRoot`，遍历副作用链表并调用 `HostConfig` 接口。
     -   ⏳ `commitMutationEffects`/`commitPlacement`/`commitDeletion` 占位逻辑已接线，可在宿主 stub 上模拟 `Placement` 与 `Deletion` 副作用。
+    -   ✅ `commitMutationEffects` 已衔接 `Update` flag 并产生 props diff payload，`SimpleHostInstance` 完成 props Patch 流程并通过最小化单元测试验证。
+    -   ✅ 基于 `SimpleHostInstance` 的 Update 回归用例：验证 `commitMutationEffects` 清空 `updatePayload`/Flag，并对宿主 props 执行新增、更新、清理。
+    -   [ ] 后续：扩展 Placement/Deletion 行为测试，补足 fiberHostContainers 迁移与删除链路覆盖。
 
 -   [ ] **3.4. Hydration 支持**:
     -   在 `beginWork` 和 `completeWork` 中添加 `Hydrating` 模式。

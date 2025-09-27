@@ -1,3 +1,4 @@
+#include "ReactWasmBridge.h"
 #include "ReactRuntime.h"
 #include "ReactWasmLayout.h"
 #include "jsi/jsi.h"
@@ -9,11 +10,11 @@
 
 namespace jsi = facebook::jsi;
 
+namespace react {
+
 // Assume Wasm memory is accessible as a global byte array for simplicity.
 // In a real scenario, this would be managed by the Wasm runtime.
-extern uint8_t* __wasm_memory_buffer;
-
-namespace react {
+uint8_t* __wasm_memory_buffer = nullptr;
 
 // --- Binary to JSI Deserializer ---
 
@@ -135,7 +136,6 @@ jsi::Value convertWasmLayoutToJsi(jsi::Runtime& rt, uint32_t baseOffset, const W
 
 static ReactRuntime* G_ReactRuntime = nullptr;
 static jsi::Runtime* G_JsiRuntime = nullptr;
-uint8_t* __wasm_memory_buffer = nullptr;
 static std::unordered_map<uint32_t, std::shared_ptr<HostInstance>> G_RootContainers;
 
 namespace {

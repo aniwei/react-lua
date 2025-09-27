@@ -1,12 +1,17 @@
 #include "ReactRuntime.h"
 #include "ReactWasmLayout.h"
 #include "jsi/jsi.h"
+#include "../host/SimpleHostInstance.h"
 #include "../reconciler/UpdateQueue.h"
+#include <algorithm>
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -45,41 +50,64 @@ std::shared_ptr<HostInstance> ReactRuntime::createInstance(
   jsi::Runtime& rt,
   const std::string& type,
   const jsi::Object& props) {
-  // TODO: Call JS via Wasm import to create a real host instance.
-  return nullptr;
+  return std::make_shared<SimpleHostInstance>(rt, type, props);
 }
 
 std::shared_ptr<HostInstance> ReactRuntime::createTextInstance(
   jsi::Runtime& rt,
   const std::string& text) {
-  // TODO: Call JS via Wasm import to create a real host text instance.
-  return nullptr;
+  return std::make_shared<SimpleHostInstance>(rt, "#text", text);
 }
 
 void ReactRuntime::appendChild(
     std::shared_ptr<HostInstance> parent,
     std::shared_ptr<HostInstance> child) {
-  // TODO: Call JS via Wasm import.
+  if (!parent || !child) {
+    return;
+  }
+
+  if (auto simpleParent = std::dynamic_pointer_cast<SimpleHostInstance>(parent)) {
+    simpleParent->appendChild(child);
+  }
 }
 
 void ReactRuntime::removeChild(
     std::shared_ptr<HostInstance> parent,
     std::shared_ptr<HostInstance> child) {
-  // TODO: Call JS via Wasm import.
+  if (!parent || !child) {
+    return;
+  }
+
+  if (auto simpleParent = std::dynamic_pointer_cast<SimpleHostInstance>(parent)) {
+    simpleParent->removeChild(child);
+  }
 }
 
 void ReactRuntime::insertBefore(
     std::shared_ptr<HostInstance> parent,
     std::shared_ptr<HostInstance> child,
     std::shared_ptr<HostInstance> beforeChild) {
-  // TODO: Call JS via Wasm import.
+  if (!parent || !child) {
+    return;
+  }
+
+  if (auto simpleParent = std::dynamic_pointer_cast<SimpleHostInstance>(parent)) {
+    simpleParent->insertChildBefore(child, beforeChild);
+  }
 }
 
 void ReactRuntime::commitUpdate(
     std::shared_ptr<HostInstance> instance,
     const jsi::Object& oldProps,
-    const jsi::Object& newProps) {
-  // TODO: Call JS via Wasm import to update instance properties.
+    const jsi::Object& newProps,
+    const jsi::Object& updatePayload) {
+  if (!instance) {
+    return;
+  }
+
+  if (auto simpleInstance = std::dynamic_pointer_cast<SimpleHostInstance>(instance)) {
+    simpleInstance->applyUpdate(newProps, updatePayload);
+  }
 }
 
 // --- Scheduler Implementation (Stubs) ---
@@ -507,7 +535,185 @@ std::string numberToText(double value) {
   return oss.str();
 }
 
+std::optional<std::string> extractKeyString(jsi::Runtime& rt, const jsi::Value& keyValue) {
+  if (keyValue.isUndefined() || keyValue.isNull()) {
+    return std::nullopt;
+  }
+
+  if (keyValue.isString()) {
+    return keyValue.asString(rt).utf8(rt);
+  }
+
+  if (keyValue.isNumber()) {
+    return numberToText(keyValue.getNumber());
+  }
+
+  return std::nullopt;
+}
+
 } // namespace
+
+std::string ReactRuntime::getTextContentFromValue(jsi::Runtime& rt, const jsi::Value& value) {
+  if (value.isString()) {
+    return value.asString(rt).utf8(rt);
+  }
+
+  if (value.isNumber()) {
+    return numberToText(value.getNumber());
+  }
+
+  if (value.isObject()) {
+    jsi::Object object = value.asObject(rt);
+    if (object.hasProperty(rt, "text")) {
+      jsi::Value textValue = object.getProperty(rt, "text");
+      if (textValue.isString()) {
+        return textValue.asString(rt).utf8(rt);
+      }
+      if (textValue.isNumber()) {
+        return numberToText(textValue.getNumber());
+      }
+    }
+  }
+
+  return std::string();
+}
+
+bool ReactRuntime::computeHostComponentUpdatePayload(
+  jsi::Runtime& rt,
+  const jsi::Value& previousPropsValue,
+  const jsi::Value& nextPropsValue,
+  jsi::Value& outPayload) {
+  std::unordered_set<std::string> keys;
+
+  auto collectKeys = [&](const jsi::Value& props) {
+    if (!props.isObject()) {
+      return;
+    }
+    jsi::Object object = props.asObject(rt);
+    jsi::Array names = object.getPropertyNames(rt);
+    size_t length = names.size(rt);
+    for (size_t i = 0; i < length; ++i) {
+      jsi::Value nameValue = names.getValueAtIndex(rt, i);
+      if (!nameValue.isString()) {
+        continue;
+      }
+      std::string key = nameValue.asString(rt).utf8(rt);
+      if (key == "children") {
+        continue;
+      }
+      keys.insert(std::move(key));
+    }
+  };
+
+  collectKeys(previousPropsValue);
+  collectKeys(nextPropsValue);
+
+  if (keys.empty()) {
+    bool previousIsObject = previousPropsValue.isObject();
+    bool nextIsObject = nextPropsValue.isObject();
+    if (previousIsObject == nextIsObject) {
+      return false;
+    }
+    if (!previousIsObject && !nextIsObject) {
+      return false;
+    }
+  }
+
+  bool previousIsObject = previousPropsValue.isObject();
+  bool nextIsObject = nextPropsValue.isObject();
+  jsi::Object previousObject = previousIsObject ? previousPropsValue.asObject(rt) : jsi::Object(rt);
+  jsi::Object nextObject = nextIsObject ? nextPropsValue.asObject(rt) : jsi::Object(rt);
+
+  bool hasChanges = false;
+  jsi::Object payload(rt);
+
+  if (keys.empty()) {
+    // There were no enumerable keys, but the object-ness changed (e.g., props removed).
+    if (previousIsObject && !nextIsObject) {
+      jsi::Array previousNames = previousObject.getPropertyNames(rt);
+      size_t length = previousNames.size(rt);
+      for (size_t i = 0; i < length; ++i) {
+        jsi::Value nameValue = previousNames.getValueAtIndex(rt, i);
+        if (!nameValue.isString()) {
+          continue;
+        }
+        std::string key = nameValue.asString(rt).utf8(rt);
+        if (key == "children") {
+          continue;
+        }
+        auto nameID = jsi::PropNameID::forUtf8(rt, key);
+        payload.setProperty(rt, nameID, jsi::Value::undefined());
+        hasChanges = true;
+      }
+    }
+
+    if (!previousIsObject && nextIsObject) {
+      jsi::Array nextNames = nextObject.getPropertyNames(rt);
+      size_t length = nextNames.size(rt);
+      for (size_t i = 0; i < length; ++i) {
+        jsi::Value nameValue = nextNames.getValueAtIndex(rt, i);
+        if (!nameValue.isString()) {
+          continue;
+        }
+        std::string key = nameValue.asString(rt).utf8(rt);
+        if (key == "children") {
+          continue;
+        }
+        auto nameID = jsi::PropNameID::forUtf8(rt, key);
+        jsi::Value nextValue = nextObject.getProperty(rt, nameID);
+        payload.setProperty(rt, nameID, jsi::Value(rt, nextValue));
+        hasChanges = true;
+      }
+    }
+  }
+
+  for (const auto& key : keys) {
+    auto nameID = jsi::PropNameID::forUtf8(rt, key);
+    bool previousHas = previousIsObject && previousObject.hasProperty(rt, nameID);
+    bool nextHas = nextIsObject && nextObject.hasProperty(rt, nameID);
+
+    jsi::Value previousValue = previousHas ? previousObject.getProperty(rt, nameID) : jsi::Value::undefined();
+    jsi::Value nextValue = nextHas ? nextObject.getProperty(rt, nameID) : jsi::Value::undefined();
+
+    if (!nextHas) {
+      if (previousHas) {
+        payload.setProperty(rt, nameID, jsi::Value::undefined());
+        hasChanges = true;
+      }
+      continue;
+    }
+
+    if (!previousHas || !jsi::Value::strictEquals(rt, previousValue, nextValue)) {
+      payload.setProperty(rt, nameID, jsi::Value(rt, nextValue));
+      hasChanges = true;
+    }
+  }
+
+  if (!hasChanges) {
+    return false;
+  }
+
+  outPayload = jsi::Value(rt, payload);
+  return true;
+}
+
+bool ReactRuntime::computeHostTextUpdatePayload(
+  jsi::Runtime& rt,
+  const jsi::Value& previousPropsValue,
+  const jsi::Value& nextPropsValue,
+  jsi::Value& outPayload) {
+  std::string previousText = getTextContentFromValue(rt, previousPropsValue);
+  std::string nextText = getTextContentFromValue(rt, nextPropsValue);
+
+  if (previousText == nextText) {
+    return false;
+  }
+
+  jsi::Object payload(rt);
+  payload.setProperty(rt, "text", jsi::String::createFromUtf8(rt, nextText));
+  outPayload = jsi::Value(rt, payload);
+  return true;
+}
 
 void ReactRuntime::appendAllChildren(
   const std::shared_ptr<HostInstance>& parent,
@@ -563,6 +769,7 @@ void ReactRuntime::commitPlacement(jsi::Runtime& rt, const std::shared_ptr<Fiber
   }
 
   std::shared_ptr<HostInstance> parentInstance;
+  auto parentFiber = fiber->returnFiber;
   if (parentFiber) {
     if (parentFiber->tag == WorkTag::HostComponent || parentFiber->tag == WorkTag::HostRoot) {
       parentInstance = parentFiber->stateNode;
@@ -704,6 +911,7 @@ void ReactRuntime::commitDeletion(
     currentFiber->flags = withoutFlag(currentFiber->flags, FiberFlags::Deletion);
     currentFiber->subtreeFlags = FiberFlags::NoFlags;
     currentFiber->deletions.clear();
+    currentFiber->updatePayload = jsi::Value::undefined();
 
     if (child) {
       stack.push_back(child);
@@ -757,7 +965,76 @@ void ReactRuntime::commitMutationEffects(jsi::Runtime& rt, const std::shared_ptr
     }
 
     if (hasFlag(fiber->flags, FiberFlags::Update)) {
-      // TODO: implement commitUpdate handling when diffing hooks are ready.
+      switch (fiber->tag) {
+        case WorkTag::HostComponent: {
+          auto instance = fiber->stateNode;
+          if (instance) {
+            jsi::Object oldProps = fiber->alternate && fiber->alternate->memoizedProps.isObject()
+              ? fiber->alternate->memoizedProps.asObject(rt)
+              : jsi::Object(rt);
+            jsi::Object newProps = fiber->memoizedProps.isObject()
+              ? fiber->memoizedProps.asObject(rt)
+              : jsi::Object(rt);
+
+            jsi::Object payload = fiber->updatePayload.isObject()
+              ? fiber->updatePayload.asObject(rt)
+              : jsi::Object(rt);
+
+            bool hasPayload = false;
+            if (fiber->updatePayload.isObject()) {
+              jsi::Array payloadKeys = payload.getPropertyNames(rt);
+              hasPayload = payloadKeys.size(rt) > 0;
+            }
+
+            if (hasPayload) {
+              commitUpdate(instance, oldProps, newProps, payload);
+            }
+          }
+          fiber->updatePayload = jsi::Value::undefined();
+          fiber->flags = withoutFlag(fiber->flags, FiberFlags::Update);
+          break;
+        }
+        case WorkTag::HostText: {
+          auto instance = fiber->stateNode;
+          if (instance) {
+            std::string newText = getTextContentFromValue(rt, fiber->memoizedProps);
+            std::string oldText = fiber->alternate
+              ? getTextContentFromValue(rt, fiber->alternate->memoizedProps)
+              : std::string();
+
+            jsi::Object oldProps(rt);
+            jsi::Object newProps(rt);
+            oldProps.setProperty(rt, "text", jsi::String::createFromUtf8(rt, oldText));
+            newProps.setProperty(rt, "text", jsi::String::createFromUtf8(rt, newText));
+
+            jsi::Object payload = fiber->updatePayload.isObject()
+              ? fiber->updatePayload.asObject(rt)
+              : jsi::Object(rt);
+
+            bool hasPayload = false;
+            if (fiber->updatePayload.isObject()) {
+              jsi::Array payloadKeys = payload.getPropertyNames(rt);
+              hasPayload = payloadKeys.size(rt) > 0;
+            }
+
+            if (!hasPayload && newText != oldText) {
+              payload.setProperty(rt, "text", jsi::String::createFromUtf8(rt, newText));
+              hasPayload = true;
+            }
+
+            if (hasPayload) {
+              commitUpdate(instance, oldProps, newProps, payload);
+            }
+          }
+          fiber->updatePayload = jsi::Value::undefined();
+          fiber->flags = withoutFlag(fiber->flags, FiberFlags::Update);
+          break;
+        }
+        default:
+          fiber->updatePayload = jsi::Value::undefined();
+          fiber->flags = withoutFlag(fiber->flags, FiberFlags::Update);
+          break;
+      }
     }
 
     fiber->subtreeFlags = FiberFlags::NoFlags;
@@ -883,8 +1160,8 @@ std::shared_ptr<FiberNode> ReactRuntime::createFiberFromElementPlaceholder(
 
   auto fiber = std::make_shared<FiberNode>(
     WorkTag::HostComponent,
-    pendingPropsValue,
-    keyCopy);
+    std::move(pendingPropsValue),
+    std::move(keyCopy));
 
   fiber->type = jsi::Value(rt, typeValue);
   fiber->elementType = jsi::Value(rt, typeValue);
@@ -899,10 +1176,70 @@ std::shared_ptr<FiberNode> ReactRuntime::createFiberFromTextPlaceholder(
   jsi::String text = jsi::String::createFromUtf8(rt, textContent);
   auto fiber = std::make_shared<FiberNode>(
     WorkTag::HostText,
-    jsi::Value(text),
+    jsi::Value(rt, text),
     jsi::Value::undefined());
 
   fiber->flags = FiberFlags::Placement;
+
+  return fiber;
+}
+
+std::shared_ptr<FiberNode> ReactRuntime::cloneFiberForReuse(
+  jsi::Runtime& rt,
+  const std::shared_ptr<FiberNode>& existing,
+  jsi::Value pendingProps,
+  jsi::Value keyCopy) {
+  if (!existing) {
+    return nullptr;
+  }
+
+  jsi::Value updatePayload = jsi::Value::undefined();
+  bool shouldMarkUpdate = false;
+  if (existing->tag == WorkTag::HostComponent) {
+    shouldMarkUpdate = computeHostComponentUpdatePayload(rt, existing->memoizedProps, pendingProps, updatePayload);
+  } else if (existing->tag == WorkTag::HostText) {
+    shouldMarkUpdate = computeHostTextUpdatePayload(rt, existing->memoizedProps, pendingProps, updatePayload);
+  } else {
+    const auto& previousProps = existing->memoizedProps;
+    bool pendingUndefined = pendingProps.isUndefined();
+    bool previousUndefined = previousProps.isUndefined();
+    if (pendingUndefined != previousUndefined) {
+      shouldMarkUpdate = true;
+    } else if (!pendingUndefined) {
+      shouldMarkUpdate = !jsi::Value::strictEquals(rt, pendingProps, previousProps);
+    }
+  }
+
+  auto fiber = std::make_shared<FiberNode>(
+    existing->tag,
+    std::move(pendingProps),
+    std::move(keyCopy));
+
+  fiber->type = existing->type.isUndefined()
+    ? jsi::Value::undefined()
+    : jsi::Value(rt, existing->type);
+  fiber->elementType = existing->elementType.isUndefined()
+    ? jsi::Value::undefined()
+    : jsi::Value(rt, existing->elementType);
+  fiber->memoizedProps = existing->memoizedProps.isUndefined()
+    ? jsi::Value::undefined()
+    : jsi::Value(rt, existing->memoizedProps);
+  fiber->memoizedState = existing->memoizedState.isUndefined()
+    ? jsi::Value::undefined()
+    : jsi::Value(rt, existing->memoizedState);
+  fiber->stateNode = existing->stateNode;
+  fiber->updateQueue = existing->updateQueue;
+  fiber->flags = FiberFlags::NoFlags;
+  fiber->subtreeFlags = FiberFlags::NoFlags;
+
+  if (shouldMarkUpdate) {
+    fiber->flags = fiber->flags | FiberFlags::Update;
+    fiber->updatePayload = std::move(updatePayload);
+  }
+
+  fiber->alternate = existing;
+  existing->alternate = fiber;
+  existing->updatePayload = jsi::Value::undefined();
 
   return fiber;
 }
@@ -913,11 +1250,34 @@ void ReactRuntime::deleteRemainingChildren(
   auto node = child;
   while (node) {
     auto nextSibling = node->sibling;
-    node->flags = node->flags | FiberFlags::Deletion;
-    result.subtreeFlags |= FiberFlags::ChildDeletion;
-    result.deletions.push_back(node);
+    markChildForDeletion(result, node);
     node = nextSibling;
   }
+}
+
+void ReactRuntime::markChildForDeletion(
+  ReactRuntime::ChildReconciliationResult& result,
+  const std::shared_ptr<FiberNode>& child) {
+  if (!child) {
+    return;
+  }
+
+  if (!hasFlag(child->flags, FiberFlags::Deletion)) {
+    child->flags = child->flags | FiberFlags::Deletion;
+  }
+
+  auto already = std::find_if(
+    result.deletions.begin(),
+    result.deletions.end(),
+    [&](const std::shared_ptr<FiberNode>& existing) {
+      return existing.get() == child.get();
+    });
+  if (already != result.deletions.end()) {
+    return;
+  }
+
+  result.subtreeFlags |= FiberFlags::ChildDeletion;
+  result.deletions.push_back(child);
 }
 
 std::shared_ptr<FiberNode> ReactRuntime::placeChild(
@@ -935,9 +1295,15 @@ std::shared_ptr<FiberNode> ReactRuntime::placeChild(
 
   bool isNewFiber = child->alternate == nullptr;
   if (isNewFiber) {
-    child->flags = child->flags | FiberFlags::Placement;
+    if (shouldTrackMoves) {
+      child->flags = child->flags | FiberFlags::Placement;
+    }
   } else if (shouldTrackMoves) {
-    if (child->alternate && child->alternate->index > index) {
+    uint32_t oldIndex = child->alternate->index;
+    if (!result.hasLastPlacedIndex || oldIndex >= result.lastPlacedIndex) {
+      result.lastPlacedIndex = oldIndex;
+      result.hasLastPlacedIndex = true;
+    } else {
       child->flags = child->flags | FiberFlags::Placement;
     }
   }
@@ -988,21 +1354,7 @@ std::shared_ptr<FiberNode> ReactRuntime::reconcileSingleElement(
 
     if (typeMatches && keyMatches) {
       deleteRemainingChildren(result, existing->sibling);
-
-      auto workInProgressFiber = std::make_shared<FiberNode>(
-        existing->tag,
-        pendingProps,
-        keyCopy);
-
-      workInProgressFiber->type = jsi::Value(rt, typeValue);
-      workInProgressFiber->elementType = jsi::Value(rt, typeValue);
-      workInProgressFiber->stateNode = existing->stateNode;
-      workInProgressFiber->updateQueue = existing->updateQueue;
-      workInProgressFiber->alternate = existing;
-      existing->alternate = workInProgressFiber;
-      workInProgressFiber->flags = FiberFlags::NoFlags;
-      workInProgressFiber->subtreeFlags = FiberFlags::NoFlags;
-
+      auto workInProgressFiber = cloneFiberForReuse(rt, existing, std::move(pendingProps), std::move(keyCopy));
       placeChild(result, workInProgressFiber, 0, false);
       return workInProgressFiber;
     }
@@ -1010,8 +1362,6 @@ std::shared_ptr<FiberNode> ReactRuntime::reconcileSingleElement(
 
   deleteRemainingChildren(result, existing);
   auto fiber = createFiberFromElementPlaceholder(rt, elementObject);
-  fiber->pendingProps = pendingProps;
-  fiber->key = keyCopy;
   placeChild(result, fiber, 0, false);
   return fiber;
 }
@@ -1026,25 +1376,11 @@ std::shared_ptr<FiberNode> ReactRuntime::reconcileSingleText(
 
   std::shared_ptr<FiberNode> existing = currentFirstChild;
   jsi::String textValue = jsi::String::createFromUtf8(rt, textContent);
-  auto pendingProps = jsi::Value(textValue);
+  auto pendingProps = jsi::Value(rt, textValue);
 
   if (existing && existing->tag == WorkTag::HostText) {
     deleteRemainingChildren(result, existing->sibling);
-
-    auto workInProgressFiber = std::make_shared<FiberNode>(
-      existing->tag,
-      pendingProps,
-      jsi::Value::undefined());
-
-    workInProgressFiber->type = jsi::Value(rt, existing->type);
-    workInProgressFiber->elementType = jsi::Value(rt, existing->elementType);
-    workInProgressFiber->stateNode = existing->stateNode;
-    workInProgressFiber->updateQueue = existing->updateQueue;
-    workInProgressFiber->alternate = existing;
-    existing->alternate = workInProgressFiber;
-    workInProgressFiber->flags = FiberFlags::NoFlags;
-    workInProgressFiber->subtreeFlags = FiberFlags::NoFlags;
-
+    auto workInProgressFiber = cloneFiberForReuse(rt, existing, std::move(pendingProps), jsi::Value::undefined());
     placeChild(result, workInProgressFiber, 0, false);
     return workInProgressFiber;
   }
@@ -1060,11 +1396,58 @@ ReactRuntime::ChildReconciliationResult ReactRuntime::reconcileArrayChildren(
   const std::shared_ptr<FiberNode>& returnFiber,
   const std::shared_ptr<FiberNode>& currentFirstChild,
   const jsi::Array& childrenArray) {
+  (void)returnFiber;
+
   ReactRuntime::ChildReconciliationResult result;
-  deleteRemainingChildren(result, currentFirstChild);
+
+  struct ExistingEntry {
+    std::shared_ptr<FiberNode> fiber;
+    std::optional<std::string> key;
+  };
+
+  std::vector<ExistingEntry> existingEntries;
+  std::unordered_map<std::string, std::shared_ptr<FiberNode>> keyedExisting;
+
+  auto existing = currentFirstChild;
+  while (existing) {
+    auto keyOpt = extractKeyString(rt, existing->key);
+    existingEntries.push_back({existing, keyOpt});
+    if (keyOpt) {
+      keyedExisting[*keyOpt] = existing;
+    }
+    existing = existing->sibling;
+  }
+
+  std::unordered_set<FiberNode*> reused;
+
+  auto takeFirstUnkeyed = [&](WorkTag tag, const std::function<bool(const std::shared_ptr<FiberNode>&)>& predicate)
+    -> std::shared_ptr<FiberNode> {
+    for (auto& entry : existingEntries) {
+      const auto& candidate = entry.fiber;
+      if (!candidate) {
+        continue;
+      }
+      if (reused.find(candidate.get()) != reused.end()) {
+        continue;
+      }
+      if (entry.key.has_value()) {
+        continue;
+      }
+      if (candidate->tag != tag) {
+        continue;
+      }
+      if (predicate && !predicate(candidate)) {
+        continue;
+      }
+      reused.insert(candidate.get());
+      return candidate;
+    }
+    return nullptr;
+  };
 
   size_t length = childrenArray.size(rt);
   uint32_t index = 0;
+
   for (size_t i = 0; i < length; ++i) {
     jsi::Value value = childrenArray.getValueAtIndex(rt, i);
 
@@ -1076,47 +1459,149 @@ ReactRuntime::ChildReconciliationResult ReactRuntime::reconcileArrayChildren(
       if (!value.getBool()) {
         continue;
       }
-      // true is ignored
       continue;
     }
 
     if (value.isString()) {
-      auto fiber = createFiberFromTextPlaceholder(rt, value.getString(rt).utf8(rt));
-      placeChild(result, fiber, index++, true);
+      std::string text = value.getString(rt).utf8(rt);
+      auto existingText = takeFirstUnkeyed(WorkTag::HostText, nullptr);
+      std::shared_ptr<FiberNode> fiber;
+      if (existingText) {
+        jsi::String textValue = jsi::String::createFromUtf8(rt, text);
+        auto pendingProps = jsi::Value(rt, textValue);
+        fiber = cloneFiberForReuse(rt, existingText, std::move(pendingProps), jsi::Value::undefined());
+      } else {
+        fiber = createFiberFromTextPlaceholder(rt, text);
+      }
+      if (fiber) {
+        placeChild(result, fiber, index, true);
+        ++index;
+      }
       continue;
     }
 
     if (value.isNumber()) {
-      auto fiber = createFiberFromTextPlaceholder(rt, numberToText(value.getNumber()));
-      placeChild(result, fiber, index++, true);
-      continue;
-    }
-
-    if (value.isObject()) {
-      jsi::Object obj = value.asObject(rt);
-      if (obj.isArray(rt)) {
-        jsi::Array nested = obj.asArray(rt);
-        size_t nestedLength = nested.size(rt);
-        for (size_t j = 0; j < nestedLength; ++j) {
-          jsi::Value nestedValue = nested.getValueAtIndex(rt, j);
-          if (nestedValue.isString()) {
-            auto fiber = createFiberFromTextPlaceholder(rt, nestedValue.getString(rt).utf8(rt));
-            placeChild(result, fiber, index++, true);
-          } else if (nestedValue.isNumber()) {
-            auto fiber = createFiberFromTextPlaceholder(rt, numberToText(nestedValue.getNumber()));
-            placeChild(result, fiber, index++, true);
-          } else if (nestedValue.isObject()) {
-            auto childFiber = createFiberFromElementPlaceholder(rt, nestedValue.asObject(rt));
-            placeChild(result, childFiber, index++, true);
-          }
-        }
-        continue;
+      std::string text = numberToText(value.getNumber());
+      auto existingText = takeFirstUnkeyed(WorkTag::HostText, nullptr);
+      std::shared_ptr<FiberNode> fiber;
+      if (existingText) {
+        jsi::String textValue = jsi::String::createFromUtf8(rt, text);
+        auto pendingProps = jsi::Value(rt, textValue);
+        fiber = cloneFiberForReuse(rt, existingText, std::move(pendingProps), jsi::Value::undefined());
+      } else {
+        fiber = createFiberFromTextPlaceholder(rt, text);
       }
-
-      auto fiber = createFiberFromElementPlaceholder(rt, obj);
-      placeChild(result, fiber, index++, true);
+      if (fiber) {
+        placeChild(result, fiber, index, true);
+        ++index;
+      }
       continue;
     }
+
+    if (!value.isObject()) {
+      continue;
+    }
+
+    jsi::Object obj = value.asObject(rt);
+    if (obj.isArray(rt)) {
+      jsi::Array nested = obj.asArray(rt);
+      size_t nestedLength = nested.size(rt);
+      for (size_t j = 0; j < nestedLength; ++j) {
+        jsi::Value nestedValue = nested.getValueAtIndex(rt, j);
+        if (nestedValue.isUndefined() || nestedValue.isNull()) {
+          continue;
+        }
+        if (nestedValue.isBool() && !nestedValue.getBool()) {
+          continue;
+        }
+
+        std::shared_ptr<FiberNode> childFiber;
+        if (nestedValue.isString()) {
+          childFiber = createFiberFromTextPlaceholder(rt, nestedValue.getString(rt).utf8(rt));
+        } else if (nestedValue.isNumber()) {
+          childFiber = createFiberFromTextPlaceholder(rt, numberToText(nestedValue.getNumber()));
+        } else if (nestedValue.isObject()) {
+          childFiber = createFiberFromElementPlaceholder(rt, nestedValue.asObject(rt));
+        }
+
+        if (childFiber) {
+          placeChild(result, childFiber, index, true);
+          ++index;
+        }
+      }
+      continue;
+    }
+
+    jsi::Value typeValue = obj.getProperty(rt, "type");
+    jsi::Value propsValue = obj.hasProperty(rt, "props")
+      ? obj.getProperty(rt, "props")
+      : jsi::Value::undefined();
+    jsi::Value keyValue = obj.hasProperty(rt, "key")
+      ? obj.getProperty(rt, "key")
+      : jsi::Value::undefined();
+
+    auto keyOpt = extractKeyString(rt, keyValue);
+    std::shared_ptr<FiberNode> childFiber;
+
+    if (keyOpt) {
+      auto it = keyedExisting.find(*keyOpt);
+      if (it != keyedExisting.end()) {
+        auto matchedExisting = it->second;
+        if (
+          matchedExisting &&
+          matchedExisting->tag == WorkTag::HostComponent &&
+          typeValue.isString() &&
+          matchedExisting->type.isString() &&
+          matchedExisting->type.asString(rt).utf8(rt) == typeValue.asString(rt).utf8(rt)
+        ) {
+          auto pendingProps = propsValue.isUndefined()
+            ? jsi::Value::undefined()
+            : jsi::Value(rt, propsValue);
+          jsi::Value keyCopy = keyValue.isUndefined() || keyValue.isNull()
+            ? jsi::Value::undefined()
+            : jsi::Value(rt, keyValue);
+
+          childFiber = cloneFiberForReuse(rt, matchedExisting, std::move(pendingProps), std::move(keyCopy));
+          reused.insert(matchedExisting.get());
+          keyedExisting.erase(it);
+        }
+      }
+    }
+
+    if (!childFiber && typeValue.isString()) {
+      auto reuseCandidate = takeFirstUnkeyed(WorkTag::HostComponent, [&](const std::shared_ptr<FiberNode>& candidate) {
+        if (!candidate->type.isString()) {
+          return false;
+        }
+        return candidate->type.asString(rt).utf8(rt) == typeValue.asString(rt).utf8(rt);
+      });
+
+      if (reuseCandidate) {
+        auto pendingProps = propsValue.isUndefined()
+          ? jsi::Value::undefined()
+          : jsi::Value(rt, propsValue);
+        childFiber = cloneFiberForReuse(rt, reuseCandidate, std::move(pendingProps), jsi::Value::undefined());
+      }
+    }
+
+    if (!childFiber) {
+      childFiber = createFiberFromElementPlaceholder(rt, obj);
+    }
+
+    if (childFiber) {
+      placeChild(result, childFiber, index, true);
+      ++index;
+    }
+  }
+
+  for (auto& entry : existingEntries) {
+    if (!entry.fiber) {
+      continue;
+    }
+    if (reused.find(entry.fiber.get()) != reused.end()) {
+      continue;
+    }
+    markChildForDeletion(result, entry.fiber);
   }
 
   return result;

@@ -13,6 +13,7 @@ namespace jsi = facebook::jsi;
 namespace react {
 
 class UpdateQueue;
+class ReactRuntimeTestHelper;
 
 // ReactRuntime is the central hub of the C++ React core.
 // It implements the HostConfig and Scheduler interfaces for a specific platform (e.g., Wasm/Browser).
@@ -51,7 +52,8 @@ public:
   void commitUpdate(
     std::shared_ptr<HostInstance> instance,
     const jsi::Object& oldProps,
-    const jsi::Object& newProps
+    const jsi::Object& newProps,
+    const jsi::Object& updatePayload
   ) override;
 
   // --- Scheduler Implementation ---
@@ -65,12 +67,28 @@ public:
   void reset();
 
 private:
+  friend class ReactRuntimeTestHelper;
+
   struct ChildReconciliationResult {
     std::shared_ptr<FiberNode> firstChild;
     std::shared_ptr<FiberNode> lastPlacedChild;
     FiberFlags subtreeFlags{FiberFlags::NoFlags};
+    uint32_t lastPlacedIndex{0};
+    bool hasLastPlacedIndex{false};
     std::vector<std::shared_ptr<FiberNode>> deletions;
   };
+
+  static std::string getTextContentFromValue(jsi::Runtime& rt, const jsi::Value& value);
+  static bool computeHostComponentUpdatePayload(
+    jsi::Runtime& rt,
+    const jsi::Value& previousPropsValue,
+    const jsi::Value& nextPropsValue,
+    jsi::Value& outPayload);
+  static bool computeHostTextUpdatePayload(
+    jsi::Runtime& rt,
+    const jsi::Value& previousPropsValue,
+    const jsi::Value& nextPropsValue,
+    jsi::Value& outPayload);
 
   std::shared_ptr<FiberNode> getOrCreateRoot(jsi::Runtime& rt, const std::shared_ptr<HostInstance>& rootContainer);
   void prepareFreshStack(
@@ -115,6 +133,11 @@ private:
   std::shared_ptr<FiberNode> createFiberFromTextPlaceholder(
     jsi::Runtime& rt,
     const std::string& textContent);
+  std::shared_ptr<FiberNode> cloneFiberForReuse(
+    jsi::Runtime& rt,
+    const std::shared_ptr<FiberNode>& existing,
+    jsi::Value pendingProps,
+    jsi::Value keyCopy);
   std::shared_ptr<FiberNode> reconcileSingleElement(
     jsi::Runtime& rt,
     const std::shared_ptr<FiberNode>& returnFiber,
@@ -122,6 +145,9 @@ private:
     const jsi::Object& elementObject,
     ChildReconciliationResult& result);
   void deleteRemainingChildren(
+    ChildReconciliationResult& result,
+    const std::shared_ptr<FiberNode>& child);
+  void markChildForDeletion(
     ChildReconciliationResult& result,
     const std::shared_ptr<FiberNode>& child);
   std::shared_ptr<FiberNode> placeChild(
@@ -154,6 +180,58 @@ private:
   std::unordered_map<HostInstance*, std::shared_ptr<HostInstance>> rootContainers_;
   std::unordered_map<HostInstance*, bool> scheduledRoots_;
   std::unordered_map<FiberNode*, std::weak_ptr<HostInstance>> fiberHostContainers_;
+};
+
+class ReactRuntimeTestHelper {
+public:
+  static std::shared_ptr<FiberNode> cloneFiberForReuse(
+    ReactRuntime& runtime,
+    jsi::Runtime& rt,
+    const std::shared_ptr<FiberNode>& existing,
+    jsi::Value pendingProps,
+    jsi::Value keyCopy) {
+    return runtime.cloneFiberForReuse(rt, existing, std::move(pendingProps), std::move(keyCopy));
+  }
+
+  static bool computeHostComponentUpdatePayload(
+    jsi::Runtime& rt,
+    const jsi::Value& previousPropsValue,
+    const jsi::Value& nextPropsValue,
+    jsi::Value& outPayload) {
+    return ReactRuntime::computeHostComponentUpdatePayload(rt, previousPropsValue, nextPropsValue, outPayload);
+  }
+
+  static bool computeHostTextUpdatePayload(
+    jsi::Runtime& rt,
+    const jsi::Value& previousPropsValue,
+    const jsi::Value& nextPropsValue,
+    jsi::Value& outPayload) {
+    return ReactRuntime::computeHostTextUpdatePayload(rt, previousPropsValue, nextPropsValue, outPayload);
+  }
+
+  static std::string getTextContentFromValue(jsi::Runtime& rt, const jsi::Value& value) {
+    return ReactRuntime::getTextContentFromValue(rt, value);
+  }
+
+  static void commitMutationEffects(
+    ReactRuntime& runtime,
+    jsi::Runtime& rt,
+    const std::shared_ptr<FiberNode>& root) {
+    runtime.commitMutationEffects(rt, root);
+  }
+
+  static void reconcileChildren(
+    ReactRuntime& runtime,
+    jsi::Runtime& rt,
+    const std::shared_ptr<FiberNode>& returnFiber,
+    const std::shared_ptr<FiberNode>& currentFirstChild,
+    const jsi::Value& newChild) {
+    runtime.reconcileChildrenPlaceholder(rt, returnFiber, currentFirstChild, newChild);
+  }
+
+  static size_t getRegisteredRootCount(const ReactRuntime& runtime) {
+    return runtime.roots_.size();
+  }
 };
 
 } // namespace react
