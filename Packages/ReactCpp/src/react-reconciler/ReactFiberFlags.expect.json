@@ -1,0 +1,727 @@
+{
+  "source": "react-main/packages/react-reconciler/src/ReactFiberFlags.js",
+  "generatedAt": "2025-09-29T07:41:39.732Z",
+  "exports": [
+    {
+      "name": "NoFlags",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 13
+        },
+        "end": {
+          "line": 18,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "PerformedWork",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 13
+        },
+        "end": {
+          "line": 19,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Placement",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 13
+        },
+        "end": {
+          "line": 20,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "DidCapture",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 13
+        },
+        "end": {
+          "line": 21,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Hydrating",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 13
+        },
+        "end": {
+          "line": 22,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Update",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 13
+        },
+        "end": {
+          "line": 25,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Cloned",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 13
+        },
+        "end": {
+          "line": 26,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "ChildDeletion",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 13
+        },
+        "end": {
+          "line": 28,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "ContentReset",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 13
+        },
+        "end": {
+          "line": 29,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Callback",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 13
+        },
+        "end": {
+          "line": 30,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "ForceClientRender",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 13
+        },
+        "end": {
+          "line": 33,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Ref",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 13
+        },
+        "end": {
+          "line": 34,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Snapshot",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 13
+        },
+        "end": {
+          "line": 35,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Passive",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 13
+        },
+        "end": {
+          "line": 36,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Visibility",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 13
+        },
+        "end": {
+          "line": 39,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "StoreConsistency",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 13
+        },
+        "end": {
+          "line": 40,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Hydrate",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 13
+        },
+        "end": {
+          "line": 45,
+          "column": 31
+        }
+      }
+    },
+    {
+      "name": "ScheduleRetry",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 13
+        },
+        "end": {
+          "line": 46,
+          "column": 45
+        }
+      }
+    },
+    {
+      "name": "ShouldSuspendCommit",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 47,
+          "column": 13
+        },
+        "end": {
+          "line": 47,
+          "column": 45
+        }
+      }
+    },
+    {
+      "name": "ViewTransitionNamedMount",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 13
+        },
+        "end": {
+          "line": 48,
+          "column": 59
+        }
+      }
+    },
+    {
+      "name": "DidDefer",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 13
+        },
+        "end": {
+          "line": 49,
+          "column": 36
+        }
+      }
+    },
+    {
+      "name": "FormReset",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 50,
+          "column": 13
+        },
+        "end": {
+          "line": 50,
+          "column": 33
+        }
+      }
+    },
+    {
+      "name": "AffectedParentLayout",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 51,
+          "column": 13
+        },
+        "end": {
+          "line": 51,
+          "column": 48
+        }
+      }
+    },
+    {
+      "name": "LifecycleEffectMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 53,
+          "column": 13
+        },
+        "end": {
+          "line": 54,
+          "column": 65
+        }
+      }
+    },
+    {
+      "name": "HostEffectMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 57,
+          "column": 13
+        },
+        "end": {
+          "line": 57,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Incomplete",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 13
+        },
+        "end": {
+          "line": 60,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "ShouldCapture",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 61,
+          "column": 13
+        },
+        "end": {
+          "line": 61,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "ForceUpdateForLegacySuspense",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 13
+        },
+        "end": {
+          "line": 62,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "DidPropagateContext",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 63,
+          "column": 13
+        },
+        "end": {
+          "line": 63,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "NeedsPropagation",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 13
+        },
+        "end": {
+          "line": 64,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "Forked",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 13
+        },
+        "end": {
+          "line": 65,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "SnapshotStatic",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 72,
+          "column": 13
+        },
+        "end": {
+          "line": 72,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "LayoutStatic",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 73,
+          "column": 13
+        },
+        "end": {
+          "line": 73,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "RefStatic",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 74,
+          "column": 13
+        },
+        "end": {
+          "line": 74,
+          "column": 37
+        }
+      }
+    },
+    {
+      "name": "PassiveStatic",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 75,
+          "column": 13
+        },
+        "end": {
+          "line": 75,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "MaySuspendCommit",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 76,
+          "column": 13
+        },
+        "end": {
+          "line": 76,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "ViewTransitionNamedStatic",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 81,
+          "column": 13
+        },
+        "end": {
+          "line": 82,
+          "column": 44
+        }
+      }
+    },
+    {
+      "name": "ViewTransitionStatic",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 85,
+          "column": 13
+        },
+        "end": {
+          "line": 85,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "PlacementDEV",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 88,
+          "column": 13
+        },
+        "end": {
+          "line": 88,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "MountLayoutDev",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 89,
+          "column": 13
+        },
+        "end": {
+          "line": 89,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "MountPassiveDev",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 90,
+          "column": 13
+        },
+        "end": {
+          "line": 90,
+          "column": 83
+        }
+      }
+    },
+    {
+      "name": "BeforeMutationMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 13
+        },
+        "end": {
+          "line": 108,
+          "column": 10
+        }
+      }
+    },
+    {
+      "name": "BeforeAndAfterMutationTransitionMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 112,
+          "column": 13
+        },
+        "end": {
+          "line": 113,
+          "column": 75
+        }
+      }
+    },
+    {
+      "name": "MutationMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 115,
+          "column": 13
+        },
+        "end": {
+          "line": 123,
+          "column": 11
+        }
+      }
+    },
+    {
+      "name": "LayoutMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 124,
+          "column": 13
+        },
+        "end": {
+          "line": 124,
+          "column": 62
+        }
+      }
+    },
+    {
+      "name": "PassiveMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 127,
+          "column": 13
+        },
+        "end": {
+          "line": 127,
+          "column": 63
+        }
+      }
+    },
+    {
+      "name": "PassiveTransitionMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 131,
+          "column": 13
+        },
+        "end": {
+          "line": 131,
+          "column": 77
+        }
+      }
+    },
+    {
+      "name": "StaticMask",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 136,
+          "column": 13
+        },
+        "end": {
+          "line": 142,
+          "column": 27
+        }
+      }
+    }
+  ],
+  "notes": []
+}

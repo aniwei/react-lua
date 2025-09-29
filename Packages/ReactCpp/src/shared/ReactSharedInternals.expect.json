@@ -1,0 +1,22 @@
+{
+  "source": "react-main/packages/shared/ReactSharedInternals.js",
+  "generatedAt": "2025-09-29T09:45:50.773Z",
+  "exports": [
+    {
+      "name": "ReactSharedInternals",
+      "kind": "variable",
+      "isDefault": true,
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 36
+        }
+      }
+    }
+  ],
+  "notes": []
+}

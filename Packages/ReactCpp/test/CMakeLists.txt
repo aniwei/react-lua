@@ -1,5 +1,6 @@
 add_executable(react_cpp_runtime_tests
     ReactFiberWorkLoopTests.cpp
+    ReactSharedConstantsTests.cpp
 )
 
 set_target_properties(react_cpp_runtime_tests PROPERTIES

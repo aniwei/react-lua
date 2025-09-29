@@ -7,6 +7,8 @@ const traverse = require('@babel/traverse').default;
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const DEFAULT_OUT_DIR = path.join(ROOT_DIR, 'packages', 'ReactCpp', 'src');
+const PREFERRED_REACT_MAIN_DIR = path.join(ROOT_DIR, 'vendor', 'react-main');
+const LEGACY_REACT_MAIN_DIR = path.join(ROOT_DIR, 'react-main');
 
 /**
  * Minimal CLI parsing helper.
@@ -65,15 +67,22 @@ function die(message) {
 }
 
 function ensureReactMainRelative(sourcePath) {
-  const reactMainDir = path.join(ROOT_DIR, 'react-main');
-  if (!fs.existsSync(reactMainDir)) {
-    die('react-main mirror not found. Expected directory: react-main/');
+  const candidates = [PREFERRED_REACT_MAIN_DIR, LEGACY_REACT_MAIN_DIR].filter(fs.existsSync);
+  if (candidates.length === 0) {
+    die('react-main mirror not found. Expected directory: vendor/react-main/ (or legacy react-main/)');
   }
-  const relative = path.relative(reactMainDir, sourcePath);
-  if (relative.startsWith('..')) {
-    die(`source must live under react-main/. Received: ${sourcePath}`);
+
+  for (const reactMainDir of candidates) {
+    const normalizedDir = path.resolve(reactMainDir) + path.sep;
+    const normalizedSource = path.resolve(sourcePath);
+    if (!normalizedSource.startsWith(normalizedDir)) {
+      continue;
+    }
+    const relative = path.relative(reactMainDir, sourcePath);
+    return { reactMainDir, relative };
   }
-  return { reactMainDir, relative };
+
+  die(`source must live under react-main/. Received: ${sourcePath}`);
 }
 
 function computeCppPaths(relativeSource, outDir) {
@@ -81,14 +90,20 @@ function computeCppPaths(relativeSource, outDir) {
   const pkgIndex = parts.indexOf('packages');
   const srcIndex = parts.indexOf('src');
 
-  if (pkgIndex === -1 || srcIndex === -1 || srcIndex <= pkgIndex + 1) {
+  if (pkgIndex === -1 || pkgIndex === parts.length - 1) {
     die(`cannot infer package/src layout from: ${relativeSource}`);
   }
 
   const packageName = parts[pkgIndex + 1];
-  const subPathParts = parts.slice(srcIndex + 1);
+  let subPathParts;
+  if (srcIndex !== -1 && srcIndex > pkgIndex + 1) {
+    subPathParts = parts.slice(srcIndex + 1);
+  } else {
+    subPathParts = parts.slice(pkgIndex + 2);
+  }
+
   if (subPathParts.length === 0) {
-    die(`missing file segment after src/: ${relativeSource}`);
+    die(`missing file segment after package root: ${relativeSource}`);
   }
 
   const fileName = subPathParts.pop();

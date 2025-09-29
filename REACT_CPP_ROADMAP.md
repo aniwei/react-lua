@@ -38,7 +38,7 @@
 | 阶段 | 主题 | 核心范围 | 状态 | Owner | 目标完成时间 |
 | --- | --- | --- | --- | --- | --- |
 | Phase 0 | 源码镜像 & Flag 清点 | 目录映射、模板生成、差异报告工具 | 🟡 进行中 | C++ 平台组 | 2025-10-20 |
-| Phase 1 | Shared/Feature Scaffold | Feature flags、共享常量、错误码对齐 | ⚪ 未开始 | 同上 | 2025-10-31 |
+| Phase 1 | Shared/Feature Scaffold | Feature flags、共享常量、错误码对齐 | 🟡 进行中 | 同上 | 2025-10-31 |
 | Phase 2 | ReactDOM Host Parity | `ReactDOMHostConfig`、`ReactDOMInstance`、属性 diff | ⚪ 未开始 | 同上 | 2025-11-15 |
 | Phase 3 | Fiber 数据结构 | `FiberNode`、`FiberRootNode`、UpdateQueue | ⚪ 未开始 | 同上 | 2025-11-29 |
 | Phase 4 | WorkLoop & Commit (Sync) | `beginWork`/`completeWork`/`commit*` 同构 | ⚪ 未开始 | 同上 | 2025-12-20 |
@@ -60,6 +60,7 @@
 - `scripts/translate-react.js`：读取 JS AST，输出 C++ 头/源模板（包含 namespace、函数声明、TODO 注释），并生成同名 `.expect.json` AST 描述。（已落地）
 - `docs/matrix/react-source-mapping.csv`：列出每个 JS 文件的 C++ 对应路径与负责人。（初版已生成）
 - `ci/react-parity-report.md`：每日 CI 产物，展示「已翻译 JS 行数 / 总行数」「存在偏差的函数列表」（初版报告脚本已上线）。
+- `vendor/react-main/`：固定 upstream mirror（当前以 symlink 指向本地 checkout，可替换为子模块或镜像仓库）。
 - Feature flag 清单：`packages/ReactCpp/src/shared/ReactFeatureFlags.h` 自动生成，支持 DEV / PROD / EXP builds。
 
 **任务现状**
@@ -69,7 +70,7 @@
 - [x] 输出 `docs/matrix/react-source-mapping.csv` 初版矩阵。
 - [x] 编写 `scripts/check-parity.js`，比较 JS/C++ AST 并报出缺失函数。
 - [x] 生成 `ci/react-parity-report.md` Markdown 报告入口。
-- [ ] 将 `react-main` 作为 git 子模块或 mirror，引入 `vendor/react-main/`。
+- [x] 将 `react-main` 作为 git 子模块或 mirror，引入 `vendor/react-main/`。
 - [ ] 生成 Feature Flag 自动化 pipeline（JS ➜ JSON ➜ C++ header）。
 
 **验收标准**
@@ -77,7 +78,7 @@
 - CI parity 报告无 404/跳过项。
 - Feature flag header 与 JS 端的 `__EXPERIMENTAL__` 值完全一致。
 
-### Phase 1 · Shared/Feature Scaffold（未开始）
+### Phase 1 · Shared/Feature Scaffold（进行中）
 
 **目标**：翻译所有共享模块，确保 Reconciler 依赖的常量、错误信息、工具函数与 JS 同步。
 
@@ -87,10 +88,12 @@
 - 建立 `SharedRuntimeTests`：验证常量值、flag 切换效果与 JS 端 snapshot 对齐。
 
 **任务清单**
-- [ ] 翻译 `shared/ReactWorkTags.js` 与 `shared/ReactFiberFlags.js`。
-- [ ] 建立 `enum class WorkTag` 与 `Flags`，并提供 `constexpr` 映射表。
+- [x] 翻译 `shared/ReactWorkTags.js` 与 `shared/ReactFiberFlags.js`。
+- [x] 建立 `enum class WorkTag` 与 `Flags`，并提供 `constexpr` 映射表。
+- [x] 翻译 `shared/ReactFeatureFlags.js`，新增 `REACTCPP_ENABLE_EXPERIMENTAL` / `REACTCPP_ENABLE_PROFILE` 宏支撑多构建配置。
 - [ ] 引入 `packages/shared/ReactSideEffectTags` ➜ C++ 常量。
-- [ ] 构建 gtest 保障——确保每个 enum 值与 JS constant JSON 快照一致。
+- [x] 翻译 `packages/shared/ReactSymbols.js`、`ReactSharedInternals.js`，统一导出 symbol & dispatcher 常量。
+- [x] 构建 gtest 保障——确保 `ReactWorkTags`、`ReactFiberFlags`、`ReactFeatureFlags` 数值与 JS 快照一致（新增 `ReactSharedConstantsTests.cpp`）。
 
 **验收标准**
 - C++ 端常量与 JS snapshot 一致（CI 对比 JSON）。
@@ -246,9 +249,11 @@
 | --- | --- | --- | --- |
 | 完成 `translate-react.js` AST 模板生成 | C++ 平台组 | ✅ 已完成 | 首版支持 `react-dom-bindings`，其余 package 正在扩展。 |
 | 引入 `react-main` mirror & lockfile | 平台组 | 🔜 待启动 | 使用 `git subtree` 或子模块，配合 parity 脚本。 |
-| 自动生成 Feature Flag Header | 平台组 | 🔜 待启动 | 输出 `ReactFeatureFlags.h/cpp`，校验 DEV/PROD 差异。 |
+| 自动生成 Feature Flag Header | 平台组 | ✅ 已完成 | `translate-react` 支持 `shared/ReactFeatureFlags.js`，生成宏 (`REACTCPP_ENABLE_EXPERIMENTAL` / `REACTCPP_ENABLE_PROFILE`) |
 | 扩展 `ReactDOMComponentTests`（gtest） | QA 小组 | ⏳ 进行中 | 复刻官方测试 `ReactDOMComponent-test.js` 关键用例。 |
 | 设计 parity CI 报告格式 | 平台组 | 🔜 待启动 | 输出 Markdown 摘要 + JSON 数据。 |
+| Shared 常量 gtest（`ReactSharedConstantsTests.cpp`） | 平台组 + QA | ✅ 已完成 | 针对 WorkTags/FiberFlags/FeatureFlags 做编译时数值快照断言。 |
+| 翻译 `shared/ReactSymbols.js` & `ReactSharedInternals.js` | 平台组 | ✅ 已完成 | 暴露 symbol / dispatcher 常量，解锁下一批 reconciler 引用。 |
 
 每日站会需更新 AST 翻译覆盖率 & 测试通过率。
 

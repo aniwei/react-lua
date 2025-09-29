@@ -1,0 +1,337 @@
+{
+  "source": "react-main/packages/shared/ReactSymbols.js",
+  "generatedAt": "2025-09-29T08:23:20.700Z",
+  "exports": [
+    {
+      "name": "REACT_LEGACY_ELEMENT_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 13
+        },
+        "end": {
+          "line": 17,
+          "column": 76
+        }
+      }
+    },
+    {
+      "name": "REACT_ELEMENT_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 13
+        },
+        "end": {
+          "line": 20,
+          "column": 29
+        }
+      }
+    },
+    {
+      "name": "REACT_PORTAL_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 13
+        },
+        "end": {
+          "line": 21,
+          "column": 67
+        }
+      }
+    },
+    {
+      "name": "REACT_FRAGMENT_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 13
+        },
+        "end": {
+          "line": 22,
+          "column": 71
+        }
+      }
+    },
+    {
+      "name": "REACT_STRICT_MODE_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 13
+        },
+        "end": {
+          "line": 23,
+          "column": 77
+        }
+      }
+    },
+    {
+      "name": "REACT_PROFILER_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 13
+        },
+        "end": {
+          "line": 24,
+          "column": 71
+        }
+      }
+    },
+    {
+      "name": "REACT_CONSUMER_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 13
+        },
+        "end": {
+          "line": 25,
+          "column": 71
+        }
+      }
+    },
+    {
+      "name": "REACT_CONTEXT_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 13
+        },
+        "end": {
+          "line": 26,
+          "column": 69
+        }
+      }
+    },
+    {
+      "name": "REACT_FORWARD_REF_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 13
+        },
+        "end": {
+          "line": 27,
+          "column": 77
+        }
+      }
+    },
+    {
+      "name": "REACT_SUSPENSE_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 13
+        },
+        "end": {
+          "line": 28,
+          "column": 71
+        }
+      }
+    },
+    {
+      "name": "REACT_SUSPENSE_LIST_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 13
+        },
+        "end": {
+          "line": 31,
+          "column": 1
+        }
+      }
+    },
+    {
+      "name": "REACT_MEMO_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 13
+        },
+        "end": {
+          "line": 32,
+          "column": 63
+        }
+      }
+    },
+    {
+      "name": "REACT_LAZY_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 13
+        },
+        "end": {
+          "line": 33,
+          "column": 63
+        }
+      }
+    },
+    {
+      "name": "REACT_SCOPE_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 13
+        },
+        "end": {
+          "line": 34,
+          "column": 65
+        }
+      }
+    },
+    {
+      "name": "REACT_ACTIVITY_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 13
+        },
+        "end": {
+          "line": 35,
+          "column": 71
+        }
+      }
+    },
+    {
+      "name": "REACT_LEGACY_HIDDEN_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 13
+        },
+        "end": {
+          "line": 38,
+          "column": 1
+        }
+      }
+    },
+    {
+      "name": "REACT_TRACING_MARKER_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 13
+        },
+        "end": {
+          "line": 41,
+          "column": 1
+        }
+      }
+    },
+    {
+      "name": "REACT_MEMO_CACHE_SENTINEL",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 13
+        },
+        "end": {
+          "line": 45,
+          "column": 1
+        }
+      }
+    },
+    {
+      "name": "REACT_POSTPONE_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 47,
+          "column": 13
+        },
+        "end": {
+          "line": 47,
+          "column": 71
+        }
+      }
+    },
+    {
+      "name": "REACT_VIEW_TRANSITION_TYPE",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 13
+        },
+        "end": {
+          "line": 51,
+          "column": 1
+        }
+      }
+    },
+    {
+      "name": "getIteratorFn",
+      "kind": "function",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 56,
+          "column": 7
+        },
+        "end": {
+          "line": 67,
+          "column": 1
+        }
+      }
+    },
+    {
+      "name": "ASYNC_ITERATOR",
+      "kind": "variable",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 13
+        },
+        "end": {
+          "line": 69,
+          "column": 50
+        }
+      }
+    }
+  ],
+  "notes": []
+}
