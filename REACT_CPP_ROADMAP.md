@@ -39,7 +39,7 @@
 | --- | --- | --- | --- | --- | --- |
 | Phase 0 | 源码镜像 & Flag 清点 | 目录映射、模板生成、差异报告工具 | 🟡 进行中 | C++ 平台组 | 2025-10-20 |
 | Phase 1 | Shared/Feature Scaffold | Feature flags、共享常量、错误码对齐 | 🟡 进行中 | 同上 | 2025-10-31 |
-| Phase 2 | ReactDOM Host Parity | `ReactDOMHostConfig`、`ReactDOMInstance`、属性 diff | ⚪ 未开始 | 同上 | 2025-11-15 |
+| Phase 2 | ReactDOM Host Parity | `ReactDOMHostConfig`、`ReactDOMInstance`、属性 diff | 🟡 进行中 | 同上 | 2025-11-15 |
 | Phase 3 | Fiber 数据结构 | `FiberNode`、`FiberRootNode`、UpdateQueue | ⚪ 未开始 | 同上 | 2025-11-29 |
 | Phase 4 | WorkLoop & Commit (Sync) | `beginWork`/`completeWork`/`commit*` 同构 | ⚪ 未开始 | 同上 | 2025-12-20 |
 | Phase 5 | Scheduler 集成 | `ensureRootScheduled` 与调度器 1:1 | ⚪ 未开始 | 平台组 | 2026-01-10 |
@@ -91,6 +91,7 @@
 - [x] 翻译 `shared/ReactWorkTags.js` 与 `shared/ReactFiberFlags.js`。
 - [x] 建立 `enum class WorkTag` 与 `Flags`，并提供 `constexpr` 映射表。
 - [x] 翻译 `shared/ReactFeatureFlags.js`，新增 `REACTCPP_ENABLE_EXPERIMENTAL` / `REACTCPP_ENABLE_PROFILE` 宏支撑多构建配置。
+- [x] 翻译 `shared/ReactOwnerStackReset.js`，与 `ReactSharedInternals` runtime 状态保持一致。
 - [ ] 引入 `packages/shared/ReactSideEffectTags` ➜ C++ 常量。
 - [x] 翻译 `packages/shared/ReactSymbols.js`、`ReactSharedInternals.js`，统一导出 symbol & dispatcher 常量。
 - [x] 构建 gtest 保障——确保 `ReactWorkTags`、`ReactFiberFlags`、`ReactFeatureFlags` 数值与 JS 快照一致（新增 `ReactSharedConstantsTests.cpp`）。
@@ -113,6 +114,7 @@
 - [ ] 翻译 `setValueForProperty` / `dangerousStyleValue` 等辅助逻辑。
 - [ ] 将事件寄存系统 `ReactDOMEventListener.js` 转写为 C++，保留 key 大小写。
 - [ ] 扩展 `ReactDOMComponentTests`，参照 React 官方 `__tests__/ReactDOMComponent-test.js`。
+- [x] （进行中）基于 `ReactHostInterface` 搭建 DOM 宿主桩，验证 `performance` / `console` 注入路径与 `ReactDOMHostConfig` 的交互（新增 host log 测试）。
 
 **验收标准**
 - Host 桩测试覆盖 append/remove/insertBefore/属性 diff/事件绑定。
@@ -253,7 +255,9 @@
 | 扩展 `ReactDOMComponentTests`（gtest） | QA 小组 | ⏳ 进行中 | 复刻官方测试 `ReactDOMComponent-test.js` 关键用例。 |
 | 设计 parity CI 报告格式 | 平台组 | 🔜 待启动 | 输出 Markdown 摘要 + JSON 数据。 |
 | Shared 常量 gtest（`ReactSharedConstantsTests.cpp`） | 平台组 + QA | ✅ 已完成 | 针对 WorkTags/FiberFlags/FeatureFlags 做编译时数值快照断言。 |
+| 翻译 `shared/ReactOwnerStackReset.js` | 平台组 | ✅ 已完成 | 实现 owner stack 重置逻辑并桥接 `ReactSharedInternals`。 |
 | 翻译 `shared/ReactSymbols.js` & `ReactSharedInternals.js` | 平台组 | ✅ 已完成 | 暴露 symbol / dispatcher 常量，解锁下一批 reconciler 引用。 |
+| 启动 Phase 2 DOM Host Parity 预研 | 平台组 | ✅ 已完成 | `HostInterface` 扩展 DOM API，新增默认实现与测试日志，完成宿主注入验证。 |
 
 每日站会需更新 AST 翻译覆盖率 & 测试通过率。
 

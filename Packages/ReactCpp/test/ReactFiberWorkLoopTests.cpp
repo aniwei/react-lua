@@ -653,6 +653,71 @@ struct TestContext {
   ReactRuntime reactRuntime;
 };
 
+struct RecordingHostInterface : HostInterface {
+  std::vector<std::string> log;
+
+  std::shared_ptr<ReactDOMInstance> createHostInstance(
+      facebook::jsi::Runtime& runtime,
+      const std::string& type,
+      const facebook::jsi::Object& props) override {
+    log.emplace_back("create:" + type);
+    return HostInterface::createHostInstance(runtime, type, props);
+  }
+
+  std::shared_ptr<ReactDOMInstance> createHostTextInstance(
+      facebook::jsi::Runtime& runtime,
+      const std::string& text) override {
+    log.emplace_back("createText:" + text);
+    return HostInterface::createHostTextInstance(runtime, text);
+  }
+
+  void appendHostChild(
+      std::shared_ptr<ReactDOMInstance> parent,
+      std::shared_ptr<ReactDOMInstance> child) override {
+    log.emplace_back("append:" + describeInstance(child));
+    HostInterface::appendHostChild(parent, child);
+  }
+
+  void removeHostChild(
+      std::shared_ptr<ReactDOMInstance> parent,
+      std::shared_ptr<ReactDOMInstance> child) override {
+    log.emplace_back("remove:" + describeInstance(child));
+    HostInterface::removeHostChild(parent, child);
+  }
+
+  void insertHostChildBefore(
+      std::shared_ptr<ReactDOMInstance> parent,
+      std::shared_ptr<ReactDOMInstance> child,
+      std::shared_ptr<ReactDOMInstance> beforeChild) override {
+    log.emplace_back("insertBefore:" + describeInstance(child) + "->" + describeInstance(beforeChild));
+    HostInterface::insertHostChildBefore(parent, child, beforeChild);
+  }
+
+  void commitHostUpdate(
+      std::shared_ptr<ReactDOMInstance> instance,
+      const facebook::jsi::Object& oldProps,
+      const facebook::jsi::Object& newProps,
+      const facebook::jsi::Object& payload) override {
+    log.emplace_back("commit:" + describeInstance(instance));
+    HostInterface::commitHostUpdate(instance, oldProps, newProps, payload);
+  }
+
+private:
+  static std::string describeInstance(const std::shared_ptr<ReactDOMInstance>& instance) {
+    if (!instance) {
+      return std::string("<null>");
+    }
+    auto component = std::dynamic_pointer_cast<ReactDOMComponent>(instance);
+    if (!component) {
+      return std::string("<unknown>");
+    }
+    if (component->isTextInstance()) {
+      return std::string("#text");
+    }
+    return component->getType();
+  }
+};
+
 bool testHostComponentPayload(TestContext& ctx) {
   auto& rt = ctx.runtime;
 
@@ -1425,6 +1490,106 @@ bool testReconcileArrayHandlesDeletionAndPlacement(TestContext& ctx) {
   return ok;
 }
 
+bool testHostInterfaceDomBridge(TestContext& ctx) {
+  ctx.reactRuntime.reset();
+
+  auto host = std::make_shared<RecordingHostInterface>();
+  ctx.reactRuntime.setHostInterface(host);
+  ctx.reactRuntime.bindHostInterface(ctx.runtime);
+
+  auto& rt = ctx.runtime;
+
+  jsi::Object parentProps(rt);
+  parentProps.setProperty(rt, "id", jsi::String::createFromUtf8(rt, "root"));
+  auto parent = ctx.reactRuntime.createInstance(rt, "div", parentProps);
+  if (!parent) {
+    std::cerr << "Expected parent instance to be created" << std::endl;
+    return false;
+  }
+
+  auto text = ctx.reactRuntime.createTextInstance(rt, "hello");
+  if (!text) {
+    std::cerr << "Expected text instance to be created" << std::endl;
+    return false;
+  }
+  ctx.reactRuntime.appendChild(parent, text);
+
+  jsi::Object spanProps(rt);
+  spanProps.setProperty(rt, "title", jsi::String::createFromUtf8(rt, "child"));
+  auto span = ctx.reactRuntime.createInstance(rt, "span", spanProps);
+  if (!span) {
+    std::cerr << "Expected span instance to be created" << std::endl;
+    return false;
+  }
+  ctx.reactRuntime.appendChild(parent, span);
+
+  ctx.reactRuntime.insertBefore(parent, span, text);
+
+  jsi::Object emptyProps(rt);
+  jsi::Object payload(rt);
+  payload.setProperty(rt, "text", jsi::String::createFromUtf8(rt, "world"));
+  ctx.reactRuntime.commitUpdate(text, emptyProps, emptyProps, payload);
+
+  ctx.reactRuntime.removeChild(parent, span);
+
+  std::vector<std::string> expectedLog = {
+    "create:div",
+    "createText:hello",
+    "append:#text",
+    "create:span",
+    "append:span",
+    "insertBefore:span->#text",
+    "commit:#text",
+    "remove:span"
+  };
+
+  if (host->log.size() != expectedLog.size()) {
+    std::cerr << "Expected host log length " << expectedLog.size() << " but got " << host->log.size() << std::endl;
+    return false;
+  }
+
+  for (size_t i = 0; i < expectedLog.size(); ++i) {
+    if (host->log[i] != expectedLog[i]) {
+      std::cerr << "Host log mismatch at index " << i << ": expected '" << expectedLog[i]
+                << "' but received '" << host->log[i] << "'" << std::endl;
+      return false;
+    }
+  }
+
+  auto parentComponent = std::dynamic_pointer_cast<ReactDOMComponent>(parent);
+  if (!parentComponent) {
+    std::cerr << "Expected parent to be ReactDOMComponent" << std::endl;
+    return false;
+  }
+
+  if (parentComponent->children.size() != 1) {
+    std::cerr << "Expected parent to contain exactly one child after removal" << std::endl;
+    return false;
+  }
+
+  if (!parentComponent->children[0] || parentComponent->children[0].get() != text.get()) {
+    std::cerr << "Expected remaining child to be text instance" << std::endl;
+    return false;
+  }
+
+  auto textComponent = std::dynamic_pointer_cast<ReactDOMComponent>(text);
+  if (!textComponent) {
+    std::cerr << "Expected text instance to be ReactDOMComponent" << std::endl;
+    return false;
+  }
+
+  if (textComponent->getTextContent() != "world") {
+    std::cerr << "Expected commitUpdate to apply new text content" << std::endl;
+    return false;
+  }
+
+  ctx.reactRuntime.setHostInterface(std::make_shared<HostInterface>());
+  ctx.reactRuntime.bindHostInterface(rt);
+  ctx.reactRuntime.reset();
+
+  return true;
+}
+
 bool testSchedulerPriorityApi(TestContext&) {
   ReactRuntime runtime;
 
@@ -1481,6 +1646,7 @@ int main() {
   ok &= react::testBridgeRenderRegistersRoot(ctx);
   ok &= react::testReconcileArrayKeyedReuseAndUpdate(ctx);
   ok &= react::testReconcileArrayHandlesDeletionAndPlacement(ctx);
+  ok &= react::testHostInterfaceDomBridge(ctx);
   ok &= react::testSchedulerPriorityApi(ctx);
 
   if (!ok) {

@@ -1,4 +1,5 @@
 #include "ReactWasmBridge.h"
+#include "ReactHostInterface.h"
 #include "ReactRuntime.h"
 #include "ReactWasmLayout.h"
 #include "jsi/jsi.h"
@@ -136,7 +137,22 @@ jsi::Value convertWasmLayoutToJsi(jsi::Runtime& rt, uint32_t baseOffset, const W
 
 static ReactRuntime* G_ReactRuntime = nullptr;
 static jsi::Runtime* G_JsiRuntime = nullptr;
+static std::shared_ptr<HostInterface> G_HostInterface = std::make_shared<HostInterface>();
 static std::unordered_map<uint32_t, std::shared_ptr<ReactDOMInstance>> G_RootContainers;
+
+void react_set_host_interface(std::shared_ptr<HostInterface> hostInterface) {
+  if (!hostInterface) {
+    hostInterface = std::make_shared<HostInterface>();
+  }
+  G_HostInterface = std::move(hostInterface);
+  if (!G_ReactRuntime) {
+    return;
+  }
+  G_ReactRuntime->setHostInterface(G_HostInterface);
+  if (G_JsiRuntime) {
+    G_ReactRuntime->bindHostInterface(*G_JsiRuntime);
+  }
+}
 
 namespace {
 
@@ -157,6 +173,12 @@ extern "C" {
     static ReactRuntime s_runtime;
     if (G_ReactRuntime == nullptr) {
       G_ReactRuntime = &s_runtime;
+    }
+    if (G_ReactRuntime) {
+      G_ReactRuntime->setHostInterface(G_HostInterface);
+      if (G_JsiRuntime) {
+        G_ReactRuntime->bindHostInterface(*G_JsiRuntime);
+      }
     }
   }
 
@@ -209,10 +231,21 @@ extern "C" {
 
   void react_attach_jsi_runtime(jsi::Runtime* runtime) {
     G_JsiRuntime = runtime;
+    if (runtime != nullptr && G_ReactRuntime != nullptr) {
+      G_ReactRuntime->setHostInterface(G_HostInterface);
+      G_ReactRuntime->bindHostInterface(*runtime);
+    }
   }
 
   void react_attach_runtime(ReactRuntime* runtime) {
     G_ReactRuntime = runtime;
+    if (!G_ReactRuntime) {
+      return;
+    }
+    G_ReactRuntime->setHostInterface(G_HostInterface);
+    if (G_JsiRuntime) {
+      G_ReactRuntime->bindHostInterface(*G_JsiRuntime);
+    }
   }
 
   void react_reset_runtime() {

@@ -1,3 +1,4 @@
+#include "shared/ReactBuildConfig.h"
 #include "shared/ReactFeatureFlags.h"
 #include "shared/ReactFiberFlags.h"
 #include "shared/ReactSymbols.h"
@@ -129,6 +130,8 @@ static_assert(enableProfilerNestedUpdatePhase == kProfileBuild, "enableProfilerN
 static_assert(enableAsyncDebugInfo, "enableAsyncDebugInfo mismatch");
 static_assert(enableUpdaterTracking == kProfileBuild, "enableUpdaterTracking mismatch");
 static_assert(ownerStackLimit == 10000, "ownerStackLimit mismatch");
+
+static_assert(kDevBuild == (REACTCPP_ENABLE_DEV != 0), "kDevBuild macro bridge mismatch");
 
 // ReactSymbols snapshots -----------------------------------------------------
 

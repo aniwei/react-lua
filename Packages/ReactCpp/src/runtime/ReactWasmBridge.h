@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 
 namespace facebook {
 namespace jsi {
@@ -15,12 +16,15 @@ namespace react {
 class ReactDOMInstance;
 class ReactRuntime;
 struct WasmReactValue;
+class HostInterface;
 
 extern uint8_t* __wasm_memory_buffer;
 facebook::jsi::Value convertWasmLayoutToJsi(
   facebook::jsi::Runtime& rt,
   uint32_t baseOffset,
   const WasmReactValue& wasmValue);
+
+void react_set_host_interface(std::shared_ptr<HostInterface> hostInterface);
 
 extern "C" {
   void react_init(void* memory_buffer);

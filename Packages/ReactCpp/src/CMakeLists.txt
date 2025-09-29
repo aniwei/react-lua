@@ -4,9 +4,13 @@ add_library(react_cpp_src
     react-dom/client/ReactDOMInstance.cpp
     runtime/ReactRuntime.cpp
     runtime/ReactFiberWorkLoop.cpp
+    runtime/ReactHostInterface.cpp
     reconciler/FiberNode.cpp
     reconciler/UpdateQueue.cpp
     runtime/ReactWasmBridge.cpp
+    shared/ReactOwnerStackReset.cpp
+    shared/ReactSharedInternals.cpp
+    shared/ReactSymbols.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../jsi/jsi/jsi.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../jsi/jsi/jsilib-posix.cpp
 )

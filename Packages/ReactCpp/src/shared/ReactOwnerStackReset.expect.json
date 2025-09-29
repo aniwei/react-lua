@@ -1,0 +1,22 @@
+{
+  "source": "react-main/packages/shared/ReactOwnerStackReset.js",
+  "generatedAt": "2025-09-29T10:45:07.249Z",
+  "exports": [
+    {
+      "name": "resetOwnerStackLimit",
+      "kind": "function",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 7
+        },
+        "end": {
+          "line": 42,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "notes": []
+}
