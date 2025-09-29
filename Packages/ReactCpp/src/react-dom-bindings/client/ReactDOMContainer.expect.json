@@ -1,0 +1,22 @@
+{
+  "source": "react-main/packages/react-dom-bindings/src/client/ReactDOMContainer.js",
+  "generatedAt": "2025-09-29T07:21:47.323Z",
+  "exports": [
+    {
+      "name": "isValidContainer",
+      "kind": "function",
+      "isDefault": false,
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 7
+        },
+        "end": {
+          "line": 29,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "notes": []
+}

@@ -1,0 +1,7 @@
+react_source,cpp_target,status,owner,notes
+packages/react-dom-bindings/src/client/ReactDOMComponent.js,packages/ReactCpp/src/react-dom/client/ReactDOMComponent.cpp,generated,C++ Platform,Generated via translate-react on 2025-09-29
+packages/react-dom-bindings/src/client/ReactDOMComponent.js,packages/ReactCpp/src/react-dom/client/ReactDOMDiffProperties.cpp,in-progress,C++ Platform,Manual port of diffProperties helpers tracking JS lines 1046-1938
+packages/react-dom-bindings/src/client/ReactDOMHostConfig.js,packages/ReactCpp/src/react-dom/client/ReactDOMHostConfig.cpp,in-progress,C++ Platform,Stubbed interface awaiting full translation
+packages/react-reconciler/src/ReactFiberWorkLoop.new.js,packages/ReactCpp/src/runtime/ReactFiberWorkLoop.cpp,planned,C++ Platform,Pending translate-react skeleton
+packages/scheduler/src/forks/Scheduler.js,packages/ReactCpp/src/scheduler/Scheduler.cpp,planned,C++ Platform,Blocked on check-parity scaffolding
+packages/react-dom-bindings/src/client/ReactDOMContainer.js,packages/ReactCpp/src/react-dom-bindings/client/ReactDOMContainer.cpp,generated,C++ Platform,Auto-generated via translate-react 2025-09-29

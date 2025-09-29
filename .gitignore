@@ -16,3 +16,5 @@ site/
 
 default_modules
 modules_*
+
+node_modules/

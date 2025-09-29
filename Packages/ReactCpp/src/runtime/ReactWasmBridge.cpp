@@ -136,11 +136,11 @@ jsi::Value convertWasmLayoutToJsi(jsi::Runtime& rt, uint32_t baseOffset, const W
 
 static ReactRuntime* G_ReactRuntime = nullptr;
 static jsi::Runtime* G_JsiRuntime = nullptr;
-static std::unordered_map<uint32_t, std::shared_ptr<HostInstance>> G_RootContainers;
+static std::unordered_map<uint32_t, std::shared_ptr<ReactDOMInstance>> G_RootContainers;
 
 namespace {
 
-std::shared_ptr<HostInstance> resolveRootContainer(uint32_t rootContainerId) {
+std::shared_ptr<ReactDOMInstance> resolveRootContainer(uint32_t rootContainerId) {
   auto it = G_RootContainers.find(rootContainerId);
   if (it == G_RootContainers.end()) {
     return nullptr;
@@ -165,22 +165,22 @@ extern "C" {
     if (!G_ReactRuntime || !G_JsiRuntime) {
       return;
     }
-    std::shared_ptr<HostInstance> rootContainer = resolveRootContainer(rootContainerId);
+    std::shared_ptr<ReactDOMInstance> rootContainer = resolveRootContainer(rootContainerId);
     if (!rootContainer) {
       return;
     }
-    G_ReactRuntime->render(*G_JsiRuntime, rootElementOffset, rootContainer);
+    G_ReactRuntime->renderRootSync(*G_JsiRuntime, rootElementOffset, rootContainer);
   }
 
   void react_hydrate(uint32_t rootElementOffset, uint32_t rootContainerId) {
     if (!G_ReactRuntime || !G_JsiRuntime) {
       return;
     }
-    std::shared_ptr<HostInstance> rootContainer = resolveRootContainer(rootContainerId);
+    std::shared_ptr<ReactDOMInstance> rootContainer = resolveRootContainer(rootContainerId);
     if (!rootContainer) {
       return;
     }
-    G_ReactRuntime->hydrate(*G_JsiRuntime, rootElementOffset, rootContainer);
+    G_ReactRuntime->hydrateRoot(*G_JsiRuntime, rootElementOffset, rootContainer);
   }
 
   // Memory allocation functions to be called from JS.
@@ -192,13 +192,13 @@ extern "C" {
     free(ptr);
   }
 
-  void react_register_root_container(uint32_t rootContainerId, HostInstance* instance) {
+  void react_register_root_container(uint32_t rootContainerId, ReactDOMInstance* instance) {
     if (instance == nullptr) {
       G_RootContainers.erase(rootContainerId);
       return;
     }
 
-    G_RootContainers[rootContainerId] = std::shared_ptr<HostInstance>(instance, [](HostInstance*) {
+    G_RootContainers[rootContainerId] = std::shared_ptr<ReactDOMInstance>(instance, [](ReactDOMInstance*) {
       // The host environment owns the lifetime; do nothing on release.
     });
   }
@@ -217,7 +217,7 @@ extern "C" {
 
   void react_reset_runtime() {
     if (G_ReactRuntime) {
-      G_ReactRuntime->reset();
+      G_ReactRuntime->resetWorkLoop();
     }
     G_ReactRuntime = nullptr;
     G_JsiRuntime = nullptr;

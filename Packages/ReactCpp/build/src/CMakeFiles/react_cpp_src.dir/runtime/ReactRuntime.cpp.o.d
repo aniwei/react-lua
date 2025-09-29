@@ -939,7 +939,7 @@ src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/../host/Scheduler.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/../reconciler/FiberNode.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactWasmLayout.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/../host/SimpleHostInstance.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/../host/ReactHostInstance.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/../reconciler/UpdateQueue.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/sstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/istream \

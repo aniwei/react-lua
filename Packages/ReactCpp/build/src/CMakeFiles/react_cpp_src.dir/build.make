@@ -83,19 +83,19 @@ src/CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.s"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.cpp -o CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.s
 
-src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
-src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.cpp
-src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o -MF CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o.d -o CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.cpp
+src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
+src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.cpp
+src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o -MF CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o.d -o CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.cpp
 
-src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.i"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.cpp > CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.i
+src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.i"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.cpp > CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.i
 
-src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.s"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.cpp -o CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.s
+src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.s"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.cpp -o CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.s
 
 src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
 src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.cpp
@@ -184,7 +184,7 @@ src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/pac
 # Object files for target react_cpp_src
 react_cpp_src_OBJECTS = \
 "CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.o" \
-"CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o" \
+"CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o" \
@@ -196,7 +196,7 @@ react_cpp_src_OBJECTS = \
 react_cpp_src_EXTERNAL_OBJECTS =
 
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.o
-src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o
+src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o

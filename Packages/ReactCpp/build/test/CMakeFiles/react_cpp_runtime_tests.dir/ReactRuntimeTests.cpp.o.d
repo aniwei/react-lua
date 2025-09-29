@@ -940,7 +940,7 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/ReactRuntimeTests.cpp.o: \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/runtime/../reconciler/FiberNode.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/runtime/ReactWasmBridge.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/runtime/ReactWasmLayout.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/host/SimpleHostInstance.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/host/ReactHostInstance.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/host/HostInstance.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/reconciler/FiberNode.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/iostream \

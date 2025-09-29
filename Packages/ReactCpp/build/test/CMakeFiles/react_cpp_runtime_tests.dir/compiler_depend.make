@@ -965,7 +965,7 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/ReactRuntimeTests.cpp.o: /Users/weiy
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi-inl.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostConfig.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.h \
@@ -984,7 +984,7 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/ReactRuntimeTests.cpp.o: /Users/weiy
 
 /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.h:
 
-/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.h:
+/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.h:
 
 /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.h:
 

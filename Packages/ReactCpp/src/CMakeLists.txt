@@ -1,7 +1,9 @@
 add_library(react_cpp_src
-    host/HostInstance.cpp
-    host/SimpleHostInstance.cpp
+    react-dom/client/ReactDOMComponent.cpp
+    react-dom/client/ReactDOMDiffProperties.cpp
+    react-dom/client/ReactDOMInstance.cpp
     runtime/ReactRuntime.cpp
+    runtime/ReactFiberWorkLoop.cpp
     reconciler/FiberNode.cpp
     reconciler/UpdateQueue.cpp
     runtime/ReactWasmBridge.cpp

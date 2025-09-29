@@ -202,29 +202,29 @@ host/HostInstance.cpp.s:
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.s
 .PHONY : host/HostInstance.cpp.s
 
-host/SimpleHostInstance.o: host/SimpleHostInstance.cpp.o
-.PHONY : host/SimpleHostInstance.o
+host/ReactHostInstance.o: host/ReactHostInstance.cpp.o
+.PHONY : host/ReactHostInstance.o
 
 # target to build an object file
-host/SimpleHostInstance.cpp.o:
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o
-.PHONY : host/SimpleHostInstance.cpp.o
+host/ReactHostInstance.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o
+.PHONY : host/ReactHostInstance.cpp.o
 
-host/SimpleHostInstance.i: host/SimpleHostInstance.cpp.i
-.PHONY : host/SimpleHostInstance.i
+host/ReactHostInstance.i: host/ReactHostInstance.cpp.i
+.PHONY : host/ReactHostInstance.i
 
 # target to preprocess a source file
-host/SimpleHostInstance.cpp.i:
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.i
-.PHONY : host/SimpleHostInstance.cpp.i
+host/ReactHostInstance.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.i
+.PHONY : host/ReactHostInstance.cpp.i
 
-host/SimpleHostInstance.s: host/SimpleHostInstance.cpp.s
-.PHONY : host/SimpleHostInstance.s
+host/ReactHostInstance.s: host/ReactHostInstance.cpp.s
+.PHONY : host/ReactHostInstance.s
 
 # target to generate assembly for a file
-host/SimpleHostInstance.cpp.s:
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.s
-.PHONY : host/SimpleHostInstance.cpp.s
+host/ReactHostInstance.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.s
+.PHONY : host/ReactHostInstance.cpp.s
 
 reconciler/FiberNode.o: reconciler/FiberNode.cpp.o
 .PHONY : reconciler/FiberNode.o
@@ -340,9 +340,9 @@ help:
 	@echo "... host/HostInstance.o"
 	@echo "... host/HostInstance.i"
 	@echo "... host/HostInstance.s"
-	@echo "... host/SimpleHostInstance.o"
-	@echo "... host/SimpleHostInstance.i"
-	@echo "... host/SimpleHostInstance.s"
+	@echo "... host/ReactHostInstance.o"
+	@echo "... host/ReactHostInstance.i"
+	@echo "... host/ReactHostInstance.s"
 	@echo "... reconciler/FiberNode.o"
 	@echo "... reconciler/FiberNode.i"
 	@echo "... reconciler/FiberNode.s"

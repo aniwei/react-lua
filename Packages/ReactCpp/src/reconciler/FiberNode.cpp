@@ -26,7 +26,7 @@ FiberNode::FiberNode(
     pendingState(jsi::Value::undefined()),
     memoizedState(jsi::Value::undefined()),
     updateQueue(nullptr),
-  updatePayload(jsi::Value::undefined()),
+    updatePayload(jsi::Value::undefined()),
     dependencies(nullptr),
     mode(fiberMode),
     lanes(fiberLanes),

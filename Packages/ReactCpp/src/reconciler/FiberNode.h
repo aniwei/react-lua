@@ -9,7 +9,7 @@ namespace jsi = facebook::jsi;
 
 namespace react {
 
-class HostInstance;
+class ReactDOMInstance;
 struct UpdateQueue;
 
 using Lane = uint32_t;
@@ -73,7 +73,7 @@ public:
   jsi::Value key;
   jsi::Value ref;
 
-  std::shared_ptr<HostInstance> stateNode;
+  std::shared_ptr<ReactDOMInstance> stateNode;
 
   std::shared_ptr<FiberNode> returnFiber;
   std::shared_ptr<FiberNode> child;

@@ -12,7 +12,7 @@ class Value;
 
 namespace react {
 
-class HostInstance;
+class ReactDOMInstance;
 class ReactRuntime;
 struct WasmReactValue;
 
@@ -28,7 +28,7 @@ extern "C" {
   void react_hydrate(uint32_t rootElementOffset, uint32_t rootContainerId);
   void* react_malloc(size_t size);
   void react_free(void* ptr);
-  void react_register_root_container(uint32_t rootContainerId, HostInstance* instance);
+  void react_register_root_container(uint32_t rootContainerId, ReactDOMInstance* instance);
   void react_clear_root_container(uint32_t rootContainerId);
   void react_attach_jsi_runtime(facebook::jsi::Runtime* runtime);
   void react_attach_runtime(ReactRuntime* runtime);

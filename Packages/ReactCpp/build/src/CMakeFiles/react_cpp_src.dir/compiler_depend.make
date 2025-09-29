@@ -2844,7 +2844,7 @@ src/CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.o: /Users/weiyanhai/Deskt
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.h
 
-src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.cpp \
+src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.cpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/Availability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -3779,7 +3779,7 @@ src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o: /Users/weiyanhai
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi-inl.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.h
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.h
 
 src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.cpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/Availability.h \
@@ -6620,7 +6620,7 @@ src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: /Users/weiyanhai/De
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostConfig.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/Scheduler.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/UpdateQueue.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.h \
@@ -7613,7 +7613,7 @@ src/CMakeFiles/react_cpp_src.dir/runtime/ReactWasmBridge.cpp.o: /Users/weiyanhai
 
 /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.cpp:
 
-/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.h:
+/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.h:
 
 /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.h:
 
@@ -8123,7 +8123,7 @@ src/CMakeFiles/react_cpp_src.dir/runtime/ReactWasmBridge.cpp.o: /Users/weiyanhai
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__threading_support:
 
-/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.cpp:
+/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.cpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__system_error/error_condition.h:
 

@@ -1,121 +1,271 @@
-# React-CPP: C++ 核心框架 - 高性能路线图
+# React-CPP 1:1 Translation Roadmap（react-main ➜ C++/JSI/Wasm）
 
-## 项目总览
+> 目标：以 React 官方仓库 `react-main` 为单一事实来源（SSOT），在 C++/JSI/Wasm 侧逐文件、逐函数复刻，实现逻辑、命名、结构 100% 对齐，确保任一差异都可追溯。
 
-**目标**: `react-lua` 为蓝本，使用 C++ 和 `facebook::jsi` 重写 React 核心。**JavaScript 与 C++ (Wasm) 之间的数据通信将通过预定义的二进制内存布局实现，以达到近似零拷贝的性能**。
+## 0. 愿景与原则
 
-**核心架构**:
+### 绝对对齐原则
+- **文件命名一一映射**：保持 `ReactFiberWorkLoop.new.js` ➜ `ReactFiberWorkLoop.cpp` 等 1:1 对应，目录结构采用 `packages/react-main` 的相对路径。
+- **函数签名完全复用**：保留原有函数名、枚举、宏命名，只在类型系统所需处添加 C++ 特有限定（如 namespace、const 引用）。
+- **执行流程逐语句对齐**：按照 JS 源码顺序重写，必要时通过注释标记“与 React vX.Y 源码行号对应”。
+- **Feature Flag 全局一致**：所有编译期/运行期的 feature flag、常量定义均复用 `shared/ReactFeatureFlags.js` 的值与命名。
+- **禁止随意重构**：仅当 JS 端依赖原生 API（如 `Object.assign`）时，才封装最小 C++ 等价实现。
 
-1.  **Reconciler (C++)**: 实现 Fiber 架构，负责计算 UI 差异。
-2.  **Scheduler (C++)**: 实现可中断的任务调度。
-3.  **Host (宿主环境)**: 通过 `HostConfig` 和 `HostInstance` 接口与平台交互。
-4.  **Runtime (C++ & JS)**:
-    *   **ReactRuntime (C++)**: 项目的中心枢纽。
-    *   **Wasm Bridge (JS & C++)**:
-        *   **JS 侧**: 实现一个**内存布局引擎**，负责将 React Element 树按照 C++ 定义的结构，序列化到 Wasm 的线性内存中。
-        *   **C++ 侧**: 实现一个**内存访问层**，能够直接从 Wasm 内存地址读取数据，并将其转换为 `jsi::Value` 供 Reconciler 使用。
-5.  **JSI (C++)**: 作为 C++ 内部统一的数据表示层。
+### 统一翻译工作流
+1. **基准版本锁定**：通过 `react-main` 子模块或固定 tag（当前：`main@<commit>`），在翻译开始前冻结。
+2. **模版生成**：使用脚本读取 JS AST，根据函数/常量导出生成 C++ 头/源文件骨架。
+3. **语义复刻**：以 JS 源码为右屏，逐语句翻译为 C++，优先保持控制流与变量命名。
+4. **行为校验**：同步扩写 gtest + Wasm 端到端用例，确保与 `react-main` 对应单测的行为一致。
+5. **差异快照**：借助自研 `translate-react.js`（待实现）输出 JS/C++ AST 对比报告，构建 CI 守护。
+
+## 1. 模块映射矩阵（示例节选）
+
+| `react-main` 源码路径 | C++ 目标文件 | 翻译策略备注 |
+| --- | --- | --- |
+| `packages/react-reconciler/src/ReactFiberWorkLoop.new.js` | `packages/ReactCpp/src/reconciler/ReactFiberWorkLoop.cpp` | 保留同名函数；`performUnitOfWork` 等逻辑逐行翻译，借助 lambda 规避闭包差异。 |
+| `packages/react-reconciler/src/ReactFiberWorkLoop.shared.js` | `packages/ReactCpp/src/reconciler/ReactFiberWorkLoopShared.cpp` | Feature flag 常量放入 `ReactFeatureFlags.h`，导出 API 保持一致。 |
+| `packages/react-dom/src/client/ReactDOMHostConfig.js` | `packages/ReactCpp/src/react-dom/client/ReactDOMHostConfig.cpp` | DOM host 操作映射到 `ReactDOMInstance`，事件配置保持原 key。 |
+| `packages/react-dom/src/client/ReactDOMComponent.js` | `packages/ReactCpp/src/react-dom/client/ReactDOMComponent.cpp` | `diffProperties` 逻辑与 `commitUpdate` payload 逐项对齐。 |
+| `packages/shared/ReactFeatureFlags.js` | `packages/ReactCpp/src/shared/ReactFeatureFlags.cpp` | 通过自动化生成器同步常量，支持多构建配置。 |
+| `packages/scheduler/src/forks/Scheduler.js` | `packages/ReactCpp/src/scheduler/Scheduler.cpp` | 使用同名优先级枚举，事件Loop策略与 JS 端相同。 |
+| `packages/react/src/ReactHooks.js` | `packages/ReactCpp/src/react/hooks/ReactHooks.cpp` | Dispatcher 模式复刻，Hook slot 结构体与 JS `memoizedState` 对齐。 |
+| `packages/react-dom/src/events/DOMPluginEventSystem.js` | `packages/ReactCpp/src/react-dom/events/DOMPluginEventSystem.cpp` | 构建统一事件注册表，名称与分发路径保持一致。 |
+
+> 完整映射详见 `docs/matrix/react-source-mapping.csv`（Phase 0 交付物）。
+
+## 2. 阶段总览
+
+| 阶段 | 主题 | 核心范围 | 状态 | Owner | 目标完成时间 |
+| --- | --- | --- | --- | --- | --- |
+| Phase 0 | 源码镜像 & Flag 清点 | 目录映射、模板生成、差异报告工具 | 🟡 进行中 | C++ 平台组 | 2025-10-20 |
+| Phase 1 | Shared/Feature Scaffold | Feature flags、共享常量、错误码对齐 | ⚪ 未开始 | 同上 | 2025-10-31 |
+| Phase 2 | ReactDOM Host Parity | `ReactDOMHostConfig`、`ReactDOMInstance`、属性 diff | ⚪ 未开始 | 同上 | 2025-11-15 |
+| Phase 3 | Fiber 数据结构 | `FiberNode`、`FiberRootNode`、UpdateQueue | ⚪ 未开始 | 同上 | 2025-11-29 |
+| Phase 4 | WorkLoop & Commit (Sync) | `beginWork`/`completeWork`/`commit*` 同构 | ⚪ 未开始 | 同上 | 2025-12-20 |
+| Phase 5 | Scheduler 集成 | `ensureRootScheduled` 与调度器 1:1 | ⚪ 未开始 | 平台组 | 2026-01-10 |
+| Phase 6 | Hydration & 事件系统 | SSR Hydration、事件委托、Legacy/Modern 模式 | ⚪ 未开始 | 平台组 + Tools | 2026-02-07 |
+| Phase 7 | Hooks & Context | Hook dispatcher、Context 注册、Effect queue | ⚪ 未开始 | 平台组 | 2026-03-14 |
+| Phase 8 | 官方测试 & 兼容性 | Jest 子集、双端 snapshot、CI 验证 | ⚪ 未开始 | QA 组 | 2026-Q2 |
+| Phase 9 | Wasm 产线 & 调优 | cheap toolchain、浏览器装载、性能基准 | ⚪ 未开始 | Tools 组 | 2026-Q2 |
+
+> 若 `react-main` upstream 有 breaking 变更，将回滚到锁定 tag，并在 Phase 0 工具中记录差异。
+
+## 3. 阶段详解
+
+### Phase 0 · 源码镜像 & Flag 清点（进行中）
+
+**目标**：建立从 JS 源到 C++ 源的一致性保障，确保每一次 commit 能够确认翻译范围与差异。
+
+**关键交付**
+- `scripts/translate-react.js`：读取 JS AST，输出 C++ 头/源模板（包含 namespace、函数声明、TODO 注释），并生成同名 `.expect.json` AST 描述。（已落地）
+- `docs/matrix/react-source-mapping.csv`：列出每个 JS 文件的 C++ 对应路径与负责人。（初版已生成）
+- `ci/react-parity-report.md`：每日 CI 产物，展示「已翻译 JS 行数 / 总行数」「存在偏差的函数列表」（初版报告脚本已上线）。
+- Feature flag 清单：`packages/ReactCpp/src/shared/ReactFeatureFlags.h` 自动生成，支持 DEV / PROD / EXP builds。
+
+**任务现状**
+- [x] 输出《CppReactArchitecture》骨架文档，梳理各模块职责。
+- [x] 对齐初版 `ReactDOMInstance` API，确保宿主接口有桩。
+- [x] 实现 `translate-react.js` AST 模板导出。
+- [x] 输出 `docs/matrix/react-source-mapping.csv` 初版矩阵。
+- [x] 编写 `scripts/check-parity.js`，比较 JS/C++ AST 并报出缺失函数。
+- [x] 生成 `ci/react-parity-report.md` Markdown 报告入口。
+- [ ] 将 `react-main` 作为 git 子模块或 mirror，引入 `vendor/react-main/`。
+- [ ] 生成 Feature Flag 自动化 pipeline（JS ➜ JSON ➜ C++ header）。
+
+**验收标准**
+- 任意 `packages/react-*/src/*.js` 在映射表中都有唯一 C++ 目标文件。
+- CI parity 报告无 404/跳过项。
+- Feature flag header 与 JS 端的 `__EXPERIMENTAL__` 值完全一致。
+
+### Phase 1 · Shared/Feature Scaffold（未开始）
+
+**目标**：翻译所有共享模块，确保 Reconciler 依赖的常量、错误信息、工具函数与 JS 同步。
+
+**关键交付**
+- `packages/ReactCpp/src/shared/` 下的 `ReactFeatureFlags.cpp/h`, `ReactWorkTags.cpp/h`, `ReactFiberFlags.cpp/h` 等文件，通过脚本生成或手工翻译。
+- `shared/ReactErrorUtils.js` ➜ `ReactErrorUtils.cpp`，保留同名 API。
+- 建立 `SharedRuntimeTests`：验证常量值、flag 切换效果与 JS 端 snapshot 对齐。
+
+**任务清单**
+- [ ] 翻译 `shared/ReactWorkTags.js` 与 `shared/ReactFiberFlags.js`。
+- [ ] 建立 `enum class WorkTag` 与 `Flags`，并提供 `constexpr` 映射表。
+- [ ] 引入 `packages/shared/ReactSideEffectTags` ➜ C++ 常量。
+- [ ] 构建 gtest 保障——确保每个 enum 值与 JS constant JSON 快照一致。
+
+**验收标准**
+- C++ 端常量与 JS snapshot 一致（CI 对比 JSON）。
+- 所有共享模块被 WorkLoop 与 HostConfig 成功引用。
+
+### Phase 2 · ReactDOM Host Parity（未开始）
+
+**目标**：确保宿主配置层完全一致，便于后续 WorkLoop 直接复用。
+
+**关键交付**
+- `ReactDOMHostConfig.cpp/h`、`ReactDOMInstance.cpp/h`、`ReactDOMComponent.cpp/h` 的 1:1 翻译。
+- `ReactDOMDiffProperties.cpp`：属性 diff 与事件处理逻辑逐语句对齐（已在进行中，后续纳入 parity 检查）。
+- `HostStubRuntime` gtest 桩，实现 append/remove/insert 与属性更新校验。
+
+**任务清单**
+- [ ] 使用模板生成器创建 C++ 框架，补全 `prepareUpdate` / `commitUpdate` / `commitTextUpdate` 等函数。
+- [ ] 翻译 `setValueForProperty` / `dangerousStyleValue` 等辅助逻辑。
+- [ ] 将事件寄存系统 `ReactDOMEventListener.js` 转写为 C++，保留 key 大小写。
+- [ ] 扩展 `ReactDOMComponentTests`，参照 React 官方 `__tests__/ReactDOMComponent-test.js`。
+
+**验收标准**
+- Host 桩测试覆盖 append/remove/insertBefore/属性 diff/事件绑定。
+- parity 报告显示 `ReactDOMHostConfig` 与 `ReactDOMComponent` 无遗漏函数。
+
+### Phase 3 · Fiber 数据结构（未开始）
+
+**目标**：复刻 Fiber 节点、更新队列、Lane 模型，为 WorkLoop 做准备。
+
+**关键交付**
+- `FiberNode.h`, `FiberRootNode.h`, `Lane.cpp/h`，所有字段命名与 JS `FiberNode.js` 一致。
+- `UpdateQueue.cpp/h`：维护 `sharedQueue`, `effectTag` 等属性。
+
+**任务清单**
+- [ ] 照搬 `react-reconciler/src/ReactFiberClassComponent.js` 中的更新逻辑。
+- [ ] 引入 `LanePriority`、`NoLane`, `SyncLane` 等常量。
+- [ ] 构建 gtest：验证 `createFiber`, `createFiberFromElement`, `enqueueUpdate`。
+
+**验收标准**
+- 结构体字段顺序与 JS 端 `FiberNode` 注释对应。
+- 测试覆盖基本的节点创建与更新排队。
+
+### Phase 4 · WorkLoop & Commit (Sync)（未开始）
+
+**目标**：完成同步工作循环与提交阶段的逐行翻译。
+
+**关键交付**
+- `beginWork.cpp`, `completeWork.cpp`, `commitWork.cpp`，按 React 分拆文件。
+- `performUnitOfWork`, `workLoopSync`, `commitMutationEffects` 等核心函数对齐。
+- Placement/Deletion/Update 副作用在 Host stub 上具有正确表现。
+
+**任务清单**
+- [ ] 使用 AST 工具从 `ReactFiberBeginWork.new.js`, `ReactFiberCompleteWork.new.js`, `ReactFiberCommitWork.new.js` 自动生成 C++ 骨架。
+- [ ] 迁移 `ChildReconciler`（`ReactChildFiber.js`）逻辑，保留 key diff 行为。
+- [ ] 建立 `ReactFiberWorkLoopTests`：渲染 `<div><p>Hello</p></div>`、更新 props、删除节点。
+
+**验收标准**
+- `renderRootSync` 在 C++ 端构建 fiber 树并驱动 host 节点。
+- 所有渲染单测与 JS 端 snapshot 一致。
+
+### Phase 5 · Scheduler 集成（未开始）
+
+**目标**：引入时间切片，使用同名优先级枚举与任务模型。
+
+**关键交付**
+- `Scheduler.cpp/h` 翻译 `packages/scheduler/src/forks/Scheduler.js`（考虑 host 环境差异）。
+- `MessageChannel` 模拟器（必要时使用 libuv/cheap event loop 适配）。
+
+**任务清单**
+- [ ] 翻译 `requestHostCallback`, `flushWork`, `advanceTimers` 等函数。
+- [ ] 将 `ensureRootScheduled` 切换到调度器驱动。
+- [ ] 新增单测：多任务优先级、过期任务抢占。
+
+**验收标准**
+- 调度器单测与 React 官方 scheduler 测试输出一致。
+- parity 报告显示 scheduler 文件全部翻译。
+
+### Phase 6 · Hydration & 事件系统（未开始）
+
+**目标**：复刻 SSR Hydration 流程与 DOM 事件系统。
+
+**关键交付**
+- `ReactFiberHydrationContext.cpp`, `ReactDOMEventListener.cpp`。
+- Wasm Hydration 桥接：从 JS 提供的真实 DOM 节点引用进行匹配。
+
+**任务清单**
+- [ ] 翻译 `ReactFiberHydrationContext.new.js`。
+- [ ] 将 DOM Plugin System 的事件优先级、冒泡、捕获完整复刻。
+- [ ] 增加 `HydrationTests`: 成功/失败/恢复路径。
+
+**验收标准**
+- 与 React 官方 `ReactDOMServerIntegration` 子集一致。
+- Hydration 失败走 fallback 渲染路径，行为与 JS 对齐。
+
+### Phase 7 · Hooks & Context（未开始）
+
+**目标**：实现 Hook dispatcher、Context 注册等高级特性。
+
+**关键交付**
+- `ReactHooks.cpp`, `ReactFiberHooks.cpp`。
+- `ReactFiberNewContext.cpp` 及相关测试。
+
+**任务清单**
+- [ ] 翻译 `useState`, `useReducer`, `useEffect`, `useLayoutEffect` 等实现。
+- [ ] 处理 `mount`/`update` 双分支。
+- [ ] gtest 覆盖状态更新、Effect 调度。
+
+**验收标准**
+- Hooks 测试（C++ 端）与 JS fixtures 输出一致。
+- Hooks dispatch 结构与 JS `currentHook` 链条对齐。
+
+### Phase 8 · 官方测试 & 兼容性（未开始）
+
+**目标**：在 Jest 环境运行 React 官方测试子集，确保行为一致。
+
+**关键交付**
+- Jest runner 集成 Wasm runtime，JS ➜ C++ 调用桥。
+- `tests/react/fixtures/` 对齐：对每个选定测试生成 Wasm 版执行脚本。
+- CI pipeline：`npm test -- react-dom/...` & `ctest` 组合。
+
+**验收标准**
+- 至少 30% 官方测试子集通过，持续提升覆盖。
+- CI parity 报告无新增偏差。
+
+### Phase 9 · Wasm 产线 & 调优（未开始）
+
+**目标**：构建生产级 Wasm 构建与性能调优工具链。
+
+**关键交付**
+- cheap toolchain 集成、Wasm loader。
+- 浏览器 demo：使用 React 官方 fixture，比较 JS vs Wasm。
+- Benchmark 报告：`bin/run-benchmarks.py` 对接 C++ runtime。
+
+**验收标准**
+- 浏览器 demo 可运行 `<ConcurrentModeApp />`。
+- 性能指标与 JS baseline 对比报告。
+
+## 4. JS ➜ C++ 机械翻译流水线
+
+1. **源文件检索**：`scripts/scan-react.js` 读取 `react-main` 目录，过滤 `.js`/`.jsx`（排除测试）。
+2. **AST 解析**：使用 Babel parser 输出带位置信息的 JSON。
+3. **C++ 模板生成**：按 export 名称输出 `.h/.cpp` 模板，包含 TODO 注释与原行号。
+4. **翻译清单**：将待翻译函数列入 `translation-status.json`，标记 Responsible/Reviewer。
+5. **实现阶段**：贡献者在模板内补充 C++ 实现，并在注释中保留原 JS 行号。
+6. **自动对比**：CI 执行 `scripts/check-parity.js`，验证函数签名、控制流结构（if/while/switch）一致。
+7. **行为验证**：运行对应 gtest/Jest fixture；CI 对比产出的日志/Hydration diff。
+8. **文档更新**：翻译完成后更新映射 CSV 与阶段进度表。
+
+> 所有脚本成果在 Phase 0/1 内完成并纳入 CI。
+
+## 5. 近期迭代（Sprint：2025-09-29 ~ 2025-10-06）
+
+| Task | Owner | 状态 | 说明 |
+| --- | --- | --- | --- |
+| 完成 `translate-react.js` AST 模板生成 | C++ 平台组 | ✅ 已完成 | 首版支持 `react-dom-bindings`，其余 package 正在扩展。 |
+| 引入 `react-main` mirror & lockfile | 平台组 | 🔜 待启动 | 使用 `git subtree` 或子模块，配合 parity 脚本。 |
+| 自动生成 Feature Flag Header | 平台组 | 🔜 待启动 | 输出 `ReactFeatureFlags.h/cpp`，校验 DEV/PROD 差异。 |
+| 扩展 `ReactDOMComponentTests`（gtest） | QA 小组 | ⏳ 进行中 | 复刻官方测试 `ReactDOMComponent-test.js` 关键用例。 |
+| 设计 parity CI 报告格式 | 平台组 | 🔜 待启动 | 输出 Markdown 摘要 + JSON 数据。 |
+
+每日站会需更新 AST 翻译覆盖率 & 测试通过率。
+
+## 6. 风险与应对
+
+- **上游变更频繁**：需维护 react-main mirror 的 `CHANGELOG`，通过 parity 报告提示新增/删除函数。
+- **JS 内建 API 差异**：如 `Object.is`、`Map` 等，需统一封装在 `shared/JSMimics.cpp`，谨防重复实现。
+- **Hydration DOM 依赖**：浏览器环境与测试环境 API 不一致；需在 Phase 6 前定义 Wasm DOM 代理协议。
+- **性能回归风险**：逐行翻译可能带来 C++ 性能损失，Phase 9 引入 profile 工具，确保追加优化不破坏一致性。
+
+## 7. 参考资料
+
+- `vendor/react-main`（锁定 tag 待补充）
+- [React Architecture Docs](https://react.dev/learn/render-and-commit)
+- 项目内部文档：`packages/ReactCpp/docs/CppReactArchitecture.md`
+- 相关脚本（待补充）：`scripts/translate-react.js`, `scripts/check-parity.js`
 
 ---
 
-## TODO Roadmap (高性能内存布局版)
-
-### 阶段 1: 项目基础与共享内存布局定义 (预计 2-3 周)
-
--   [x] **1.1. 目录结构与编译环境**:
-    -   创建 `packages/ReactCpp` 目录。
-    -   配置 CMake 和 `aniwei/cheap` 的 Wasm 工具链。
-
--   [x] **1.2. 依赖集成**:
-    -   集成 `facebook::jsi` 头文件。
-
--   [x] **1.3. 核心 C++ 接口定义**:
-    -   `src/host/HostInstance.h`
-    -   `src/host/Scheduler.h`
-    -   `src/host/HostConfig.h`
-    -   `src/runtime/ReactRuntime.h`
-
--   [x] **1.4. 定义共享内存布局**:
-    -   **关键任务**: 创建 `src/runtime/ReactWasmLayout.h`。
-    -   使用 `#pragma pack(push, 1)` 来定义 C++/JS 共享的、无填充的二进制结构体。
-    -   **定义**:
-        -   `WasmReactValue`: 用于表示不同类型的值 (number, string, element, array) 的联合体 (union)。
-        -   `WasmReactProp`: 表示一个 prop (key/value 对)。
-        -   `WasmReactElement`: 核心结构，包含 `type`、`props` 数组指针、`children` 数组指针等。
-    -   所有“指针”都定义为 `uint32_t`，表示相对于内存块基地址的偏移量。
-
-### 阶段 2: Reconciler 核心与二进制桥接 (预计 3-4 周)
-
--   [x] **2.1. Fiber 节点与 UpdateQueue 定义**:
-    -   `src/reconciler/FiberNode.h`: 定义 Fiber 属性集合、lanes、flags，与 `react-lua` 对齐。
-    -   `src/reconciler/UpdateQueue.h`: 引入更新链表、队列初始化与入队工具函数。
-    -   ✅ Fiber/UpdateQueue 结构已落地，等待与工作循环联动。
-
--   [x] **2.2. Wasm 二进制桥接实现**:
-    -   **C++ 侧**:
-        -   [x] `ReactWasmLayout.h`: 新增 `WasmReactArray` 结构，统一数组布局。
-        -   [x] `ReactWasmBridge.cpp`: 支持 Element/Array 反序列化、`key/ref/children` 映射，并返回 `jsi::Value`。
-        -   [x] 导出 `react_hydrate`、容器注册/重置、JSI/Runtime 注入接口，形成可扩展的宿主桥接层。
-    -   [x] `testBridgeRenderRegistersRoot` 覆盖桥接入口 `react_render` 与根容器注册流程。
-    -   **JS 侧**:
-        -   [x] `test/bridge.js`: 构建写入引擎 `writeElementTreeToWasmMemory(element)`，序列化字符串、布尔、数字、数组与嵌套 Element。
-
--   [ ] **2.3. 渲染入口实现**:
-    -   [x] `ReactRuntime::render`：接受偏移量并调用反序列化，将结果提升为 `jsi::Value`。
-    -   [x] Root Fiber 双缓冲结构初始化，`currentRoot`/`workInProgressRoot` 与宿主容器建立关联。
-    -   [x] 为 Fiber Root 创建与调度提供真实实现，连通 HostInstance 映射。
-    -   [ ] `ReactRuntime::hydrate`：偏移量入口已建立（占位实现），待补齐 hydration pipeline。
-
--   [x] **2.4. 初步验证**:
-    -   JS 调用 `render`，C++ 能接收到偏移量，并成功将二进制数据转换回 `jsi::Value`。
-    -   ✅ 新增 `testRenderConvertsWasmLayout` 覆盖二进制布局到宿主树的端到端验证。
-
-### 阶段 3: Reconciler 工作循环与 Diffing (预计 3-4 周)
-
--   [ ] **3.1. `beginWork`, `completeWork`, `workLoop` 实现**:
-    -   这些函数的核心逻辑不变，因为它们操作的是已经从二进制格式解耦的 `FiberNode` 和 `jsi::Value`。
-    -   [x] 搭建占位同步 `workLoop` 管线，串起 `beginWork`/`completeWork` 骨架。
-
--   [ ] **3.2. `reconcileChildren` (Diffing 算法) 实现**:
-    -   严格参照 React 的 Diffing 逻辑，生成 `Placement`, `Update`, `Deletion` 等副作用。
-    -   ⏳ 占位版 `reconcileChildrenPlaceholder` 已接入工作循环，覆盖单节点、文本与数组的 Fiber 构建与 Placement 记录。
-    -   ⏳ 数组协调支持按 `key` 复用宿主节点，并为剩余旧节点累积 `ChildDeletion` 副作用以驱动提交阶段。 
-    -   [x] 后续：为 HostComponent/HostText 复用路径比较 `pendingProps` 与 `memoizedProps`，设置 `Update` flag。
-    -   [x] 后续：补充数组调和与副作用链路的最小测试覆盖（`testReconcileArrayKeyedReuseAndUpdate`、`testReconcileArrayHandlesDeletionAndPlacement`）。
-    -   [x] 后续：提炼 HostComponent props diff，生成精细化变更 payload 供 `commitUpdate` 使用。
-
--   [ ] **3.3. Commit 阶段实现**:
-    -   实现 `commitRoot`，遍历副作用链表并调用 `HostConfig` 接口。
-    -   ⏳ `commitMutationEffects`/`commitPlacement`/`commitDeletion` 占位逻辑已接线，可在宿主 stub 上模拟 `Placement` 与 `Deletion` 副作用。
-    -   ✅ `commitMutationEffects` 已衔接 `Update` flag 并产生 props diff payload，`SimpleHostInstance` 完成 props Patch 流程并通过最小化单元测试验证。
-    -   ✅ 基于 `SimpleHostInstance` 的 Update 回归用例：验证 `commitMutationEffects` 清空 `updatePayload`/Flag，并对宿主 props 执行新增、更新、清理。
-    -   [ ] 后续：扩展 Placement/Deletion 行为测试，补足 fiberHostContainers 迁移与删除链路覆盖。
-
--   [ ] **3.4. Hydration 支持**:
-    -   在 `beginWork` 和 `completeWork` 中添加 `Hydrating` 模式。
-    -   在此模式下，Reconciler 不会创建新的 `HostInstance` (即不调用 `createInstance`)，而是尝试从宿主环境获取现有的节点进行“附加”。
-    -   如果客户端与服务器渲染的 DOM 不匹配，则需要进行错误恢复并切换回客户端渲染模式。
-
--   [ ] **3.5. 端到端验证**:
-    -   **目标**: 渲染一个简单的、无状态的 JSX 结构 (`<div><p>Hello</p></div>`)。
-    -   **目标**: 使用 `hydrate` 模式成功附加到一个预先存在的 DOM 结构上。
-    -   需要编写专门的工具函数来打印 Wasm 内存区域的内容，以便于调试。
-
-### 阶段 4: Scheduler 实现 (预计 1-2 周)
-
--   [ ] **4.1. 任务、优先级与任务队列定义**
--   [ ] **4.2. 调度循环与 `requestIdleCallback` 集成**
--   [ ] **4.3. 与 Reconciler 集成**
-
-### 阶段 5: Hooks 实现 (预计 2-3 周)
-
--   [ ] **5.1. Hooks 数据结构与 Dispatcher 定义**
--   [ ] **5.2. `useState`, `useEffect` 实现**
--   [ ] **5.3. 验证带状态组件的更新和副作用**
-
-### 阶段 6: 官方测试套件集成与迭代 (持续)
-
--   [ ] **6.1. 测试用例同步与 Jest 环境配置**
--   [ ] **6.2. 逐个通过测试**:
-    -   **重点**: 这一阶段将极大地考验**二进制桥接的健壮性**。
-    -   这是一个长期的、需要极大耐心和细心的打磨过程。
+> 文档维护：平台组。每周五更新 parity 指标，或当阶段完成时即时刷新。

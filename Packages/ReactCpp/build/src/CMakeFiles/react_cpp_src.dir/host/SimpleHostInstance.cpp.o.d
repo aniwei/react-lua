@@ -1,6 +1,6 @@
-src/CMakeFiles/react_cpp_src.dir/host/SimpleHostInstance.cpp.o: \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.cpp \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/SimpleHostInstance.h \
+src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o: \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.cpp \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/../../jsi/jsi/jsi.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cassert \
