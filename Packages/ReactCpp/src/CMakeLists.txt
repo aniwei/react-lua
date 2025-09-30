@@ -2,12 +2,9 @@ add_library(react_cpp_src
     react-dom/client/ReactDOMComponent.cpp
     react-dom/client/ReactDOMDiffProperties.cpp
     react-dom/client/ReactDOMInstance.cpp
-    runtime/ReactRuntime.cpp
-    runtime/ReactFiberWorkLoop.cpp
-    runtime/ReactHostInterface.cpp
     reconciler/FiberNode.cpp
     reconciler/UpdateQueue.cpp
-    runtime/ReactWasmBridge.cpp
+    react-reconciler/ReactFiberConcurrentUpdates.cpp
     shared/ReactOwnerStackReset.cpp
     shared/ReactSharedInternals.cpp
     shared/ReactSymbols.cpp
@@ -19,6 +16,7 @@ add_library(react_cpp_src
 # target_link_libraries(react_cpp_src PRIVATE jsi)
 
 target_include_directories(react_cpp_src PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_SOURCE_DIR}/../../jsi
 )

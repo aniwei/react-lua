@@ -1,6 +1,9 @@
 #pragma once
 
 #include "jsi/jsi.h"
+#include "react-reconciler/ReactFiberFlags.h"
+#include "react-reconciler/ReactFiberLane.h"
+#include "react-reconciler/ReactWorkTags.h"
 #include <cstdint>
 #include <memory>
 #include <vector>
@@ -9,56 +12,7 @@ namespace jsi = facebook::jsi;
 
 namespace react {
 
-class ReactDOMInstance;
 struct UpdateQueue;
-
-using Lane = uint32_t;
-using Lanes = uint32_t;
-
-enum class WorkTag {
-  IndeterminateComponent,
-  FunctionComponent,
-  ClassComponent,
-  HostRoot,
-  HostComponent,
-  HostText,
-  HostPortal,
-  ForwardRef,
-  Fragment,
-  Mode,
-  ContextProvider,
-  ContextConsumer,
-  SuspenseComponent,
-  SuspenseListComponent,
-  MemoComponent,
-  SimpleMemoComponent,
-  LazyComponent,
-  IncompleteClassComponent,
-  // ... extend as needed
-};
-
-enum class FiberFlags : uint32_t {
-  NoFlags = 0,
-  Placement = 1 << 0,
-  Update = 1 << 1,
-  Deletion = 1 << 2,
-  ChildDeletion = 1 << 3,
-  Ref = 1 << 4,
-  Snapshot = 1 << 5,
-  Passive = 1 << 6,
-  Hydrating = 1 << 7,
-  Visibility = 1 << 8,
-  StoreConsistency = 1 << 9,
-};
-
-inline FiberFlags operator|(FiberFlags a, FiberFlags b) {
-  return static_cast<FiberFlags>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
-}
-
-inline FiberFlags& operator|=(FiberFlags& a, FiberFlags b) {
-  a = a | b;
-  return a;
-}
 
 struct FiberDependencies {
   Lanes lanes{0};
@@ -73,11 +27,11 @@ public:
   jsi::Value key;
   jsi::Value ref;
 
-  std::shared_ptr<ReactDOMInstance> stateNode;
+  void* stateNode;
 
-  std::shared_ptr<FiberNode> returnFiber;
-  std::shared_ptr<FiberNode> child;
-  std::shared_ptr<FiberNode> sibling;
+    std::shared_ptr<FiberNode> returnFiber;
+    std::shared_ptr<FiberNode> child;
+    std::shared_ptr<FiberNode> sibling;
   uint32_t index{0};
 
   jsi::Value pendingProps;
@@ -92,11 +46,11 @@ public:
   Lanes lanes{0};
   Lanes childLanes{0};
 
-  FiberFlags flags{FiberFlags::NoFlags};
-  FiberFlags subtreeFlags{FiberFlags::NoFlags};
-  std::vector<std::shared_ptr<FiberNode>> deletions;
+  FiberFlags flags{NoFlags};
+  FiberFlags subtreeFlags{NoFlags};
+    std::vector<std::shared_ptr<FiberNode>> deletions;
 
-  std::shared_ptr<FiberNode> alternate;
+    std::shared_ptr<FiberNode> alternate;
 
   double actualDuration{0.0};
   double actualStartTime{-1.0};

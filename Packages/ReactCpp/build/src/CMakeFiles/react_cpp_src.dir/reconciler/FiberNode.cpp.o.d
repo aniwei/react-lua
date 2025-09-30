@@ -933,4 +933,11 @@ src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/pointer_to_binary_function.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/pointer_to_unary_function.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/unary_negate.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/../../jsi/jsi/jsi-inl.h
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/../../jsi/jsi/jsi-inl.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberFlags.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/../shared/ReactFeatureFlags.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberLane.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactFeatureFlags.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactRootTags.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/unordered_set \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactWorkTags.h

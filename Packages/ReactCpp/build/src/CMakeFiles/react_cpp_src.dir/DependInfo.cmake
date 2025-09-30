@@ -10,16 +10,23 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp" "src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o.d"
   "/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp" "src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o.d"
-  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/HostInstance.cpp" "src/CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/host/HostInstance.cpp.o.d"
-  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/host/ReactHostInstance.cpp" "src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/host/ReactHostInstance.cpp.o.d"
+  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-dom/client/ReactDOMComponent.cpp" "src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMComponent.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMComponent.cpp.o.d"
+  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-dom/client/ReactDOMDiffProperties.cpp" "src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMDiffProperties.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMDiffProperties.cpp.o.d"
+  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-dom/client/ReactDOMInstance.cpp" "src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMInstance.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMInstance.cpp.o.d"
+  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberConcurrentUpdates.cpp" "src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o.d"
   "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.cpp" "src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o.d"
   "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/UpdateQueue.cpp" "src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o.d"
-  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.cpp" "src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o.d"
-  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactWasmBridge.cpp" "src/CMakeFiles/react_cpp_src.dir/runtime/ReactWasmBridge.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/runtime/ReactWasmBridge.cpp.o.d"
+  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactOwnerStackReset.cpp" "src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o.d"
+  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactSharedInternals.cpp" "src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o.d"
+  "/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactSymbols.cpp" "src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o" "gcc" "src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
 set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.

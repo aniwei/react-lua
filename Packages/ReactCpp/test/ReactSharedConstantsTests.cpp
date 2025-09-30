@@ -1,8 +1,8 @@
 #include "shared/ReactBuildConfig.h"
 #include "shared/ReactFeatureFlags.h"
-#include "shared/ReactFiberFlags.h"
+#include "react-reconciler/ReactFiberFlags.h"
 #include "shared/ReactSymbols.h"
-#include "shared/ReactWorkTags.h"
+#include "react-reconciler/ReactWorkTags.h"
 
 #include <string_view>
 

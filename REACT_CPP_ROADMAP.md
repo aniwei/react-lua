@@ -40,7 +40,7 @@
 | Phase 0 | 源码镜像 & Flag 清点 | 目录映射、模板生成、差异报告工具 | 🟡 进行中 | C++ 平台组 | 2025-10-20 |
 | Phase 1 | Shared/Feature Scaffold | Feature flags、共享常量、错误码对齐 | 🟡 进行中 | 同上 | 2025-10-31 |
 | Phase 2 | ReactDOM Host Parity | `ReactDOMHostConfig`、`ReactDOMInstance`、属性 diff | 🟡 进行中 | 同上 | 2025-11-15 |
-| Phase 3 | Fiber 数据结构 | `FiberNode`、`FiberRootNode`、UpdateQueue | ⚪ 未开始 | 同上 | 2025-11-29 |
+| Phase 3 | Fiber 数据结构 | `FiberNode`、`FiberRootNode`、UpdateQueue | 🟡 进行中 | 同上 | 2025-11-29 |
 | Phase 4 | WorkLoop & Commit (Sync) | `beginWork`/`completeWork`/`commit*` 同构 | ⚪ 未开始 | 同上 | 2025-12-20 |
 | Phase 5 | Scheduler 集成 | `ensureRootScheduled` 与调度器 1:1 | ⚪ 未开始 | 平台组 | 2026-01-10 |
 | Phase 6 | Hydration & 事件系统 | SSR Hydration、事件委托、Legacy/Modern 模式 | ⚪ 未开始 | 平台组 + Tools | 2026-02-07 |
@@ -120,7 +120,7 @@
 - Host 桩测试覆盖 append/remove/insertBefore/属性 diff/事件绑定。
 - parity 报告显示 `ReactDOMHostConfig` 与 `ReactDOMComponent` 无遗漏函数。
 
-### Phase 3 · Fiber 数据结构（未开始）
+### Phase 3 · Fiber 数据结构（进行中）
 
 **目标**：复刻 Fiber 节点、更新队列、Lane 模型，为 WorkLoop 做准备。
 
@@ -128,10 +128,25 @@
 - `FiberNode.h`, `FiberRootNode.h`, `Lane.cpp/h`，所有字段命名与 JS `FiberNode.js` 一致。
 - `UpdateQueue.cpp/h`：维护 `sharedQueue`, `effectTag` 等属性。
 
+**进展速记**
+- ✅ 使用 `translate-react.js` 生成 `FiberNode.h/.cpp` 与 `FiberRootNode.h/.cpp` 模板骨架，并补齐命名空间、注释衔接 React JS 源码行号。
+- ✅ 输出 `ReactFiberLane.h` Lane mask 常量与基础 helper，实现 `NoLane` ➜ `DeferredLane` 全量位掩码对齐，并新增静态断言快照。
+- ✅ 拓展 `FiberRoot` 状态（纠缠、Indicator、到期位图）并落地 `markRootUpdated`、`getEntangledLanes` 等核心入口，运行时断言验证。
+- ✅ 引入 `LanePriority` 映射与到期策略（`computeExpirationTime`、`markStarvedLanesAsExpired`），同步补充运行时断言。
+- ✅ 首批 `UpdateQueue` 单元测试：验证 `enqueueUpdate` 环状拼接、`appendPendingUpdates` 拆圈、`processUpdateQueue` 状态推进与回调收集。
+- ✅ 补全集合型 FiberRoot helper：实现 `markRootSuspended`/`markRootPinged`/`markRootEntangled` 以及 Deferred lane 产生活跃路径，配套运行时测试覆盖。
+- ✅ 继续下沉 FiberRoot 完成路径：翻译 `markRootFinished`、`upgradePendingLanesToSync`、`markHiddenUpdate` 以及 hydration lane bump 逻辑，并拓展断言用例验证隐藏更新与重试 lane 状态。
+- ✅ 扩展 updater 追踪支撑：为 `FiberRoot` 增补 `pendingUpdatersLaneMap`/`memoizedUpdaters` 并落地 `addFiberToLanesMap`、`movePendingFibersToMemoized` 桩实现，为后续 DevTools 联动预留接口。
+- ✅ 补全 transition lane 桥接：引入 `transitionLanes` 结构及 `addTransitionToLanesMap`/`getTransitionsForLanes`/`clearTransitionsForLanes`，在 flag 关闭场景下保持零开销，便于后续启用 Transition Tracing。
+- ✅ 首版 `ReactFiberConcurrentUpdates` 翻译：落地并串联并发更新排队、悬挂更新继承、隐藏更新标记逻辑，配套运行时用例覆盖基本 enqueue/flush 行为。
+
 **任务清单**
-- [ ] 照搬 `react-reconciler/src/ReactFiberClassComponent.js` 中的更新逻辑。
-- [ ] 引入 `LanePriority`、`NoLane`, `SyncLane` 等常量。
-- [ ] 构建 gtest：验证 `createFiber`, `createFiberFromElement`, `enqueueUpdate`。
+- [x] 生成 `FiberNode.h/.cpp`、`FiberRootNode.h/.cpp` 模板文件，保持字段与构造逻辑签名一致。
+- [x] 搭建 `ReactFiberLane.h` 常量/工具集（含 `SyncUpdateLanes`, `HydrationLanes` 等），配套 `ReactFiberLaneTests.cpp` 静态断言。
+- [x] 翻译 `ReactFiberConcurrentUpdates.js` 核心入口，接入 FiberRoot/Lane helper 并补充运行时断言。
+- [ ] 将 `packages/react-reconciler/src/ReactFiberClassComponent.js` 的更新流程翻译到 C++ `UpdateQueue`，覆盖 `enqueueUpdate` / `processUpdateQueue` 路径。
+- [x] 引入 `LanePriority` 数值表及到期策略，补全 Lane 相关辅助函数链路，并与 Feature Flag 生成流程打通（DEV/PROD 同步校验）。
+- [ ] 构建 gtest：验证 `createFiber`, `createFiberFromElement`, `enqueueUpdate`，确保与 JS 快照一致。
 
 **验收标准**
 - 结构体字段顺序与 JS 端 `FiberNode` 注释对应。
@@ -250,6 +265,8 @@
 | Task | Owner | 状态 | 说明 |
 | --- | --- | --- | --- |
 | 完成 `translate-react.js` AST 模板生成 | C++ 平台组 | ✅ 已完成 | 首版支持 `react-dom-bindings`，其余 package 正在扩展。 |
+| 输出 `FiberNode`/`FiberRootNode` C++ 模板骨架 | C++ 平台组 | ✅ 已完成 | 结合 `translate-react.js` 生成头/源文件，补充命名空间与 JS 行号注释。 |
+| 翻译 Lane mask 常量并补齐静态断言 | C++ 平台组 | ✅ 已完成 | 新增 `ReactFiberLane.h` + `ReactFiberLaneTests.cpp`，覆盖 `NoLane`~`DeferredLane` 常量与 bitmask helper。 |
 | 引入 `react-main` mirror & lockfile | 平台组 | 🔜 待启动 | 使用 `git subtree` 或子模块，配合 parity 脚本。 |
 | 自动生成 Feature Flag Header | 平台组 | ✅ 已完成 | `translate-react` 支持 `shared/ReactFeatureFlags.js`，生成宏 (`REACTCPP_ENABLE_EXPERIMENTAL` / `REACTCPP_ENABLE_PROFILE`) |
 | 扩展 `ReactDOMComponentTests`（gtest） | QA 小组 | ⏳ 进行中 | 复刻官方测试 `ReactDOMComponent-test.js` 关键用例。 |

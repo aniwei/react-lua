@@ -1,6 +1,10 @@
 add_executable(react_cpp_runtime_tests
-    ReactFiberWorkLoopTests.cpp
+    TestMain.cpp
+    ReactFiberLaneTests.cpp
+    ReactFiberLaneRuntimeTests.cpp
+    ReactFiberConcurrentUpdatesRuntimeTests.cpp
     ReactSharedConstantsTests.cpp
+    UpdateQueueTests.cpp
 )
 
 set_target_properties(react_cpp_runtime_tests PROPERTIES
