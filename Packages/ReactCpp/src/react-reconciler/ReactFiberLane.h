@@ -320,8 +320,8 @@ inline constexpr Lanes SyncUpdateLanes = detail::kSyncUpdateLanes;
 inline constexpr int NoTimestamp = detail::kNoTimestamp;
 
 struct ConcurrentUpdate {
-	ConcurrentUpdate* next{nullptr};
 	Lane lane{NoLane};
+	ConcurrentUpdate* next{nullptr};
 };
 
 template <typename T>

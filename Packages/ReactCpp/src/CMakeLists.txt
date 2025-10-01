@@ -3,8 +3,8 @@ add_library(react_cpp_src
     react-dom/client/ReactDOMDiffProperties.cpp
     react-dom/client/ReactDOMInstance.cpp
     reconciler/FiberNode.cpp
-    reconciler/UpdateQueue.cpp
     react-reconciler/ReactFiberConcurrentUpdates.cpp
+    react-reconciler/ReactUpdateQueue.cpp
     shared/ReactOwnerStackReset.cpp
     shared/ReactSharedInternals.cpp
     shared/ReactSymbols.cpp

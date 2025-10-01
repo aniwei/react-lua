@@ -1,4 +1,4 @@
-#include "reconciler/UpdateQueue.h"
+#include "react-reconciler/ReactUpdateQueue.h"
 
 #include <cassert>
 
@@ -13,8 +13,8 @@ bool runUpdateQueueTests() {
     return jsi::Value(prev.getNumber() + 1);
   };
   enqueueUpdate(queue, update1);
-  assert(queue.shared.pending == update1);
-  assert(queue.shared.pending->next == update1);
+  assert(queue.shared.pending == update1.get());
+  assert(queue.shared.pending->next == update1.get());
   assert(queue.shared.lanes == update1->lane);
 
   const auto update2 = createUpdate(DefaultLane);
@@ -23,15 +23,15 @@ bool runUpdateQueueTests() {
   };
   enqueueUpdate(queue, update2);
   const auto pending = queue.shared.pending;
-  assert(pending == update2);
-  assert(pending->next == update1);
+  assert(pending == update2.get());
+  assert(pending->next == update1.get());
   assert(queue.shared.lanes == DefaultLane);
 
   appendPendingUpdates(queue);
   assert(queue.shared.pending == nullptr);
   assert(queue.shared.lanes == NoLanes);
-  assert(queue.firstBaseUpdate == update1);
-  assert(queue.lastBaseUpdate == update2);
+  assert(queue.firstBaseUpdate == update1.get());
+  assert(queue.lastBaseUpdate == update2.get());
 
   const auto& finalState = processUpdateQueue(queue);
   assert(finalState.isNumber());

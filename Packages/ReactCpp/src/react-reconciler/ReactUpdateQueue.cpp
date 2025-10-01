@@ -1,4 +1,4 @@
-#include "UpdateQueue.h"
+#include "react-reconciler/ReactUpdateQueue.h"
 
 namespace jsi = facebook::jsi;
 
@@ -20,21 +20,25 @@ std::shared_ptr<UpdateQueue> createUpdateQueue(jsi::Runtime& rt, const jsi::Valu
 std::shared_ptr<Update> createUpdate(Lane lane, jsi::Value payload) {
   auto update = std::make_shared<Update>();
   update->lane = lane;
+  update->tag = UpdateTag::UpdateState;
   update->payload = std::move(payload);
   update->next = nullptr;
   return update;
 }
 
 void enqueueUpdate(UpdateQueue& queue, const std::shared_ptr<Update>& update) {
+  queue.ownedUpdates.push_back(update);
+
+  auto* updatePtr = update.get();
   if (queue.shared.pending == nullptr) {
-    update->next = update;
+    updatePtr->next = updatePtr;
   } else {
-    auto pending = queue.shared.pending;
-    update->next = pending->next;
-    pending->next = update;
+    auto* pending = queue.shared.pending;
+    updatePtr->next = pending->next;
+    pending->next = updatePtr;
   }
-  queue.shared.pending = update;
-  queue.shared.lanes = mergeLanes(queue.shared.lanes, update->lane);
+  queue.shared.pending = updatePtr;
+  queue.shared.lanes = mergeLanes(queue.shared.lanes, updatePtr->lane);
 }
 
 void appendPendingUpdates(UpdateQueue& queue) {
@@ -46,8 +50,11 @@ void appendPendingUpdates(UpdateQueue& queue) {
   queue.shared.pending = nullptr;
   queue.shared.lanes = NoLanes;
 
-  const auto lastPendingUpdate = pending;
-  const auto firstPendingUpdate = pending->next;
+  auto* lastPendingUpdate = pending;
+  auto* firstPendingUpdate = static_cast<Update*>(pending->next);
+  if (firstPendingUpdate == nullptr) {
+    firstPendingUpdate = lastPendingUpdate;
+  }
   lastPendingUpdate->next = nullptr;
 
   if (queue.firstBaseUpdate == nullptr) {
@@ -61,7 +68,7 @@ void appendPendingUpdates(UpdateQueue& queue) {
 
 namespace {
 
-void applyUpdateReducer(const std::shared_ptr<Update>& update, jsi::Value& state) {
+void applyUpdateReducer(Update* update, jsi::Value& state) {
   if (update->reducer) {
     jsi::Value result = update->reducer(state);
     state = std::move(result);
@@ -81,7 +88,7 @@ const jsi::Value& processUpdateQueue(UpdateQueue& queue) {
   jsi::Value newState = std::move(queue.baseState);
   queue.callbacks.clear();
 
-  auto current = queue.firstBaseUpdate;
+  auto* current = queue.firstBaseUpdate;
   while (current != nullptr) {
     switch (current->tag) {
       case UpdateTag::UpdateState:
@@ -98,12 +105,13 @@ const jsi::Value& processUpdateQueue(UpdateQueue& queue) {
       queue.callbacks.push_back(current->callback);
     }
 
-    current = current->next;
+    current = static_cast<Update*>(current->next);
   }
 
   queue.baseState = std::move(newState);
   queue.firstBaseUpdate = nullptr;
   queue.lastBaseUpdate = nullptr;
+  queue.ownedUpdates.clear();
 
   return queue.baseState;
 }

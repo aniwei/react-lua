@@ -21,26 +21,25 @@ enum class UpdateTag : uint8_t {
 };
 
 struct SharedQueue {
-  std::shared_ptr<Update> pending;
+  Update* pending{nullptr};
   Lanes lanes{NoLanes};
   std::vector<std::function<void()>> hiddenCallbacks;
 };
 
-struct Update {
-  Lane lane{NoLane};
+struct Update : ConcurrentUpdate {
   UpdateTag tag{UpdateTag::UpdateState};
   jsi::Value payload;
   std::function<jsi::Value(const jsi::Value&)> reducer;
   std::function<void()> callback;
-  std::shared_ptr<Update> next;
 };
 
 struct UpdateQueue {
   jsi::Value baseState;
-  std::shared_ptr<Update> firstBaseUpdate;
-  std::shared_ptr<Update> lastBaseUpdate;
+  Update* firstBaseUpdate{nullptr};
+  Update* lastBaseUpdate{nullptr};
   SharedQueue shared;
   std::vector<std::function<void()>> callbacks;
+  std::vector<std::shared_ptr<Update>> ownedUpdates;
 
   UpdateQueue();
 };
