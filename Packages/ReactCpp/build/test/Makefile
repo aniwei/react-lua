@@ -202,6 +202,54 @@ ReactFiberLaneTests.cpp.s:
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberLaneTests.cpp.s
 .PHONY : ReactFiberLaneTests.cpp.s
 
+ReactFiberRuntimeTests.o: ReactFiberRuntimeTests.cpp.o
+.PHONY : ReactFiberRuntimeTests.o
+
+# target to build an object file
+ReactFiberRuntimeTests.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberRuntimeTests.cpp.o
+.PHONY : ReactFiberRuntimeTests.cpp.o
+
+ReactFiberRuntimeTests.i: ReactFiberRuntimeTests.cpp.i
+.PHONY : ReactFiberRuntimeTests.i
+
+# target to preprocess a source file
+ReactFiberRuntimeTests.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberRuntimeTests.cpp.i
+.PHONY : ReactFiberRuntimeTests.cpp.i
+
+ReactFiberRuntimeTests.s: ReactFiberRuntimeTests.cpp.s
+.PHONY : ReactFiberRuntimeTests.s
+
+# target to generate assembly for a file
+ReactFiberRuntimeTests.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberRuntimeTests.cpp.s
+.PHONY : ReactFiberRuntimeTests.cpp.s
+
+ReactFiberWorkLoopStateTests.o: ReactFiberWorkLoopStateTests.cpp.o
+.PHONY : ReactFiberWorkLoopStateTests.o
+
+# target to build an object file
+ReactFiberWorkLoopStateTests.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberWorkLoopStateTests.cpp.o
+.PHONY : ReactFiberWorkLoopStateTests.cpp.o
+
+ReactFiberWorkLoopStateTests.i: ReactFiberWorkLoopStateTests.cpp.i
+.PHONY : ReactFiberWorkLoopStateTests.i
+
+# target to preprocess a source file
+ReactFiberWorkLoopStateTests.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberWorkLoopStateTests.cpp.i
+.PHONY : ReactFiberWorkLoopStateTests.cpp.i
+
+ReactFiberWorkLoopStateTests.s: ReactFiberWorkLoopStateTests.cpp.s
+.PHONY : ReactFiberWorkLoopStateTests.s
+
+# target to generate assembly for a file
+ReactFiberWorkLoopStateTests.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberWorkLoopStateTests.cpp.s
+.PHONY : ReactFiberWorkLoopStateTests.cpp.s
+
 ReactSharedConstantsTests.o: ReactSharedConstantsTests.cpp.o
 .PHONY : ReactSharedConstantsTests.o
 
@@ -292,6 +340,12 @@ help:
 	@echo "... ReactFiberLaneTests.o"
 	@echo "... ReactFiberLaneTests.i"
 	@echo "... ReactFiberLaneTests.s"
+	@echo "... ReactFiberRuntimeTests.o"
+	@echo "... ReactFiberRuntimeTests.i"
+	@echo "... ReactFiberRuntimeTests.s"
+	@echo "... ReactFiberWorkLoopStateTests.o"
+	@echo "... ReactFiberWorkLoopStateTests.i"
+	@echo "... ReactFiberWorkLoopStateTests.s"
 	@echo "... ReactSharedConstantsTests.o"
 	@echo "... ReactSharedConstantsTests.i"
 	@echo "... ReactSharedConstantsTests.s"

@@ -1,5 +1,10 @@
 #include "react-reconciler/ReactUpdateQueue.h"
 
+#include "react-reconciler/ReactFiberAsyncAction.h"
+
+#include <stdexcept>
+#include <utility>
+
 namespace jsi = facebook::jsi;
 
 namespace react {
@@ -68,6 +73,17 @@ void appendPendingUpdates(UpdateQueue& queue) {
 
 namespace {
 
+bool gDidReadFromEntangledAsyncAction = false;
+bool gHasForceUpdate = false;
+
+void callCallback(const std::function<void()>& callback) {
+  if (!callback) {
+    throw std::invalid_argument(
+        "Invalid argument passed as callback. Expected a function.");
+  }
+  callback();
+}
+
 void applyUpdateReducer(Update* update, jsi::Value& state) {
   if (update->reducer) {
     jsi::Value result = update->reducer(state);
@@ -86,10 +102,16 @@ const jsi::Value& processUpdateQueue(UpdateQueue& queue) {
   appendPendingUpdates(queue);
 
   jsi::Value newState = std::move(queue.baseState);
+  gDidReadFromEntangledAsyncAction = false;
+  gHasForceUpdate = false;
   queue.callbacks.clear();
 
   auto* current = queue.firstBaseUpdate;
   while (current != nullptr) {
+    if (current->lane != NoLane && current->lane == peekEntangledActionLane()) {
+      gDidReadFromEntangledAsyncAction = true;
+    }
+
     switch (current->tag) {
       case UpdateTag::UpdateState:
       case UpdateTag::CaptureUpdate:
@@ -98,6 +120,7 @@ const jsi::Value& processUpdateQueue(UpdateQueue& queue) {
         break;
       case UpdateTag::ForceUpdate:
         // ForceUpdate intentionally does not modify state in this simplified port.
+        gHasForceUpdate = true;
         break;
     }
 
@@ -114,6 +137,53 @@ const jsi::Value& processUpdateQueue(UpdateQueue& queue) {
   queue.ownedUpdates.clear();
 
   return queue.baseState;
+}
+
+void suspendIfUpdateReadFromEntangledAsyncAction() {
+  if (!gDidReadFromEntangledAsyncAction) {
+    return;
+  }
+
+  if (auto thenable = peekEntangledActionThenable()) {
+    throw thenable;
+  }
+}
+
+void resetHasForceUpdateBeforeProcessing() {
+  gHasForceUpdate = false;
+}
+
+bool checkHasForceUpdateAfterProcessing() {
+  return gHasForceUpdate;
+}
+
+void deferHiddenCallbacks(UpdateQueue& queue) {
+  if (queue.callbacks.empty()) {
+    return;
+  }
+
+  auto& hiddenCallbacks = queue.shared.hiddenCallbacks;
+  hiddenCallbacks.reserve(hiddenCallbacks.size() + queue.callbacks.size());
+  for (auto& callback : queue.callbacks) {
+    hiddenCallbacks.push_back(std::move(callback));
+  }
+  queue.callbacks.clear();
+}
+
+void commitHiddenCallbacks(UpdateQueue& queue) {
+  auto hiddenCallbacks = std::move(queue.shared.hiddenCallbacks);
+  queue.shared.hiddenCallbacks.clear();
+  for (auto& callback : hiddenCallbacks) {
+    callCallback(callback);
+  }
+}
+
+void commitCallbacks(UpdateQueue& queue) {
+  auto callbacks = std::move(queue.callbacks);
+  queue.callbacks.clear();
+  for (auto& callback : callbacks) {
+    callCallback(callback);
+  }
 }
 
 } // namespace react

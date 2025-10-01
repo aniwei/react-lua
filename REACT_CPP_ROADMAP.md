@@ -41,7 +41,7 @@
 | Phase 1 | Shared/Feature Scaffold | Feature flags、共享常量、错误码对齐 | 🟡 进行中 | 同上 | 2025-10-31 |
 | Phase 2 | ReactDOM Host Parity | `ReactDOMHostConfig`、`ReactDOMInstance`、属性 diff | 🟡 进行中 | 同上 | 2025-11-15 |
 | Phase 3 | Fiber 数据结构 | `FiberNode`、`FiberRootNode`、UpdateQueue | 🟡 进行中 | 同上 | 2025-11-29 |
-| Phase 4 | WorkLoop & Commit (Sync) | `beginWork`/`completeWork`/`commit*` 同构 | ⚪ 未开始 | 同上 | 2025-12-20 |
+| Phase 4 | WorkLoop & Commit (Sync) | `beginWork`/`completeWork`/`commit*` 同构 | 🟡 进行中 | 同上 | 2025-12-20 |
 | Phase 5 | Scheduler 集成 | `ensureRootScheduled` 与调度器 1:1 | ⚪ 未开始 | 平台组 | 2026-01-10 |
 | Phase 6 | Hydration & 事件系统 | SSR Hydration、事件委托、Legacy/Modern 模式 | ⚪ 未开始 | 平台组 + Tools | 2026-02-07 |
 | Phase 7 | Hooks & Context | Hook dispatcher、Context 注册、Effect queue | ⚪ 未开始 | 平台组 | 2026-03-14 |
@@ -139,6 +139,7 @@
 - ✅ 扩展 updater 追踪支撑：为 `FiberRoot` 增补 `pendingUpdatersLaneMap`/`memoizedUpdaters` 并落地 `addFiberToLanesMap`、`movePendingFibersToMemoized` 桩实现，为后续 DevTools 联动预留接口。
 - ✅ 补全 transition lane 桥接：引入 `transitionLanes` 结构及 `addTransitionToLanesMap`/`getTransitionsForLanes`/`clearTransitionsForLanes`，在 flag 关闭场景下保持零开销，便于后续启用 Transition Tracing。
 - ✅ 首版 `ReactFiberConcurrentUpdates` 翻译：落地并串联并发更新排队、悬挂更新继承、隐藏更新标记逻辑，配套运行时用例覆盖基本 enqueue/flush 行为。
+- ✅ 同步 `FiberNode` 依赖克隆与重置语义：引入 `Dependencies` 结构体与 `createWorkInProgress`/`resetWorkInProgress` 断言覆盖，确保双缓冲 fiber 不共享上下文快照。
 
 **任务清单**
 - [x] 生成 `FiberNode.h/.cpp`、`FiberRootNode.h/.cpp` 模板文件，保持字段与构造逻辑签名一致。
@@ -146,25 +147,24 @@
 - [x] 翻译 `ReactFiberConcurrentUpdates.js` 核心入口，接入 FiberRoot/Lane helper 并补充运行时断言。
 - [ ] 将 `packages/react-reconciler/src/ReactFiberClassComponent.js` 的更新流程翻译到 C++ `UpdateQueue`，覆盖 `enqueueUpdate` / `processUpdateQueue` 路径。
 - [x] 引入 `LanePriority` 数值表及到期策略，补全 Lane 相关辅助函数链路，并与 Feature Flag 生成流程打通（DEV/PROD 同步校验）。
-- [ ] 构建 gtest：验证 `createFiber`, `createFiberFromElement`, `enqueueUpdate`，确保与 JS 快照一致。
+- [ ] 构建 gtest：验证 `createFiber`, `createFiberFromElement`, `enqueueUpdate`，确保与 JS 快照一致。（进行中：已新增 `ReactFiberRuntimeTests` 覆盖 `createWorkInProgress`/`resetWorkInProgress` 依赖复制与还原逻辑）
 
 **验收标准**
 - 结构体字段顺序与 JS 端 `FiberNode` 注释对应。
 - 测试覆盖基本的节点创建与更新排队。
 
-### Phase 4 · WorkLoop & Commit (Sync)（未开始）
+### Phase 4 · WorkLoop & Commit (Sync)（进行中）
 
 **目标**：完成同步工作循环与提交阶段的逐行翻译。
 
 **关键交付**
-- `beginWork.cpp`, `completeWork.cpp`, `commitWork.cpp`，按 React 分拆文件。
-- `performUnitOfWork`, `workLoopSync`, `commitMutationEffects` 等核心函数对齐。
-- Placement/Deletion/Update 副作用在 Host stub 上具有正确表现。
 
 **任务清单**
+- ✅ 追加 `panicOnRootError`、`completeUnitOfWork`、`unwindUnitOfWork`、`performUnitOfWork`、`workLoopSync`/`workLoopConcurrent` 驱动与 `renderRootSync`/`renderRootConcurrent` 雏形（当前搭载 Profiler/BeginWork 桩），并在 `ReactFiberWorkLoopStateTests` 中验证 WIP 指针及 Root Exit 状态。
 - [ ] 使用 AST 工具从 `ReactFiberBeginWork.new.js`, `ReactFiberCompleteWork.new.js`, `ReactFiberCommitWork.new.js` 自动生成 C++ 骨架。
 - [ ] 迁移 `ChildReconciler`（`ReactChildFiber.js`）逻辑，保留 key diff 行为。
 - [ ] 建立 `ReactFiberWorkLoopTests`：渲染 `<div><p>Hello</p></div>`、更新 props、删除节点。
+- [ ] 实现 `resetSuspendedWorkLoopOnUnwind` / `unwindInterruptedWork` 具体逻辑，恢复上下文与 Hook 栈状态。
 
 **验收标准**
 - `renderRootSync` 在 C++ 端构建 fiber 树并驱动 host 节点。
@@ -272,8 +272,11 @@
 | 扩展 `ReactDOMComponentTests`（gtest） | QA 小组 | ⏳ 进行中 | 复刻官方测试 `ReactDOMComponent-test.js` 关键用例。 |
 | 设计 parity CI 报告格式 | 平台组 | 🔜 待启动 | 输出 Markdown 摘要 + JSON 数据。 |
 | Shared 常量 gtest（`ReactSharedConstantsTests.cpp`） | 平台组 + QA | ✅ 已完成 | 针对 WorkTags/FiberFlags/FeatureFlags 做编译时数值快照断言。 |
+| 翻译 `prepareFreshStack` / `resetWorkInProgressStack` 并补测 | 平台组 | ✅ 已完成 | 完成 Root 初始化、Lane/错误状态复位与 unwind 桩落地，扩展 `ReactFiberWorkLoopStateTests` 覆盖。 |
 | 翻译 `shared/ReactOwnerStackReset.js` | 平台组 | ✅ 已完成 | 实现 owner stack 重置逻辑并桥接 `ReactSharedInternals`。 |
 | 翻译 `shared/ReactSymbols.js` & `ReactSharedInternals.js` | 平台组 | ✅ 已完成 | 暴露 symbol / dispatcher 常量，解锁下一批 reconciler 引用。 |
+| 同步 WorkLoop 渲染阶段辅助函数与 fallback 计时 | 平台组 | ✅ 已完成 | 新增 `markSkippedUpdateLanes`、`renderDidSuspendDelayIfPossible`、`markCommitTimeOfFallback` 等实现，并扩展 `ReactFiberWorkLoopStateTests` 验证 lane 合并与时间戳写入。 |
+| 扩充 WorkLoop 提交阶段状态容器 | 平台组 | ✅ 已完成 | 新增 pending effects / view transition / nested update 状态字段与访问器，配套单测覆盖 `hasPendingCommitEffects`、`getRootWithPendingPassiveEffects` 等入口。 |
 | 启动 Phase 2 DOM Host Parity 预研 | 平台组 | ✅ 已完成 | `HostInterface` 扩展 DOM API，新增默认实现与测试日志，完成宿主注入验证。 |
 
 每日站会需更新 AST 翻译覆盖率 & 测试通过率。

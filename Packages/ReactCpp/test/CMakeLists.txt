@@ -3,6 +3,8 @@ add_executable(react_cpp_runtime_tests
     ReactFiberLaneTests.cpp
     ReactFiberLaneRuntimeTests.cpp
     ReactFiberConcurrentUpdatesRuntimeTests.cpp
+    ReactFiberRuntimeTests.cpp
+    ReactFiberWorkLoopStateTests.cpp
     ReactSharedConstantsTests.cpp
     UpdateQueueTests.cpp
 )

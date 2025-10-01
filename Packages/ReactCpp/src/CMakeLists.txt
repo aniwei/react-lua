@@ -2,9 +2,14 @@ add_library(react_cpp_src
     react-dom/client/ReactDOMComponent.cpp
     react-dom/client/ReactDOMDiffProperties.cpp
     react-dom/client/ReactDOMInstance.cpp
-    reconciler/FiberNode.cpp
     react-reconciler/ReactFiberConcurrentUpdates.cpp
+    react-reconciler/ReactCapturedValue.cpp
+    react-reconciler/ReactFiber.cpp
+    react-reconciler/ReactFiberAsyncAction.cpp
+    react-reconciler/ReactFiberErrorLogger.cpp
     react-reconciler/ReactUpdateQueue.cpp
+    react-reconciler/ReactFiberWorkLoop.cpp
+    runtime/ReactRuntime.cpp
     shared/ReactOwnerStackReset.cpp
     shared/ReactSharedInternals.cpp
     shared/ReactSymbols.cpp

@@ -1,7 +1,7 @@
 #include "ReactFiberConcurrentUpdates.h"
 
 #include "ReactFiberLane.h"
-#include "../reconciler/FiberNode.h"
+#include "ReactFiber.h"
 
 #include <array>
 #include <vector>
@@ -124,7 +124,7 @@ FiberRoot* markUpdateLaneFromFiberToRoot(
 
 	bool isHidden = false;
 	FiberNode* node = sourceFiber;
-	FiberNode* parent = node->returnFiber.get();
+	FiberNode* parent = node->returnFiber;
 	while (parent != nullptr) {
 		parent->childLanes = mergeLanes(parent->childLanes, lane);
 		if (parent->alternate) {
@@ -139,7 +139,7 @@ FiberRoot* markUpdateLaneFromFiberToRoot(
 		}
 
 		node = parent;
-		parent = parent->returnFiber.get();
+	parent = parent->returnFiber;
 	}
 
 	if (node->tag == WorkTag::HostRoot) {
@@ -162,10 +162,10 @@ FiberRoot* getRootForUpdatedFiber(FiberNode* sourceFiber) {
 	}
 
 	FiberNode* node = sourceFiber;
-	FiberNode* parent = node->returnFiber.get();
+	FiberNode* parent = node->returnFiber;
 	while (parent != nullptr) {
 		node = parent;
-		parent = parent->returnFiber.get();
+	parent = parent->returnFiber;
 	}
 
 	if (node->tag == WorkTag::HostRoot) {

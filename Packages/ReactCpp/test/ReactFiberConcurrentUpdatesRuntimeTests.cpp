@@ -1,8 +1,8 @@
+#include "react-reconciler/ReactFiber.h"
 #include "react-reconciler/ReactFiberConcurrentUpdates.h"
 #include "react-reconciler/ReactFiberLane.h"
 #include "react-reconciler/ReactFiberOffscreenComponent.h"
 #include "react-reconciler/ReactWorkTags.h"
-#include "reconciler/FiberNode.h"
 #include "shared/ReactFeatureFlags.h"
 
 #include "jsi/jsi.h"
@@ -14,8 +14,9 @@ namespace react::test {
 
 namespace {
 
-std::shared_ptr<FiberNode> createFiber(WorkTag tag) {
-  return std::make_shared<FiberNode>(tag, facebook::jsi::Value::undefined(), facebook::jsi::Value::undefined());
+std::shared_ptr<FiberNode> makeFiber(WorkTag tag) {
+  FiberNode* fiber = react::createFiber(tag);
+  return std::shared_ptr<FiberNode>(fiber, [](FiberNode* ptr) { delete ptr; });
 }
 
 } // namespace
@@ -24,16 +25,16 @@ bool runReactFiberConcurrentUpdatesRuntimeTests() {
   FiberRoot rootState{};
   rootState.tag = RootTag::ConcurrentRoot;
 
-  auto rootFiber = createFiber(WorkTag::HostRoot);
+  auto rootFiber = makeFiber(WorkTag::HostRoot);
   rootFiber->stateNode = &rootState;
 
   ConcurrentUpdateQueue queue{};
   ConcurrentUpdate update{};
   update.lane = DefaultLane;
 
-  auto child = createFiber(WorkTag::FunctionComponent);
-  child->returnFiber = rootFiber;
-  rootFiber->child = child;
+  auto child = makeFiber(WorkTag::FunctionComponent);
+  child->returnFiber = rootFiber.get();
+  rootFiber->child = child.get();
 
   auto* scheduledRoot = enqueueConcurrentHookUpdate(child.get(), &queue, &update, DefaultLane);
   assert(scheduledRoot == &rootState);
@@ -53,14 +54,14 @@ bool runReactFiberConcurrentUpdatesRuntimeTests() {
   OffscreenInstance hiddenInstance;
   hiddenInstance._visibility = 0;
 
-  auto offscreen = createFiber(WorkTag::OffscreenComponent);
+  auto offscreen = makeFiber(WorkTag::OffscreenComponent);
   offscreen->stateNode = &hiddenInstance;
-  offscreen->returnFiber = rootFiber;
-  rootFiber->child = offscreen;
+  offscreen->returnFiber = rootFiber.get();
+  rootFiber->child = offscreen.get();
 
-  auto hiddenChild = createFiber(WorkTag::FunctionComponent);
-  hiddenChild->returnFiber = offscreen;
-  offscreen->child = hiddenChild;
+  auto hiddenChild = makeFiber(WorkTag::FunctionComponent);
+  hiddenChild->returnFiber = offscreen.get();
+  offscreen->child = hiddenChild.get();
 
   ConcurrentUpdateQueue hiddenQueue{};
   auto* hiddenRoot = enqueueConcurrentHookUpdate(hiddenChild.get(), &hiddenQueue, &hiddenUpdate, TransitionLane1);

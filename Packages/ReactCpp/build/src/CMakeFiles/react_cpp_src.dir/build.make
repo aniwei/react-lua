@@ -114,38 +114,10 @@ src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMInstance.cpp.s: cmake_
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMInstance.cpp.s"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-dom/client/ReactDOMInstance.cpp -o CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMInstance.cpp.s
 
-src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
-src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.cpp
-src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o -MF CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o.d -o CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.cpp
-
-src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.i"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.cpp > CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.i
-
-src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.s"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/FiberNode.cpp -o CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.s
-
-src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
-src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/UpdateQueue.cpp
-src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o -MF CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o.d -o CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/UpdateQueue.cpp
-
-src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.i"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/UpdateQueue.cpp > CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.i
-
-src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.s"
-	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/reconciler/UpdateQueue.cpp -o CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.s
-
 src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
 src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberConcurrentUpdates.cpp
 src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o -MF CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o.d -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberConcurrentUpdates.cpp
 
 src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.i: cmake_force
@@ -156,10 +128,108 @@ src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cp
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.s"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberConcurrentUpdates.cpp -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.s
 
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactCapturedValue.cpp
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o -MF CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o.d -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactCapturedValue.cpp
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.i"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactCapturedValue.cpp > CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.i
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.s"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactCapturedValue.cpp -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.s
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiber.cpp
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o -MF CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o.d -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiber.cpp
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.i"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiber.cpp > CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.i
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.s"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiber.cpp -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.s
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.cpp
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o -MF CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o.d -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.cpp
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.i"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.cpp > CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.i
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.s"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.cpp -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.s
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberErrorLogger.cpp
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o -MF CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o.d -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberErrorLogger.cpp
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.i"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberErrorLogger.cpp > CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.i
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.s"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberErrorLogger.cpp -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.s
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactUpdateQueue.cpp
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o -MF CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o.d -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactUpdateQueue.cpp
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.i"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactUpdateQueue.cpp > CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.i
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.s"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactUpdateQueue.cpp -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.s
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberWorkLoop.cpp
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o -MF CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o.d -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberWorkLoop.cpp
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.i"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberWorkLoop.cpp > CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.i
+
+src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.s"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberWorkLoop.cpp -o CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.s
+
+src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
+src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.cpp
+src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o -MF CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o.d -o CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.cpp
+
+src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.i"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.cpp > CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.i
+
+src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.s"
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.cpp -o CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.s
+
 src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
 src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactOwnerStackReset.cpp
 src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o -MF CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o.d -o CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactOwnerStackReset.cpp
 
 src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.i: cmake_force
@@ -173,7 +243,7 @@ src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.s: cmake_force
 src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
 src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactSharedInternals.cpp
 src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o -MF CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o.d -o CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactSharedInternals.cpp
 
 src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.i: cmake_force
@@ -187,7 +257,7 @@ src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.s: cmake_force
 src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
 src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactSymbols.cpp
 src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o -MF CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o.d -o CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactSymbols.cpp
 
 src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.i: cmake_force
@@ -201,7 +271,7 @@ src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.s: cmake_force
 src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
 src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp
 src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o -MF CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o.d -o CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp
 
 src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsi.cpp.i: cmake_force
@@ -215,7 +285,7 @@ src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/pac
 src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o: src/CMakeFiles/react_cpp_src.dir/flags.make
 src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp
 src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o: src/CMakeFiles/react_cpp_src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o -MF CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o.d -o CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o -c /Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp
 
 src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.i: cmake_force
@@ -231,9 +301,14 @@ react_cpp_src_OBJECTS = \
 "CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMComponent.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMDiffProperties.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMInstance.cpp.o" \
-"CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o" \
-"CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o" \
+"CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o" \
+"CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o" \
+"CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o" \
+"CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o" \
+"CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o" \
+"CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o" \
+"CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o" \
 "CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o" \
@@ -246,9 +321,14 @@ react_cpp_src_EXTERNAL_OBJECTS =
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMComponent.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMDiffProperties.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-dom/client/ReactDOMInstance.cpp.o
-src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/reconciler/FiberNode.cpp.o
-src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/reconciler/UpdateQueue.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberConcurrentUpdates.cpp.o
+src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactCapturedValue.cpp.o
+src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiber.cpp.o
+src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.o
+src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.o
+src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o
+src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o
+src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/shared/ReactOwnerStackReset.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/shared/ReactSharedInternals.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/shared/ReactSymbols.cpp.o
@@ -256,7 +336,7 @@ src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/Users/weiyanhai/Desktop/workspace/react-lua/packages/jsi/jsi/jsilib-posix.cpp.o
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/build.make
 src/libreact_cpp_src.a: src/CMakeFiles/react_cpp_src.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX static library libreact_cpp_src.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX static library libreact_cpp_src.a"
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && $(CMAKE_COMMAND) -P CMakeFiles/react_cpp_src.dir/cmake_clean_target.cmake
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/react_cpp_src.dir/link.txt --verbose=$(VERBOSE)
 

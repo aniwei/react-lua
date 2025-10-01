@@ -9,6 +9,7 @@
 #include <array>
 #include <atomic>
 #include <cstdint>
+#include <functional>
 #include <optional>
 #include <string_view>
 #include <unordered_set>
@@ -21,6 +22,9 @@ using Lanes = std::uint32_t;
 
 class FiberNode;
 struct Transition {};
+
+using TimeoutHandle = std::uintptr_t;
+inline constexpr TimeoutHandle noTimeout = 0;
 
 namespace detail {
 
@@ -531,6 +535,9 @@ enum class LanePriority : std::uint8_t {
 }
 
 struct FiberRoot {
+	FiberNode* current{nullptr};
+	TimeoutHandle timeoutHandle{noTimeout};
+	std::function<void()> cancelPendingCommit{};
 	RootTag tag{RootTag::LegacyRoot};
 	Lanes pendingLanes{NoLanes};
 	Lanes suspendedLanes{NoLanes};
@@ -640,6 +647,14 @@ inline void markRootSuspended(FiberRoot& root, Lanes suspendedLanes, Lane spawne
 inline void markRootPinged(FiberRoot& root, Lanes pingedLanes) {
 	root.pingedLanes |= root.suspendedLanes & pingedLanes;
 	root.warmLanes &= ~pingedLanes;
+}
+
+[[nodiscard]] inline bool checkIfRootIsPrerendering(const FiberRoot& root, Lanes renderLanes) {
+	const Lanes pendingLanes = root.pendingLanes;
+	const Lanes suspendedLanes = root.suspendedLanes;
+	const Lanes pingedLanes = root.pingedLanes;
+	const Lanes nonSuspendedPendingLanes = pendingLanes & ~(suspendedLanes & ~pingedLanes);
+	return (nonSuspendedPendingLanes & renderLanes) == NoLanes;
 }
 
 inline void markRootFinished(

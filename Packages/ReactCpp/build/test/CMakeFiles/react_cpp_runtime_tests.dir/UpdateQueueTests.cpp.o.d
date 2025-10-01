@@ -1,6 +1,6 @@
 test/CMakeFiles/react_cpp_runtime_tests.dir/UpdateQueueTests.cpp.o: \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/UpdateQueueTests.cpp \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/reconciler/UpdateQueue.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/react-reconciler/ReactUpdateQueue.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/../../jsi/jsi/jsi.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cassert \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert \
@@ -937,4 +937,5 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/UpdateQueueTests.cpp.o: \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/react-reconciler/ReactFiberLane.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/shared/ReactFeatureFlags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/react-reconciler/ReactRootTags.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/unordered_set
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/unordered_set \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/../src/react-reconciler/ReactFiberAsyncAction.h

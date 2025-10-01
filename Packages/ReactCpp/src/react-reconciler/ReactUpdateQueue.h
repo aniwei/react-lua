@@ -49,6 +49,12 @@ std::shared_ptr<Update> createUpdate(Lane lane, jsi::Value payload = jsi::Value:
 void enqueueUpdate(UpdateQueue& queue, const std::shared_ptr<Update>& update);
 void appendPendingUpdates(UpdateQueue& queue);
 const jsi::Value& processUpdateQueue(UpdateQueue& queue);
+void suspendIfUpdateReadFromEntangledAsyncAction();
+void resetHasForceUpdateBeforeProcessing();
+bool checkHasForceUpdateAfterProcessing();
+void deferHiddenCallbacks(UpdateQueue& queue);
+void commitHiddenCallbacks(UpdateQueue& queue);
+void commitCallbacks(UpdateQueue& queue);
 
 inline bool operator==(UpdateTag a, UpdateTag b) {
   return static_cast<uint8_t>(a) == static_cast<uint8_t>(b);
