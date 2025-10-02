@@ -942,9 +942,12 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberConcurrentUpdatesRuntimeTe
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberFlags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberLane.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberOffscreenComponent.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberSuspenseComponent.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactRootTags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactTypeOfMode.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactWakeable.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactWorkTags.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/scheduler/Scheduler.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactFeatureFlags.h
 
 test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberLaneRuntimeTests.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/ReactFiberLaneRuntimeTests.cpp \
@@ -1882,6 +1885,7 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberLaneRuntimeTests.cpp.o: /U
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdint.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberLane.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactRootTags.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/scheduler/Scheduler.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactFeatureFlags.h
 
 test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberLaneTests.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/ReactFiberLaneTests.cpp \
@@ -2815,6 +2819,7 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberLaneTests.cpp.o: /Users/we
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdint.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberLane.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactRootTags.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/scheduler/Scheduler.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactFeatureFlags.h
 
 test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberRuntimeTests.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/ReactFiberRuntimeTests.cpp \
@@ -3757,6 +3762,7 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberRuntimeTests.cpp.o: /Users
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactRootTags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactTypeOfMode.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactWorkTags.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/scheduler/Scheduler.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactFeatureFlags.h
 
 test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberWorkLoopStateTests.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/ReactFiberWorkLoopStateTests.cpp \
@@ -4702,6 +4708,7 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberWorkLoopStateTests.cpp.o: 
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactTypeOfMode.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactWorkTags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/scheduler/Scheduler.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactFeatureFlags.h
 
 test/CMakeFiles/react_cpp_runtime_tests.dir/ReactSharedConstantsTests.cpp.o: /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/test/ReactSharedConstantsTests.cpp \
@@ -6668,6 +6675,7 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/UpdateQueueTests.cpp.o: /Users/weiya
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberLane.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactRootTags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactUpdateQueue.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/scheduler/Scheduler.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactFeatureFlags.h
 
 
@@ -6687,7 +6695,11 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/UpdateQueueTests.cpp.o: /Users/weiya
 
 /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactWorkTags.h:
 
+/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactWakeable.h:
+
 /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactTypeOfMode.h:
+
+/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberSuspenseComponent.h:
 
 /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberLane.h:
 
@@ -8024,6 +8036,8 @@ test/CMakeFiles/react_cpp_runtime_tests.dir/UpdateQueueTests.cpp.o: /Users/weiya
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_next_permutation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/to_underlying.h:
+
+/Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/scheduler/Scheduler.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/compare_three_way_result.h:
 

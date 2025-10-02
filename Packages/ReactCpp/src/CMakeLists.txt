@@ -7,6 +7,14 @@ add_library(react_cpp_src
     react-reconciler/ReactFiber.cpp
     react-reconciler/ReactFiberAsyncAction.cpp
     react-reconciler/ReactFiberErrorLogger.cpp
+    react-reconciler/ReactFiberHiddenContext.cpp
+    react-reconciler/ReactFiberClassUpdateQueue.cpp
+    react-reconciler/ReactFiberStack.cpp
+    react-reconciler/ReactFiberSuspenseContext.cpp
+    react-reconciler/ReactFiberThenable.cpp
+    react-reconciler/ReactFiberThrow.cpp
+    react-reconciler/ReactFiberRootScheduler.cpp
+    react-reconciler/ReactWakeable.cpp
     react-reconciler/ReactUpdateQueue.cpp
     react-reconciler/ReactFiberWorkLoop.cpp
     runtime/ReactRuntime.cpp

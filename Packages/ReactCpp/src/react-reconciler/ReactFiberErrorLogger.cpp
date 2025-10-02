@@ -10,4 +10,11 @@ void logUncaughtError(FiberRoot& root, const CapturedValue& errorInfo) {
   // TODO: Integrate with runtime error callbacks and component stacks.
 }
 
+void logCaughtError(FiberRoot& root, FiberNode& fiber, const CapturedValue& errorInfo) {
+  (void)root;
+  (void)fiber;
+  (void)errorInfo;
+  // TODO: surface caught errors to devtools/runtime observers.
+}
+
 } // namespace react

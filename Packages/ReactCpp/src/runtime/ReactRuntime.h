@@ -1,8 +1,10 @@
 #pragma once
 
 #include "react-reconciler/ReactFiberWorkLoopState.h"
+#include "scheduler/Scheduler.h"
 
 #include <cstdint>
+#include <functional>
 #include <memory>
 
 namespace facebook {
@@ -36,11 +38,28 @@ public:
     std::uint32_t rootElementOffset,
     std::shared_ptr<ReactDOMInstance> rootContainer);
 
+  TaskHandle scheduleTask(
+    SchedulerPriority priority,
+    Task task,
+    const TaskOptions& options = {});
+
+  void cancelTask(TaskHandle handle);
+
+  SchedulerPriority getCurrentPriorityLevel() const;
+
+  SchedulerPriority runWithPriority(
+    SchedulerPriority priority,
+    const std::function<void()>& fn);
+
+  bool shouldYield() const;
+
   [[nodiscard]] double now() const;
 
 private:
   std::shared_ptr<HostInterface> hostInterface_{};
   WorkLoopState workLoopState_{};
+  SchedulerPriority currentPriority_{SchedulerPriority::NormalPriority};
+  std::uint64_t nextTaskId_{1};
 };
 
 } // namespace react

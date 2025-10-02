@@ -322,6 +322,30 @@ react-reconciler/ReactFiberAsyncAction.cpp.s:
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberAsyncAction.cpp.s
 .PHONY : react-reconciler/ReactFiberAsyncAction.cpp.s
 
+react-reconciler/ReactFiberClassUpdateQueue.o: react-reconciler/ReactFiberClassUpdateQueue.cpp.o
+.PHONY : react-reconciler/ReactFiberClassUpdateQueue.o
+
+# target to build an object file
+react-reconciler/ReactFiberClassUpdateQueue.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberClassUpdateQueue.cpp.o
+.PHONY : react-reconciler/ReactFiberClassUpdateQueue.cpp.o
+
+react-reconciler/ReactFiberClassUpdateQueue.i: react-reconciler/ReactFiberClassUpdateQueue.cpp.i
+.PHONY : react-reconciler/ReactFiberClassUpdateQueue.i
+
+# target to preprocess a source file
+react-reconciler/ReactFiberClassUpdateQueue.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberClassUpdateQueue.cpp.i
+.PHONY : react-reconciler/ReactFiberClassUpdateQueue.cpp.i
+
+react-reconciler/ReactFiberClassUpdateQueue.s: react-reconciler/ReactFiberClassUpdateQueue.cpp.s
+.PHONY : react-reconciler/ReactFiberClassUpdateQueue.s
+
+# target to generate assembly for a file
+react-reconciler/ReactFiberClassUpdateQueue.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberClassUpdateQueue.cpp.s
+.PHONY : react-reconciler/ReactFiberClassUpdateQueue.cpp.s
+
 react-reconciler/ReactFiberConcurrentUpdates.o: react-reconciler/ReactFiberConcurrentUpdates.cpp.o
 .PHONY : react-reconciler/ReactFiberConcurrentUpdates.o
 
@@ -370,6 +394,150 @@ react-reconciler/ReactFiberErrorLogger.cpp.s:
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberErrorLogger.cpp.s
 .PHONY : react-reconciler/ReactFiberErrorLogger.cpp.s
 
+react-reconciler/ReactFiberHiddenContext.o: react-reconciler/ReactFiberHiddenContext.cpp.o
+.PHONY : react-reconciler/ReactFiberHiddenContext.o
+
+# target to build an object file
+react-reconciler/ReactFiberHiddenContext.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberHiddenContext.cpp.o
+.PHONY : react-reconciler/ReactFiberHiddenContext.cpp.o
+
+react-reconciler/ReactFiberHiddenContext.i: react-reconciler/ReactFiberHiddenContext.cpp.i
+.PHONY : react-reconciler/ReactFiberHiddenContext.i
+
+# target to preprocess a source file
+react-reconciler/ReactFiberHiddenContext.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberHiddenContext.cpp.i
+.PHONY : react-reconciler/ReactFiberHiddenContext.cpp.i
+
+react-reconciler/ReactFiberHiddenContext.s: react-reconciler/ReactFiberHiddenContext.cpp.s
+.PHONY : react-reconciler/ReactFiberHiddenContext.s
+
+# target to generate assembly for a file
+react-reconciler/ReactFiberHiddenContext.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberHiddenContext.cpp.s
+.PHONY : react-reconciler/ReactFiberHiddenContext.cpp.s
+
+react-reconciler/ReactFiberRootScheduler.o: react-reconciler/ReactFiberRootScheduler.cpp.o
+.PHONY : react-reconciler/ReactFiberRootScheduler.o
+
+# target to build an object file
+react-reconciler/ReactFiberRootScheduler.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberRootScheduler.cpp.o
+.PHONY : react-reconciler/ReactFiberRootScheduler.cpp.o
+
+react-reconciler/ReactFiberRootScheduler.i: react-reconciler/ReactFiberRootScheduler.cpp.i
+.PHONY : react-reconciler/ReactFiberRootScheduler.i
+
+# target to preprocess a source file
+react-reconciler/ReactFiberRootScheduler.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberRootScheduler.cpp.i
+.PHONY : react-reconciler/ReactFiberRootScheduler.cpp.i
+
+react-reconciler/ReactFiberRootScheduler.s: react-reconciler/ReactFiberRootScheduler.cpp.s
+.PHONY : react-reconciler/ReactFiberRootScheduler.s
+
+# target to generate assembly for a file
+react-reconciler/ReactFiberRootScheduler.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberRootScheduler.cpp.s
+.PHONY : react-reconciler/ReactFiberRootScheduler.cpp.s
+
+react-reconciler/ReactFiberStack.o: react-reconciler/ReactFiberStack.cpp.o
+.PHONY : react-reconciler/ReactFiberStack.o
+
+# target to build an object file
+react-reconciler/ReactFiberStack.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberStack.cpp.o
+.PHONY : react-reconciler/ReactFiberStack.cpp.o
+
+react-reconciler/ReactFiberStack.i: react-reconciler/ReactFiberStack.cpp.i
+.PHONY : react-reconciler/ReactFiberStack.i
+
+# target to preprocess a source file
+react-reconciler/ReactFiberStack.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberStack.cpp.i
+.PHONY : react-reconciler/ReactFiberStack.cpp.i
+
+react-reconciler/ReactFiberStack.s: react-reconciler/ReactFiberStack.cpp.s
+.PHONY : react-reconciler/ReactFiberStack.s
+
+# target to generate assembly for a file
+react-reconciler/ReactFiberStack.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberStack.cpp.s
+.PHONY : react-reconciler/ReactFiberStack.cpp.s
+
+react-reconciler/ReactFiberSuspenseContext.o: react-reconciler/ReactFiberSuspenseContext.cpp.o
+.PHONY : react-reconciler/ReactFiberSuspenseContext.o
+
+# target to build an object file
+react-reconciler/ReactFiberSuspenseContext.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberSuspenseContext.cpp.o
+.PHONY : react-reconciler/ReactFiberSuspenseContext.cpp.o
+
+react-reconciler/ReactFiberSuspenseContext.i: react-reconciler/ReactFiberSuspenseContext.cpp.i
+.PHONY : react-reconciler/ReactFiberSuspenseContext.i
+
+# target to preprocess a source file
+react-reconciler/ReactFiberSuspenseContext.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberSuspenseContext.cpp.i
+.PHONY : react-reconciler/ReactFiberSuspenseContext.cpp.i
+
+react-reconciler/ReactFiberSuspenseContext.s: react-reconciler/ReactFiberSuspenseContext.cpp.s
+.PHONY : react-reconciler/ReactFiberSuspenseContext.s
+
+# target to generate assembly for a file
+react-reconciler/ReactFiberSuspenseContext.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberSuspenseContext.cpp.s
+.PHONY : react-reconciler/ReactFiberSuspenseContext.cpp.s
+
+react-reconciler/ReactFiberThenable.o: react-reconciler/ReactFiberThenable.cpp.o
+.PHONY : react-reconciler/ReactFiberThenable.o
+
+# target to build an object file
+react-reconciler/ReactFiberThenable.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberThenable.cpp.o
+.PHONY : react-reconciler/ReactFiberThenable.cpp.o
+
+react-reconciler/ReactFiberThenable.i: react-reconciler/ReactFiberThenable.cpp.i
+.PHONY : react-reconciler/ReactFiberThenable.i
+
+# target to preprocess a source file
+react-reconciler/ReactFiberThenable.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberThenable.cpp.i
+.PHONY : react-reconciler/ReactFiberThenable.cpp.i
+
+react-reconciler/ReactFiberThenable.s: react-reconciler/ReactFiberThenable.cpp.s
+.PHONY : react-reconciler/ReactFiberThenable.s
+
+# target to generate assembly for a file
+react-reconciler/ReactFiberThenable.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberThenable.cpp.s
+.PHONY : react-reconciler/ReactFiberThenable.cpp.s
+
+react-reconciler/ReactFiberThrow.o: react-reconciler/ReactFiberThrow.cpp.o
+.PHONY : react-reconciler/ReactFiberThrow.o
+
+# target to build an object file
+react-reconciler/ReactFiberThrow.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberThrow.cpp.o
+.PHONY : react-reconciler/ReactFiberThrow.cpp.o
+
+react-reconciler/ReactFiberThrow.i: react-reconciler/ReactFiberThrow.cpp.i
+.PHONY : react-reconciler/ReactFiberThrow.i
+
+# target to preprocess a source file
+react-reconciler/ReactFiberThrow.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberThrow.cpp.i
+.PHONY : react-reconciler/ReactFiberThrow.cpp.i
+
+react-reconciler/ReactFiberThrow.s: react-reconciler/ReactFiberThrow.cpp.s
+.PHONY : react-reconciler/ReactFiberThrow.s
+
+# target to generate assembly for a file
+react-reconciler/ReactFiberThrow.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberThrow.cpp.s
+.PHONY : react-reconciler/ReactFiberThrow.cpp.s
+
 react-reconciler/ReactFiberWorkLoop.o: react-reconciler/ReactFiberWorkLoop.cpp.o
 .PHONY : react-reconciler/ReactFiberWorkLoop.o
 
@@ -417,6 +585,30 @@ react-reconciler/ReactUpdateQueue.s: react-reconciler/ReactUpdateQueue.cpp.s
 react-reconciler/ReactUpdateQueue.cpp.s:
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.s
 .PHONY : react-reconciler/ReactUpdateQueue.cpp.s
+
+react-reconciler/ReactWakeable.o: react-reconciler/ReactWakeable.cpp.o
+.PHONY : react-reconciler/ReactWakeable.o
+
+# target to build an object file
+react-reconciler/ReactWakeable.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactWakeable.cpp.o
+.PHONY : react-reconciler/ReactWakeable.cpp.o
+
+react-reconciler/ReactWakeable.i: react-reconciler/ReactWakeable.cpp.i
+.PHONY : react-reconciler/ReactWakeable.i
+
+# target to preprocess a source file
+react-reconciler/ReactWakeable.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactWakeable.cpp.i
+.PHONY : react-reconciler/ReactWakeable.cpp.i
+
+react-reconciler/ReactWakeable.s: react-reconciler/ReactWakeable.cpp.s
+.PHONY : react-reconciler/ReactWakeable.s
+
+# target to generate assembly for a file
+react-reconciler/ReactWakeable.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactWakeable.cpp.s
+.PHONY : react-reconciler/ReactWakeable.cpp.s
 
 runtime/ReactRuntime.o: runtime/ReactRuntime.cpp.o
 .PHONY : runtime/ReactRuntime.o
@@ -547,18 +739,42 @@ help:
 	@echo "... react-reconciler/ReactFiberAsyncAction.o"
 	@echo "... react-reconciler/ReactFiberAsyncAction.i"
 	@echo "... react-reconciler/ReactFiberAsyncAction.s"
+	@echo "... react-reconciler/ReactFiberClassUpdateQueue.o"
+	@echo "... react-reconciler/ReactFiberClassUpdateQueue.i"
+	@echo "... react-reconciler/ReactFiberClassUpdateQueue.s"
 	@echo "... react-reconciler/ReactFiberConcurrentUpdates.o"
 	@echo "... react-reconciler/ReactFiberConcurrentUpdates.i"
 	@echo "... react-reconciler/ReactFiberConcurrentUpdates.s"
 	@echo "... react-reconciler/ReactFiberErrorLogger.o"
 	@echo "... react-reconciler/ReactFiberErrorLogger.i"
 	@echo "... react-reconciler/ReactFiberErrorLogger.s"
+	@echo "... react-reconciler/ReactFiberHiddenContext.o"
+	@echo "... react-reconciler/ReactFiberHiddenContext.i"
+	@echo "... react-reconciler/ReactFiberHiddenContext.s"
+	@echo "... react-reconciler/ReactFiberRootScheduler.o"
+	@echo "... react-reconciler/ReactFiberRootScheduler.i"
+	@echo "... react-reconciler/ReactFiberRootScheduler.s"
+	@echo "... react-reconciler/ReactFiberStack.o"
+	@echo "... react-reconciler/ReactFiberStack.i"
+	@echo "... react-reconciler/ReactFiberStack.s"
+	@echo "... react-reconciler/ReactFiberSuspenseContext.o"
+	@echo "... react-reconciler/ReactFiberSuspenseContext.i"
+	@echo "... react-reconciler/ReactFiberSuspenseContext.s"
+	@echo "... react-reconciler/ReactFiberThenable.o"
+	@echo "... react-reconciler/ReactFiberThenable.i"
+	@echo "... react-reconciler/ReactFiberThenable.s"
+	@echo "... react-reconciler/ReactFiberThrow.o"
+	@echo "... react-reconciler/ReactFiberThrow.i"
+	@echo "... react-reconciler/ReactFiberThrow.s"
 	@echo "... react-reconciler/ReactFiberWorkLoop.o"
 	@echo "... react-reconciler/ReactFiberWorkLoop.i"
 	@echo "... react-reconciler/ReactFiberWorkLoop.s"
 	@echo "... react-reconciler/ReactUpdateQueue.o"
 	@echo "... react-reconciler/ReactUpdateQueue.i"
 	@echo "... react-reconciler/ReactUpdateQueue.s"
+	@echo "... react-reconciler/ReactWakeable.o"
+	@echo "... react-reconciler/ReactWakeable.i"
+	@echo "... react-reconciler/ReactWakeable.s"
 	@echo "... runtime/ReactRuntime.o"
 	@echo "... runtime/ReactRuntime.i"
 	@echo "... runtime/ReactRuntime.s"

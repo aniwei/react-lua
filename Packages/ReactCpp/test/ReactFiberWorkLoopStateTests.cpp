@@ -453,6 +453,151 @@ bool runReactFiberWorkLoopStateTests() {
   delete concurrentChild;
   delete concurrentCurrent;
 
+  // renderRootConcurrent should treat hydration suspends as shell exits and reset WIP state.
+  resetState(runtime);
+  FiberRoot hydrationRoot{};
+  FiberNode* hydrationCurrent = createFiber(WorkTag::HostRoot);
+  FiberNode* hydrationChild = createFiber(WorkTag::FunctionComponent);
+  hydrationCurrent->child = hydrationChild;
+  hydrationChild->returnFiber = hydrationCurrent;
+  hydrationRoot.current = hydrationCurrent;
+
+  prepareFreshStack(runtime, hydrationRoot, DefaultLane);
+  setWorkInProgressFiber(runtime, hydrationChild);
+  setWorkInProgressSuspendedReason(runtime, SuspendedReason::SuspendedOnHydration);
+  setWorkInProgressThrownValue(runtime, reinterpret_cast<void*>(0x7));
+  setWorkInProgressRootExitStatus(runtime, RootExitStatus::InProgress);
+
+  RootExitStatus hydrationStatus = renderRootConcurrent(runtime, hydrationRoot, DefaultLane);
+  assert(hydrationStatus == RootExitStatus::SuspendedAtTheShell);
+  assert(getWorkInProgressRoot(runtime) == nullptr);
+  assert(getWorkInProgressFiber(runtime) == nullptr);
+  assert(getWorkInProgressRootRenderLanes(runtime) == NoLanes);
+
+  if (FiberNode* hydrationWorkInProgress = hydrationCurrent->alternate) {
+    hydrationWorkInProgress->child = nullptr;
+    hydrationWorkInProgress->alternate = nullptr;
+    delete hydrationWorkInProgress;
+    hydrationCurrent->alternate = nullptr;
+  }
+
+  hydrationCurrent->child = nullptr;
+  hydrationChild->returnFiber = nullptr;
+  delete hydrationChild;
+  delete hydrationCurrent;
+
+  // renderRootConcurrent should convert SuspendedOnImmediate into SuspendedAndReadyToContinue without clearing WIP.
+  resetState(runtime);
+  FiberRoot immediateRoot{};
+  FiberNode* immediateCurrent = createFiber(WorkTag::HostRoot);
+  FiberNode* immediateChild = createFiber(WorkTag::FunctionComponent);
+  immediateCurrent->child = immediateChild;
+  immediateChild->returnFiber = immediateCurrent;
+  immediateRoot.current = immediateCurrent;
+
+  prepareFreshStack(runtime, immediateRoot, DefaultLane);
+  setWorkInProgressFiber(runtime, immediateChild);
+  setWorkInProgressSuspendedReason(runtime, SuspendedReason::SuspendedOnImmediate);
+  setWorkInProgressThrownValue(runtime, reinterpret_cast<void*>(0x9));
+  setWorkInProgressRootExitStatus(runtime, RootExitStatus::InProgress);
+
+  RootExitStatus immediateStatus = renderRootConcurrent(runtime, immediateRoot, DefaultLane);
+  assert(immediateStatus == RootExitStatus::InProgress);
+  assert(getWorkInProgressRoot(runtime) == &immediateRoot);
+  assert(getWorkInProgressFiber(runtime) == immediateChild);
+  assert(getWorkInProgressSuspendedReason(runtime) == SuspendedReason::SuspendedAndReadyToContinue);
+  assert(getWorkInProgressThrownValue(runtime) == reinterpret_cast<void*>(0x9));
+
+  resetState(runtime);
+
+  // Clean up temporary work-in-progress fibers.
+  if (FiberNode* immediateWorkInProgress = immediateCurrent->alternate) {
+    immediateWorkInProgress->child = nullptr;
+    immediateWorkInProgress->alternate = nullptr;
+    delete immediateWorkInProgress;
+    immediateCurrent->alternate = nullptr;
+  }
+
+  immediateCurrent->child = nullptr;
+  immediateChild->returnFiber = nullptr;
+  delete immediateChild;
+  delete immediateCurrent;
+
+  // renderRootConcurrent should resume SuspendedAndReadyToContinue and finish the tree.
+  resetState(runtime);
+  FiberRoot resumeRoot{};
+  FiberNode* resumeCurrent = createFiber(WorkTag::HostRoot);
+  FiberNode* resumeChild = createFiber(WorkTag::FunctionComponent);
+  resumeCurrent->child = resumeChild;
+  resumeChild->returnFiber = resumeCurrent;
+  resumeRoot.current = resumeCurrent;
+
+  prepareFreshStack(runtime, resumeRoot, DefaultLane);
+  setWorkInProgressFiber(runtime, resumeChild);
+  setWorkInProgressSuspendedReason(runtime, SuspendedReason::SuspendedAndReadyToContinue);
+  setWorkInProgressThrownValue(runtime, reinterpret_cast<void*>(0xA));
+  setWorkInProgressRootExitStatus(runtime, RootExitStatus::InProgress);
+
+  RootExitStatus resumeStatus = renderRootConcurrent(runtime, resumeRoot, DefaultLane);
+  assert(resumeStatus == RootExitStatus::Completed);
+  assert(getWorkInProgressRoot(runtime) == nullptr);
+  assert(getWorkInProgressFiber(runtime) == nullptr);
+  assert(getWorkInProgressSuspendedReason(runtime) == SuspendedReason::NotSuspended);
+  assert(getWorkInProgressThrownValue(runtime) == nullptr);
+
+  resetState(runtime);
+
+  if (FiberNode* resumeWorkInProgress = resumeCurrent->alternate) {
+    resumeWorkInProgress->child = nullptr;
+    resumeWorkInProgress->alternate = nullptr;
+    delete resumeWorkInProgress;
+    resumeCurrent->alternate = nullptr;
+  }
+
+  resumeCurrent->child = nullptr;
+  resumeChild->returnFiber = nullptr;
+  delete resumeChild;
+  delete resumeCurrent;
+
+  // renderRootConcurrent should unwind suspended work and mark skipped siblings.
+  resetState(runtime);
+  FiberRoot suspendedRoot{};
+  FiberNode* suspendedCurrent = createFiber(WorkTag::HostRoot);
+  FiberNode* suspendedChild = createFiber(WorkTag::FunctionComponent);
+  suspendedCurrent->child = suspendedChild;
+  suspendedChild->returnFiber = suspendedCurrent;
+  suspendedChild->flags = static_cast<FiberFlags>(suspendedChild->flags | Incomplete);
+  suspendedRoot.current = suspendedCurrent;
+
+  prepareFreshStack(runtime, suspendedRoot, DefaultLane);
+  setWorkInProgressFiber(runtime, suspendedChild);
+  setWorkInProgressSuspendedReason(runtime, SuspendedReason::SuspendedOnData);
+  setWorkInProgressThrownValue(runtime, reinterpret_cast<void*>(0x8));
+  setWorkInProgressRootExitStatus(runtime, RootExitStatus::InProgress);
+  setWorkInProgressRootDidSkipSuspendedSiblings(runtime, false);
+
+  RootExitStatus suspendedStatus = renderRootConcurrent(runtime, suspendedRoot, DefaultLane);
+  assert(suspendedStatus == RootExitStatus::SuspendedAtTheShell);
+  assert(getWorkInProgressRootDidSkipSuspendedSiblings(runtime));
+  assert(getWorkInProgressSuspendedReason(runtime) == SuspendedReason::NotSuspended);
+  assert(getWorkInProgressThrownValue(runtime) == nullptr);
+  assert(getWorkInProgressFiber(runtime) == nullptr);
+  assert(getWorkInProgressRoot(runtime) == nullptr);
+
+  if (FiberNode* suspendedWorkInProgress = suspendedCurrent->alternate) {
+    suspendedWorkInProgress->child = nullptr;
+    suspendedWorkInProgress->alternate = nullptr;
+    delete suspendedWorkInProgress;
+    suspendedCurrent->alternate = nullptr;
+  }
+
+  suspendedCurrent->child = nullptr;
+  suspendedChild->returnFiber = nullptr;
+  delete suspendedChild;
+  delete suspendedCurrent;
+
+  resetState(runtime);
+
   // throwAndUnwindWorkLoop should mark skipped siblings and unwind to the shell.
   FiberRoot throwRoot{};
   FiberNode* throwParent = createFiber(WorkTag::HostRoot);

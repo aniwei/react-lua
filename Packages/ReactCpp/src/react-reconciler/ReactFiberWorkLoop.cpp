@@ -3,15 +3,67 @@
 #include "react-reconciler/ReactFiberConcurrentUpdates.h"
 #include "react-reconciler/ReactCapturedValue.h"
 #include "react-reconciler/ReactFiberErrorLogger.h"
+#include "react-reconciler/ReactWakeable.h"
+#include "react-reconciler/ReactFiberSuspenseContext.h"
+#include "react-reconciler/ReactFiberThrow.h"
+#include "react-reconciler/ReactFiberSuspenseContext.h"
+#include "react-reconciler/ReactFiberRootScheduler.h"
 #include "runtime/ReactRuntime.h"
 #include "shared/ReactFeatureFlags.h"
 
 #include <limits>
+#include <unordered_set>
 #include <utility>
 
 namespace react {
 
 namespace {
+
+std::unordered_set<void*>& legacyErrorBoundariesThatAlreadyFailed() {
+  static std::unordered_set<void*> instances;
+  return instances;
+}
+
+void pingSuspendedRoot(
+    ReactRuntime& runtime,
+    FiberRoot& root,
+    const Wakeable* wakeable,
+    Lanes pingedLanes) {
+  if (wakeable != nullptr) {
+    root.pingCache.erase(wakeable);
+  }
+
+  markRootPinged(root, pingedLanes);
+
+  FiberRoot* const workInProgressRoot = getWorkInProgressRoot(runtime);
+  if (workInProgressRoot == &root) {
+    const Lanes renderLanes = getWorkInProgressRootRenderLanes(runtime);
+    if (isSubsetOfLanes(renderLanes, pingedLanes)) {
+      const RootExitStatus exitStatus = getWorkInProgressRootExitStatus(runtime);
+      const bool shouldResetStack =
+          exitStatus == RootExitStatus::SuspendedWithDelay ||
+          (exitStatus == RootExitStatus::Suspended &&
+           includesOnlyRetries(renderLanes) &&
+           (runtime.now() - getGlobalMostRecentFallbackTime(runtime)) < fallbackThrottleMs);
+
+      if (shouldResetStack) {
+        if ((getExecutionContext(runtime) & RenderContext) == NoContext) {
+          prepareFreshStack(runtime, root, NoLanes);
+        }
+      } else {
+        const Lanes accumulatedPingedLanes = mergeLanes(
+            getWorkInProgressRootPingedLanes(runtime), pingedLanes);
+        setWorkInProgressRootPingedLanes(runtime, accumulatedPingedLanes);
+      }
+
+      if (getWorkInProgressSuspendedRetryLanes(runtime) == renderLanes) {
+        setWorkInProgressSuspendedRetryLanes(runtime, NoLanes);
+      }
+    }
+  }
+
+  ensureRootIsScheduled(runtime, root);
+}
 
 inline WorkLoopState& getState(ReactRuntime& runtime) {
   return runtime.workLoopState();
@@ -78,29 +130,41 @@ bool getIsHydrating() {
   return false;
 }
 
-FiberNode* getSuspenseHandler() {
-  // TODO: wire to suspense stack once available.
-  return nullptr;
+} // namespace
+
+bool isAlreadyFailedLegacyErrorBoundary(void* instance) {
+  if (instance == nullptr) {
+    return false;
+  }
+  const auto& instances = legacyErrorBoundariesThatAlreadyFailed();
+  return instances.find(instance) != instances.end();
 }
 
-bool throwException(
+void markLegacyErrorBoundaryAsFailed(void* instance) {
+  if (instance == nullptr) {
+    return;
+  }
+  legacyErrorBoundariesThatAlreadyFailed().insert(instance);
+}
+
+void attachPingListener(
     ReactRuntime& runtime,
     FiberRoot& root,
-    FiberNode* returnFiber,
-    FiberNode& unitOfWork,
-    void* thrownValue,
-    Lanes renderLanes) {
-  (void)runtime;
-  (void)root;
-  (void)returnFiber;
-  (void)unitOfWork;
-  (void)thrownValue;
-  (void)renderLanes;
-  // TODO: port throwException once error boundaries are available.
-  return false;
-}
+    Wakeable& wakeable,
+    Lanes lanes) {
+  auto& threadIds = root.pingCache[&wakeable];
+  if (!threadIds.insert(lanes).second) {
+    return;
+  }
 
-} // namespace
+  setWorkInProgressRootDidAttachPingListener(runtime, true);
+
+  auto ping = [&runtime, &root, wakeablePtr = &wakeable, lanes]() {
+    pingSuspendedRoot(runtime, root, wakeablePtr, lanes);
+  };
+
+  wakeable.then(ping, ping);
+}
 
 ExecutionContext getExecutionContext(ReactRuntime& runtime) {
   return getState(runtime).executionContext;
@@ -589,6 +653,15 @@ RootExitStatus renderRootConcurrent(
           setWorkInProgressRootExitStatus(runtime, RootExitStatus::SuspendedAtTheShell);
           shouldContinue = false;
           break;
+        case SuspendedReason::SuspendedOnImmediate:
+          setWorkInProgressSuspendedReason(runtime, SuspendedReason::SuspendedAndReadyToContinue);
+          shouldContinue = false;
+          break;
+        case SuspendedReason::SuspendedAndReadyToContinue:
+        case SuspendedReason::SuspendedOnInstanceAndReadyToContinue:
+          setWorkInProgressSuspendedReason(runtime, SuspendedReason::NotSuspended);
+          setWorkInProgressThrownValue(runtime, nullptr);
+          continue;
         default:
           setWorkInProgressSuspendedReason(runtime, SuspendedReason::NotSuspended);
           setWorkInProgressThrownValue(runtime, nullptr);
@@ -667,6 +740,7 @@ void throwAndUnwindWorkLoop(
         if (FiberNode* const boundary = getSuspenseHandler()) {
           if (boundary->tag == WorkTag::SuspenseComponent) {
             boundary->flags = static_cast<FiberFlags>(boundary->flags | ScheduleRetry);
+
           }
         }
       }

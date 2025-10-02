@@ -11,6 +11,7 @@
 namespace react {
 
 class ReactRuntime;
+class Wakeable;
 
 ExecutionContext getExecutionContext(ReactRuntime& runtime);
 void setExecutionContext(ReactRuntime& runtime, ExecutionContext context);
@@ -104,6 +105,8 @@ void renderDidError(ReactRuntime& runtime);
 void queueConcurrentError(ReactRuntime& runtime, void* error);
 bool renderHasNotSuspendedYet(ReactRuntime& runtime);
 void markSpawnedRetryLane(ReactRuntime& runtime, Lane lane);
+bool isAlreadyFailedLegacyErrorBoundary(void* instance);
+void markLegacyErrorBoundaryAsFailed(void* instance);
 
 SuspendedReason getWorkInProgressSuspendedReason(ReactRuntime& runtime);
 void setWorkInProgressSuspendedReason(ReactRuntime& runtime, SuspendedReason reason);
@@ -163,6 +166,7 @@ void performUnitOfWork(ReactRuntime& runtime, FiberNode& unitOfWork);
 void workLoopSync(ReactRuntime& runtime);
 void workLoopConcurrent(ReactRuntime& runtime, bool nonIdle);
 void workLoopConcurrentByScheduler(ReactRuntime& runtime);
+void attachPingListener(ReactRuntime& runtime, FiberRoot& root, Wakeable& wakeable, Lanes lanes);
 RootExitStatus renderRootSync(
 	ReactRuntime& runtime,
 	FiberRoot& root,

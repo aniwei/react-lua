@@ -5,6 +5,8 @@
 
 #include "shared/ReactFeatureFlags.h"
 #include "react-reconciler/ReactRootTags.h"
+#include "scheduler/Scheduler.h"
+#include "scheduler/Scheduler.h"
 
 #include <array>
 #include <atomic>
@@ -12,6 +14,7 @@
 #include <functional>
 #include <optional>
 #include <string_view>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -21,6 +24,7 @@ using Lane = std::uint32_t;
 using Lanes = std::uint32_t;
 
 class FiberNode;
+class Wakeable;
 struct Transition {};
 
 using TimeoutHandle = std::uintptr_t;
@@ -536,6 +540,9 @@ enum class LanePriority : std::uint8_t {
 
 struct FiberRoot {
 	FiberNode* current{nullptr};
+	FiberRoot* next{nullptr};
+	TaskHandle callbackNode{};
+	Lane callbackPriority{NoLane};
 	TimeoutHandle timeoutHandle{noTimeout};
 	std::function<void()> cancelPendingCommit{};
 	RootTag tag{RootTag::LegacyRoot};
@@ -558,6 +565,7 @@ struct FiberRoot {
 	std::unordered_set<const FiberNode*> memoizedUpdaters{};
 	LaneMap<std::optional<std::unordered_set<const Transition*>>> transitionLanes{
 		createLaneMap<std::optional<std::unordered_set<const Transition*>>>(std::nullopt)};
+	std::unordered_map<const Wakeable*, std::unordered_set<Lanes>> pingCache{};
 };
 
 [[nodiscard]] inline int computeExpirationTime(Lane lane, int currentTime) {
