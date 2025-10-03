@@ -55,17 +55,15 @@ struct Value {
   [[nodiscard]] bool isTruthyRenderable() const;
 };
 
-using PropEntry = std::pair<std::string, jsi::Value>;
-using PropList = std::vector<PropEntry>;
 
 struct ReactElement {
   jsi::Value type;
+  jsi::Value props;
+  jsi::Value children;
   std::optional<jsi::Value> key;
   std::optional<jsi::Value> ref;
-  PropList props;
-  std::vector<Value> children;
+  std::optional<jsi::Value> source;
   std::optional<SourceLocation> source;
-  
   std::optional<std::string> debugType;
   std::optional<std::string> debugKey;
 };
@@ -87,7 +85,7 @@ ReactElementPtr jsxs(
 ReactElementPtr jsxDEV(
     jsi::Runtime& runtime,
     const jsi::Value& type,
-    PropList config = {},
+    const jsi::Value& config,
     std::optional<jsi::Value> maybeKey = std::nullopt,
     SourceLocation source = {},
     std::optional<jsi::Value> ref = std::nullopt);

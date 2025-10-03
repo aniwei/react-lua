@@ -168,17 +168,20 @@ std::vector<Value> extractChildren(jsi::Runtime& runtime, PropList& props) {
 }
 
 ReactElementPtr createElement(
-    jsi::Runtime& runtime,
-    const jsi::Value& type,
-    PropList props,
-    std::optional<jsi::Value> key,
-    std::optional<jsi::Value> ref,
-    std::optional<SourceLocation> source) {
+  jsi::Runtime& runtime,
+  const jsi::Value& type,
+  const jsi::Value& props,
+  std::optional<jsi::Value> key,
+  std::optional<jsi::Value> ref,
+  std::optional<SourceLocation> source) {
+
   auto element = std::make_shared<ReactElement>();
   element->type = jsi::Value(runtime, type);
+
   if (type.isString()) {
-    element->hostType = type.getString(runtime).utf8(runtime);
+    element->debugType = type.getString(runtime).utf8(runtime);
   }
+  
   if (key) {
     coerceToString(runtime, *key);
     element->key = *key;
