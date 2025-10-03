@@ -37,6 +37,8 @@ nav:
     - ReactRoblox: api-reference/react-roblox.md
     - RoactCompat: api-reference/roact-compat.md
     - Additional Libraries: api-reference/additional-libraries.md
+  - React C++:
+    - WebAssembly Demo: react-wasm-web-demo.md
   - Benchmarks: bench.md
 
 extra_css:

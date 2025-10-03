@@ -960,4 +960,6 @@ src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberHiddenContext.cpp.o:
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactTypeOfMode.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactWorkTags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberWorkLoopState.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.h
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberRootSchedulerState.h

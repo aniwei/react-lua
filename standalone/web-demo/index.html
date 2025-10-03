@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>React C++ Web Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>React C++ ↔︎ DOM Demo</h1>
+      <p class="lead">This page renders a keyed list using the C++ React runtime compiled to WebAssembly.</p>
+      <section id="controls">
+        <button data-step="0">Initial state</button>
+        <button data-step="1">Update classes</button>
+        <button data-step="2">Reorder items</button>
+        <button data-step="3">Remove last item</button>
+        <button id="clear">Clear root</button>
+      </section>
+      <section class="surface">
+        <div id="app-root" class="chip-container"></div>
+      </section>
+      <section class="log">
+        <h2>Last action</h2>
+        <pre id="log">waiting for runtime…</pre>
+      </section>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -2,6 +2,14 @@
 
 namespace react {
 
+void ReactDOMInstance::setKey(std::string keyValue) {
+  key = std::move(keyValue);
+}
+
+const std::string& ReactDOMInstance::getKey() const {
+  return key;
+}
+
 facebook::jsi::Value ReactDOMInstance::get(
   facebook::jsi::Runtime& rt,
   const facebook::jsi::PropNameID& name) {
@@ -11,6 +19,9 @@ facebook::jsi::Value ReactDOMInstance::get(
   }
   if (nameStr == "className") {
     return facebook::jsi::String::createFromUtf8(rt, className);
+  }
+  if (nameStr == "key") {
+    return facebook::jsi::String::createFromUtf8(rt, key);
   }
   if (nameStr == "textContent") {
     return facebook::jsi::String::createFromUtf8(rt, getTextContent());
@@ -41,6 +52,11 @@ void ReactDOMInstance::set(
     return;
   }
 
+  if (nameStr == "key" && value.isString()) {
+    setKey(value.asString(rt).utf8(rt));
+    return;
+  }
+
   if (nameStr == "textContent") {
     if (value.isString()) {
       setTextContent(value.asString(rt).utf8(rt));
@@ -59,6 +75,7 @@ std::vector<facebook::jsi::PropNameID> ReactDOMInstance::getPropertyNames(facebo
   std::vector<facebook::jsi::PropNameID> props;
   props.push_back(facebook::jsi::PropNameID::forUtf8(rt, "tagName"));
   props.push_back(facebook::jsi::PropNameID::forUtf8(rt, "className"));
+  props.push_back(facebook::jsi::PropNameID::forUtf8(rt, "key"));
   props.push_back(facebook::jsi::PropNameID::forUtf8(rt, "children"));
   props.push_back(facebook::jsi::PropNameID::forUtf8(rt, "textContent"));
   return props;

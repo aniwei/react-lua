@@ -612,6 +612,16 @@ RootExitStatus renderRootSync(
 
   const RootExitStatus exitStatus = getWorkInProgressRootExitStatus(runtime);
 
+  if (exitStatus == RootExitStatus::SuspendedAtTheShell &&
+      !getWorkInProgressRootDidSkipSuspendedSiblings(runtime)) {
+    setWorkInProgressRootDidSkipSuspendedSiblings(runtime, true);
+  }
+
+  if (exitStatus == RootExitStatus::SuspendedAtTheShell) {
+    setWorkInProgressSuspendedReason(runtime, SuspendedReason::NotSuspended);
+    setWorkInProgressThrownValue(runtime, nullptr);
+  }
+
   if (getWorkInProgressFiber(runtime) == nullptr) {
     setWorkInProgressRoot(runtime, nullptr);
     setWorkInProgressRootRenderLanes(runtime, NoLanes);
@@ -665,8 +675,13 @@ RootExitStatus renderRootConcurrent(
         default:
           setWorkInProgressSuspendedReason(runtime, SuspendedReason::NotSuspended);
           setWorkInProgressThrownValue(runtime, nullptr);
+          setWorkInProgressRootDidSkipSuspendedSiblings(runtime, true);
           throwAndUnwindWorkLoop(runtime, root, *workInProgress, thrownValue, suspendedReason);
           break;
+      }
+
+      if (!shouldContinue) {
+        break;
       }
 
       continue;
@@ -674,6 +689,14 @@ RootExitStatus renderRootConcurrent(
 
     workLoopConcurrent(runtime, includesNonIdleWork(lanes));
     shouldContinue = false;
+  }
+
+  const SuspendedReason finalSuspendedReason = getWorkInProgressSuspendedReason(runtime);
+  if (
+      finalSuspendedReason != SuspendedReason::SuspendedAndReadyToContinue &&
+      finalSuspendedReason != SuspendedReason::SuspendedOnInstanceAndReadyToContinue) {
+    setWorkInProgressSuspendedReason(runtime, SuspendedReason::NotSuspended);
+    setWorkInProgressThrownValue(runtime, nullptr);
   }
 
   const RootExitStatus exitStatus = getWorkInProgressRootExitStatus(runtime);

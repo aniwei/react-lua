@@ -1,5 +1,5 @@
 #include "ReactWasmBridge.h"
-#include "ReactHostInterface.h"
+#include "runtime/ReactHostInterface.h"
 #include "ReactRuntime.h"
 #include "ReactWasmLayout.h"
 #include "jsi/jsi.h"
@@ -216,7 +216,13 @@ extern "C" {
 
   void react_register_root_container(uint32_t rootContainerId, ReactDOMInstance* instance) {
     if (instance == nullptr) {
-      G_RootContainers.erase(rootContainerId);
+      auto it = G_RootContainers.find(rootContainerId);
+      if (it != G_RootContainers.end()) {
+        if (G_ReactRuntime) {
+          G_ReactRuntime->unregisterRootContainer(it->second.get());
+        }
+        G_RootContainers.erase(it);
+      }
       return;
     }
 
@@ -226,7 +232,14 @@ extern "C" {
   }
 
   void react_clear_root_container(uint32_t rootContainerId) {
-    G_RootContainers.erase(rootContainerId);
+    auto it = G_RootContainers.find(rootContainerId);
+    if (it == G_RootContainers.end()) {
+      return;
+    }
+    if (G_ReactRuntime) {
+      G_ReactRuntime->unregisterRootContainer(it->second.get());
+    }
+    G_RootContainers.erase(it);
   }
 
   void react_attach_jsi_runtime(jsi::Runtime* runtime) {
@@ -250,7 +263,7 @@ extern "C" {
 
   void react_reset_runtime() {
     if (G_ReactRuntime) {
-      G_ReactRuntime->resetWorkLoop();
+      G_ReactRuntime->reset();
     }
     G_ReactRuntime = nullptr;
     G_JsiRuntime = nullptr;

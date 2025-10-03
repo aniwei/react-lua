@@ -28,12 +28,16 @@ public:
   virtual void setTextContent(const std::string& text) = 0;
   virtual const std::string& getTextContent() const = 0;
 
+  void setKey(std::string key);
+  const std::string& getKey() const;
+
   facebook::jsi::Value get(facebook::jsi::Runtime&, const facebook::jsi::PropNameID& name) override;
   void set(facebook::jsi::Runtime&, const facebook::jsi::PropNameID& name, const facebook::jsi::Value& value) override;
   std::vector<facebook::jsi::PropNameID> getPropertyNames(facebook::jsi::Runtime& rt) override;
 
   std::string tagName;
   std::string className;
+  std::string key;
 
   std::weak_ptr<ReactDOMInstance> parent;
   std::vector<std::shared_ptr<ReactDOMInstance>> children;

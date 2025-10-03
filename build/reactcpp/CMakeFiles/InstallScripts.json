@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/weiyanhai/Desktop/workspace/react-lua/build/reactcpp/cmake_install.cmake",
+		"/Users/weiyanhai/Desktop/workspace/react-lua/build/reactcpp/src/cmake_install.cmake",
+		"/Users/weiyanhai/Desktop/workspace/react-lua/build/reactcpp/test/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

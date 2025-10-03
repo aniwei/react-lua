@@ -1,7 +1,7 @@
 src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.cpp \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberWorkLoopState.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberLane.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/shared/ReactFeatureFlags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactRootTags.h \
@@ -934,6 +934,20 @@ src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/pointer_to_unary_function.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/unary_negate.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/unordered_set \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberRootSchedulerState.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberWorkLoopState.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/../../jsi/jsi/jsi.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cassert \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/assert.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_assert.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/_static_assert.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/../../jsi/jsi/jsi-inl.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-dom/client/ReactDOMComponent.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-dom/client/ReactDOMDiffProperties.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-dom/client/ReactDOMInstance.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactHostInterface.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactWasmBridge.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactWasmLayout.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/chrono \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/calendar.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/convert_to_tm.h \
@@ -951,4 +965,32 @@ src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year_month_day.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year_month_weekday.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/literals.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/forward_list
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/forward_list \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/sstream \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/istream \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/ostream \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/bitset \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/format \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/container_adaptor.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/range_default_formatter.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/range_formatter.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_context.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_arg_store.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_args.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/ref_view.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/queue \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/deque \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stack \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_functions.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_char.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/write_escaped.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/escaped_output_table.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_floating_point.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/chars_format.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_floating_point.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_integer.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_pointer.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_tuple.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/print \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/unistd.h

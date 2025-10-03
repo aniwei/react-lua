@@ -610,6 +610,30 @@ react-reconciler/ReactWakeable.cpp.s:
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactWakeable.cpp.s
 .PHONY : react-reconciler/ReactWakeable.cpp.s
 
+runtime/ReactHostInterface.o: runtime/ReactHostInterface.cpp.o
+.PHONY : runtime/ReactHostInterface.o
+
+# target to build an object file
+runtime/ReactHostInterface.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/runtime/ReactHostInterface.cpp.o
+.PHONY : runtime/ReactHostInterface.cpp.o
+
+runtime/ReactHostInterface.i: runtime/ReactHostInterface.cpp.i
+.PHONY : runtime/ReactHostInterface.i
+
+# target to preprocess a source file
+runtime/ReactHostInterface.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/runtime/ReactHostInterface.cpp.i
+.PHONY : runtime/ReactHostInterface.cpp.i
+
+runtime/ReactHostInterface.s: runtime/ReactHostInterface.cpp.s
+.PHONY : runtime/ReactHostInterface.s
+
+# target to generate assembly for a file
+runtime/ReactHostInterface.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/runtime/ReactHostInterface.cpp.s
+.PHONY : runtime/ReactHostInterface.cpp.s
+
 runtime/ReactRuntime.o: runtime/ReactRuntime.cpp.o
 .PHONY : runtime/ReactRuntime.o
 
@@ -633,6 +657,30 @@ runtime/ReactRuntime.s: runtime/ReactRuntime.cpp.s
 runtime/ReactRuntime.cpp.s:
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/runtime/ReactRuntime.cpp.s
 .PHONY : runtime/ReactRuntime.cpp.s
+
+runtime/ReactWasmBridge.o: runtime/ReactWasmBridge.cpp.o
+.PHONY : runtime/ReactWasmBridge.o
+
+# target to build an object file
+runtime/ReactWasmBridge.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/runtime/ReactWasmBridge.cpp.o
+.PHONY : runtime/ReactWasmBridge.cpp.o
+
+runtime/ReactWasmBridge.i: runtime/ReactWasmBridge.cpp.i
+.PHONY : runtime/ReactWasmBridge.i
+
+# target to preprocess a source file
+runtime/ReactWasmBridge.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/runtime/ReactWasmBridge.cpp.i
+.PHONY : runtime/ReactWasmBridge.cpp.i
+
+runtime/ReactWasmBridge.s: runtime/ReactWasmBridge.cpp.s
+.PHONY : runtime/ReactWasmBridge.s
+
+# target to generate assembly for a file
+runtime/ReactWasmBridge.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/react_cpp_src.dir/build.make src/CMakeFiles/react_cpp_src.dir/runtime/ReactWasmBridge.cpp.s
+.PHONY : runtime/ReactWasmBridge.cpp.s
 
 shared/ReactOwnerStackReset.o: shared/ReactOwnerStackReset.cpp.o
 .PHONY : shared/ReactOwnerStackReset.o
@@ -775,9 +823,15 @@ help:
 	@echo "... react-reconciler/ReactWakeable.o"
 	@echo "... react-reconciler/ReactWakeable.i"
 	@echo "... react-reconciler/ReactWakeable.s"
+	@echo "... runtime/ReactHostInterface.o"
+	@echo "... runtime/ReactHostInterface.i"
+	@echo "... runtime/ReactHostInterface.s"
 	@echo "... runtime/ReactRuntime.o"
 	@echo "... runtime/ReactRuntime.i"
 	@echo "... runtime/ReactRuntime.s"
+	@echo "... runtime/ReactWasmBridge.o"
+	@echo "... runtime/ReactWasmBridge.i"
+	@echo "... runtime/ReactWasmBridge.s"
 	@echo "... shared/ReactOwnerStackReset.o"
 	@echo "... shared/ReactOwnerStackReset.i"
 	@echo "... shared/ReactOwnerStackReset.s"

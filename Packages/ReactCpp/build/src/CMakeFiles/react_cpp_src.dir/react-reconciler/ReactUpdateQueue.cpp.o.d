@@ -939,4 +939,7 @@ src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactUpdateQueue.cpp.o: \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactRootTags.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/scheduler/Scheduler.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/unordered_set \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.h
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberRootSchedulerState.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberWorkLoopState.h

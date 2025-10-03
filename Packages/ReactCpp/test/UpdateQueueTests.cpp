@@ -1,5 +1,6 @@
 #include "react-reconciler/ReactUpdateQueue.h"
 #include "react-reconciler/ReactFiberAsyncAction.h"
+#include "runtime/ReactRuntime.h"
 
 #include <cassert>
 #include <memory>
@@ -9,6 +10,7 @@ namespace react::test {
 namespace {
 
 bool testBasicQueueProcessing() {
+  ReactRuntime runtime;
   UpdateQueue queue;
   queue.baseState = jsi::Value(0);
 
@@ -37,7 +39,7 @@ bool testBasicQueueProcessing() {
   assert(queue.firstBaseUpdate == update1.get());
   assert(queue.lastBaseUpdate == update2.get());
 
-  const auto& finalState = processUpdateQueue(queue);
+  const auto& finalState = processUpdateQueue(runtime, queue);
   assert(finalState.isNumber());
   assert(finalState.getNumber() == 3);
   assert(queue.baseState.isNumber());
@@ -50,6 +52,7 @@ bool testBasicQueueProcessing() {
 }
 
 bool testForceUpdateTracking() {
+  ReactRuntime runtime;
   UpdateQueue queue;
   queue.baseState = jsi::Value(1);
 
@@ -58,7 +61,7 @@ bool testForceUpdateTracking() {
   enqueueUpdate(queue, update);
 
   resetHasForceUpdateBeforeProcessing();
-  processUpdateQueue(queue);
+  processUpdateQueue(runtime, queue);
   assert(checkHasForceUpdateAfterProcessing());
 
   return true;
@@ -67,6 +70,7 @@ bool testForceUpdateTracking() {
 bool testDeferredHiddenCallbacks() {
   bool callbackInvoked = false;
 
+  ReactRuntime runtime;
   UpdateQueue queue;
   queue.baseState = jsi::Value(0);
 
@@ -77,7 +81,7 @@ bool testDeferredHiddenCallbacks() {
   update->callback = [&]() { callbackInvoked = true; };
   enqueueUpdate(queue, update);
 
-  processUpdateQueue(queue);
+  processUpdateQueue(runtime, queue);
   assert(!queue.callbacks.empty());
   deferHiddenCallbacks(queue);
   assert(queue.callbacks.empty());
@@ -94,6 +98,7 @@ bool testDeferredHiddenCallbacks() {
 bool testCommitCallbacks() {
   bool callbackInvoked = false;
 
+  ReactRuntime runtime;
   UpdateQueue queue;
   queue.baseState = jsi::Value(0);
 
@@ -104,7 +109,7 @@ bool testCommitCallbacks() {
   update->callback = [&]() { callbackInvoked = true; };
   enqueueUpdate(queue, update);
 
-  processUpdateQueue(queue);
+  processUpdateQueue(runtime, queue);
   commitCallbacks(queue);
   assert(callbackInvoked);
   assert(queue.callbacks.empty());
@@ -113,7 +118,8 @@ bool testCommitCallbacks() {
 }
 
 bool testEntangledAsyncActionSuspension() {
-  clearEntangledActionForTesting();
+  ReactRuntime runtime;
+  clearEntangledActionForTesting(runtime);
 
   UpdateQueue queue;
   queue.baseState = jsi::Value(0);
@@ -125,20 +131,20 @@ bool testEntangledAsyncActionSuspension() {
   enqueueUpdate(queue, update);
 
   auto thenable = std::make_shared<AsyncActionThenable>();
-  setEntangledActionForTesting(DefaultLane, thenable);
+  setEntangledActionForTesting(runtime, DefaultLane, thenable);
 
-  processUpdateQueue(queue);
+  processUpdateQueue(runtime, queue);
 
   bool threw = false;
   try {
-    suspendIfUpdateReadFromEntangledAsyncAction();
+  suspendIfUpdateReadFromEntangledAsyncAction(runtime);
   } catch (const AsyncActionThenablePtr& thrown) {
     assert(thrown == thenable);
     threw = true;
   }
   assert(threw);
 
-  clearEntangledActionForTesting();
+  clearEntangledActionForTesting(runtime);
 
   return true;
 }

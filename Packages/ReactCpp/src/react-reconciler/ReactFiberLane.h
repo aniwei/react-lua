@@ -24,6 +24,7 @@ using Lane = std::uint32_t;
 using Lanes = std::uint32_t;
 
 class FiberNode;
+struct FiberRoot;
 class Wakeable;
 struct Transition {};
 
@@ -566,6 +567,8 @@ struct FiberRoot {
 	LaneMap<std::optional<std::unordered_set<const Transition*>>> transitionLanes{
 		createLaneMap<std::optional<std::unordered_set<const Transition*>>>(std::nullopt)};
 	std::unordered_map<const Wakeable*, std::unordered_set<Lanes>> pingCache{};
+	std::function<std::function<void()>()> onDefaultTransitionIndicator{};
+	std::function<void()> pendingIndicator{};
 };
 
 [[nodiscard]] inline int computeExpirationTime(Lane lane, int currentTime) {
@@ -655,6 +658,90 @@ inline void markRootSuspended(FiberRoot& root, Lanes suspendedLanes, Lane spawne
 inline void markRootPinged(FiberRoot& root, Lanes pingedLanes) {
 	root.pingedLanes |= root.suspendedLanes & pingedLanes;
 	root.warmLanes &= ~pingedLanes;
+}
+
+[[nodiscard]] inline Lanes getNextLanes(const FiberRoot& root, Lanes wipLanes, bool rootHasPendingCommit) {
+	const Lanes pendingLanes = root.pendingLanes;
+	if (pendingLanes == NoLanes) {
+		return NoLanes;
+	}
+
+	Lanes nextLanes = NoLanes;
+	const Lanes suspendedLanes = root.suspendedLanes;
+	const Lanes pingedLanes = root.pingedLanes;
+	const Lanes warmLanes = root.warmLanes;
+
+	const Lanes nonIdlePendingLanes = pendingLanes & NonIdleLanes;
+	if (nonIdlePendingLanes != NoLanes) {
+		const Lanes nonIdleUnblockedLanes = nonIdlePendingLanes & ~suspendedLanes;
+		if (nonIdleUnblockedLanes != NoLanes) {
+			nextLanes = getHighestPriorityLanes(nonIdleUnblockedLanes);
+		} else {
+			const Lanes nonIdlePingedLanes = nonIdlePendingLanes & pingedLanes;
+			if (nonIdlePingedLanes != NoLanes) {
+				nextLanes = getHighestPriorityLanes(nonIdlePingedLanes);
+			} else if (!rootHasPendingCommit) {
+				const Lanes lanesToPrewarm = nonIdlePendingLanes & ~warmLanes;
+				if (lanesToPrewarm != NoLanes) {
+					nextLanes = getHighestPriorityLanes(lanesToPrewarm);
+				}
+			}
+		}
+	} else {
+		const Lanes unblockedLanes = pendingLanes & ~suspendedLanes;
+		if (unblockedLanes != NoLanes) {
+			nextLanes = getHighestPriorityLanes(unblockedLanes);
+		} else {
+			if (pingedLanes != NoLanes) {
+				nextLanes = getHighestPriorityLanes(pingedLanes);
+			} else if (!rootHasPendingCommit) {
+				const Lanes lanesToPrewarm = pendingLanes & ~warmLanes;
+				if (lanesToPrewarm != NoLanes) {
+					nextLanes = getHighestPriorityLanes(lanesToPrewarm);
+				}
+			}
+		}
+	}
+
+	if (nextLanes == NoLanes) {
+		return NoLanes;
+	}
+
+	if (wipLanes != NoLanes && wipLanes != nextLanes && (wipLanes & suspendedLanes) == NoLanes) {
+		const Lane nextLane = getHighestPriorityLane(nextLanes);
+		const Lane wipLane = getHighestPriorityLane(wipLanes);
+		if (nextLane >= wipLane || (nextLane == DefaultLane && (wipLane & TransitionLanes) != NoLanes)) {
+			return wipLanes;
+		}
+	}
+
+	return nextLanes;
+}
+
+[[nodiscard]] inline Lanes getNextLanesToFlushSync(const FiberRoot& root, Lanes extraLanesToForceSync) {
+	const Lanes lanesToFlush = SyncUpdateLanes | extraLanesToForceSync;
+
+	const Lanes pendingLanes = root.pendingLanes;
+	if (pendingLanes == NoLanes) {
+		return NoLanes;
+	}
+
+	const Lanes suspendedLanes = root.suspendedLanes;
+	const Lanes pingedLanes = root.pingedLanes;
+
+	const Lanes unblockedLanes = pendingLanes & ~(suspendedLanes & ~pingedLanes);
+	const Lanes unblockedLanesWithMatchingPriority =
+		unblockedLanes & getLanesOfEqualOrHigherPriority(lanesToFlush);
+
+	if ((unblockedLanesWithMatchingPriority & HydrationLanes) != NoLanes) {
+		return (unblockedLanesWithMatchingPriority & HydrationLanes) | SyncHydrationLane;
+	}
+
+	if (unblockedLanesWithMatchingPriority != NoLanes) {
+		return unblockedLanesWithMatchingPriority | SyncLane;
+	}
+
+	return NoLanes;
 }
 
 [[nodiscard]] inline bool checkIfRootIsPrerendering(const FiberRoot& root, Lanes renderLanes) {

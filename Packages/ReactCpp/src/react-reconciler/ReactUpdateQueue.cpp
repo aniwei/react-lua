@@ -1,6 +1,7 @@
 #include "react-reconciler/ReactUpdateQueue.h"
 
 #include "react-reconciler/ReactFiberAsyncAction.h"
+#include "runtime/ReactRuntime.h"
 
 #include <stdexcept>
 #include <utility>
@@ -98,7 +99,7 @@ void applyUpdateReducer(Update* update, jsi::Value& state) {
 
 } // namespace
 
-const jsi::Value& processUpdateQueue(UpdateQueue& queue) {
+const jsi::Value& processUpdateQueue(ReactRuntime& runtime, UpdateQueue& queue) {
   appendPendingUpdates(queue);
 
   jsi::Value newState = std::move(queue.baseState);
@@ -108,7 +109,7 @@ const jsi::Value& processUpdateQueue(UpdateQueue& queue) {
 
   auto* current = queue.firstBaseUpdate;
   while (current != nullptr) {
-    if (current->lane != NoLane && current->lane == peekEntangledActionLane()) {
+  if (current->lane != NoLane && current->lane == peekEntangledActionLane(runtime)) {
       gDidReadFromEntangledAsyncAction = true;
     }
 
@@ -139,12 +140,12 @@ const jsi::Value& processUpdateQueue(UpdateQueue& queue) {
   return queue.baseState;
 }
 
-void suspendIfUpdateReadFromEntangledAsyncAction() {
+void suspendIfUpdateReadFromEntangledAsyncAction(ReactRuntime& runtime) {
   if (!gDidReadFromEntangledAsyncAction) {
     return;
   }
 
-  if (auto thenable = peekEntangledActionThenable()) {
+  if (auto thenable = peekEntangledActionThenable(runtime)) {
     throw thenable;
   }
 }

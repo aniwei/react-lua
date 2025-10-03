@@ -130,6 +130,30 @@ react_cpp_runtime_tests/fast:
 	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/build
 .PHONY : react_cpp_runtime_tests/fast
 
+ReactFiberAsyncActionTests.o: ReactFiberAsyncActionTests.cpp.o
+.PHONY : ReactFiberAsyncActionTests.o
+
+# target to build an object file
+ReactFiberAsyncActionTests.cpp.o:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberAsyncActionTests.cpp.o
+.PHONY : ReactFiberAsyncActionTests.cpp.o
+
+ReactFiberAsyncActionTests.i: ReactFiberAsyncActionTests.cpp.i
+.PHONY : ReactFiberAsyncActionTests.i
+
+# target to preprocess a source file
+ReactFiberAsyncActionTests.cpp.i:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberAsyncActionTests.cpp.i
+.PHONY : ReactFiberAsyncActionTests.cpp.i
+
+ReactFiberAsyncActionTests.s: ReactFiberAsyncActionTests.cpp.s
+.PHONY : ReactFiberAsyncActionTests.s
+
+# target to generate assembly for a file
+ReactFiberAsyncActionTests.cpp.s:
+	cd /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/react_cpp_runtime_tests.dir/build.make test/CMakeFiles/react_cpp_runtime_tests.dir/ReactFiberAsyncActionTests.cpp.s
+.PHONY : ReactFiberAsyncActionTests.cpp.s
+
 ReactFiberConcurrentUpdatesRuntimeTests.o: ReactFiberConcurrentUpdatesRuntimeTests.cpp.o
 .PHONY : ReactFiberConcurrentUpdatesRuntimeTests.o
 
@@ -331,6 +355,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... react_cpp_runtime_tests"
+	@echo "... ReactFiberAsyncActionTests.o"
+	@echo "... ReactFiberAsyncActionTests.i"
+	@echo "... ReactFiberAsyncActionTests.s"
 	@echo "... ReactFiberConcurrentUpdatesRuntimeTests.o"
 	@echo "... ReactFiberConcurrentUpdatesRuntimeTests.i"
 	@echo "... ReactFiberConcurrentUpdatesRuntimeTests.s"

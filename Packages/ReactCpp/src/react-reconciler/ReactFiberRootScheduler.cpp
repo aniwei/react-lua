@@ -1,46 +1,136 @@
 #include "react-reconciler/ReactFiberRootScheduler.h"
 
 #include "react-reconciler/ReactFiber.h"
+#include "react-reconciler/ReactFiberAsyncAction.h"
 #include "react-reconciler/ReactFiberLane.h"
 #include "react-reconciler/ReactFiberWorkLoop.h"
 #include "runtime/ReactRuntime.h"
+#include "shared/ReactFeatureFlags.h"
+#include <exception>
+#include <iostream>
 
 namespace react {
 namespace {
 
-FiberRoot* firstScheduledRoot = nullptr;
-FiberRoot* lastScheduledRoot = nullptr;
-bool didScheduleRootProcessing = false;
-bool isProcessingRootSchedule = false;
+RootSchedulerState& getState(ReactRuntime& runtime) {
+  return runtime.rootSchedulerState();
+}
+
+const RootSchedulerState& getState(const ReactRuntime& runtime) {
+  return runtime.rootSchedulerState();
+}
 
 void ensureScheduleProcessing(ReactRuntime& runtime);
+void ensureScheduleIsScheduledInternal(ReactRuntime& runtime);
+void scheduleImmediateRootScheduleTask(ReactRuntime& runtime);
+bool performWorkOnRoot(ReactRuntime& runtime, FiberRoot& root, Lanes lanes);
+void flushSyncWorkAcrossRoots(ReactRuntime& runtime, Lanes syncTransitionLanes, bool onlyLegacy);
+Lanes scheduleTaskForRootDuringMicrotask(ReactRuntime& runtime, FiberRoot& root, int currentTime);
+void startDefaultTransitionIndicatorIfNeeded(ReactRuntime& runtime);
+void cleanupDefaultTransitionIndicatorIfNeeded(ReactRuntime& runtime, FiberRoot& root);
 
-void addRootToSchedule(FiberRoot& root) {
-  if (&root == lastScheduledRoot || root.next != nullptr || firstScheduledRoot == &root) {
+void reportDefaultIndicatorError(const std::exception& ex) {
+  std::cerr << "React default transition indicator threw: " << ex.what() << std::endl;
+}
+
+void reportDefaultIndicatorUnknownError() {
+  std::cerr << "React default transition indicator threw an unknown exception" << std::endl;
+}
+
+void startDefaultTransitionIndicatorIfNeeded(ReactRuntime& runtime) {
+  if (!enableDefaultTransitionIndicator) {
+    return;
+  }
+
+  startIsomorphicDefaultIndicatorIfNeeded(runtime);
+
+  RootSchedulerState& state = getState(runtime);
+  for (FiberRoot* root = state.firstScheduledRoot; root != nullptr; root = root->next) {
+    if (root->indicatorLanes == NoLanes || root->pendingIndicator) {
+      continue;
+    }
+
+    if (hasOngoingIsomorphicIndicator(runtime)) {
+      root->pendingIndicator = retainIsomorphicIndicator(runtime);
+      continue;
+    }
+
+    const auto& onIndicator = root->onDefaultTransitionIndicator;
+    if (!onIndicator) {
+      root->pendingIndicator = []() {};
+      continue;
+    }
+
+    try {
+      auto cleanup = onIndicator();
+      if (cleanup) {
+        root->pendingIndicator = std::move(cleanup);
+      } else {
+        root->pendingIndicator = []() {};
+      }
+    } catch (const std::exception& ex) {
+      root->pendingIndicator = []() {};
+      reportDefaultIndicatorError(ex);
+    } catch (...) {
+      root->pendingIndicator = []() {};
+      reportDefaultIndicatorUnknownError();
+    }
+  }
+}
+
+void cleanupDefaultTransitionIndicatorIfNeeded(ReactRuntime& runtime, FiberRoot& root) {
+  if (!enableDefaultTransitionIndicator) {
+    return;
+  }
+
+  if (!root.pendingIndicator) {
+    return;
+  }
+
+  if (root.indicatorLanes != NoLanes) {
+    return;
+  }
+
+  auto cleanup = std::move(root.pendingIndicator);
+  root.pendingIndicator = {};
+
+  try {
+    cleanup();
+  } catch (const std::exception& ex) {
+    reportDefaultIndicatorError(ex);
+  } catch (...) {
+    reportDefaultIndicatorUnknownError();
+  }
+}
+
+void addRootToSchedule(ReactRuntime& runtime, FiberRoot& root) {
+  RootSchedulerState& state = getState(runtime);
+  if (&root == state.lastScheduledRoot || root.next != nullptr || state.firstScheduledRoot == &root) {
     return;
   }
 
   root.next = nullptr;
-  if (lastScheduledRoot == nullptr) {
-    firstScheduledRoot = lastScheduledRoot = &root;
+  if (state.lastScheduledRoot == nullptr) {
+    state.firstScheduledRoot = state.lastScheduledRoot = &root;
   } else {
-    lastScheduledRoot->next = &root;
-    lastScheduledRoot = &root;
+    state.lastScheduledRoot->next = &root;
+    state.lastScheduledRoot = &root;
   }
 }
 
-void removeRootFromSchedule(FiberRoot& root) {
+void removeRootFromSchedule(ReactRuntime& runtime, FiberRoot& root) {
+  RootSchedulerState& state = getState(runtime);
   FiberRoot* previous = nullptr;
-  FiberRoot* current = firstScheduledRoot;
+  FiberRoot* current = state.firstScheduledRoot;
   while (current != nullptr) {
     if (current == &root) {
       if (previous == nullptr) {
-        firstScheduledRoot = current->next;
+        state.firstScheduledRoot = current->next;
       } else {
         previous->next = current->next;
       }
-      if (lastScheduledRoot == &root) {
-        lastScheduledRoot = previous;
+      if (state.lastScheduledRoot == &root) {
+        state.lastScheduledRoot = previous;
       }
       root.next = nullptr;
       break;
@@ -88,14 +178,115 @@ void commitRoot(FiberRoot& root, FiberNode& finishedWork) {
 void performScheduledWorkOnRoot(ReactRuntime& runtime, FiberRoot& root, Lane scheduledLane) {
   (void)scheduledLane;
 
-  const Lanes lanes = getHighestPriorityPendingLanes(root);
+  const int currentTime = static_cast<int>(runtime.now());
+  markStarvedLanesAsExpired(root, currentTime);
+
+  FiberRoot* const workInProgressRoot = getWorkInProgressRoot(runtime);
+  const Lanes workInProgressRenderLanes =
+      workInProgressRoot == &root ? getWorkInProgressRootRenderLanes(runtime) : NoLanes;
+  const bool rootHasPendingCommit = root.cancelPendingCommit != nullptr || root.timeoutHandle != noTimeout;
+
+  const Lanes lanes = getNextLanes(root, workInProgressRenderLanes, rootHasPendingCommit);
   if (lanes == NoLanes) {
     root.callbackNode = {};
     root.callbackPriority = NoLane;
-    removeRootFromSchedule(root);
+    removeRootFromSchedule(runtime, root);
+    return;
+  }
+  const bool hasRemainingWork = performWorkOnRoot(runtime, root, lanes);
+
+  if (hasRemainingWork) {
+    ensureScheduleProcessing(runtime);
+  }
+}
+
+void scheduleRootTask(ReactRuntime& runtime, FiberRoot& root, Lane lane) {
+  const SchedulerPriority priority = toSchedulerPriority(lane);
+  const TaskHandle handle = runtime.scheduleTask(priority, [&runtime, rootPtr = &root, lane]() {
+    performScheduledWorkOnRoot(runtime, *rootPtr, lane);
+  });
+
+  root.callbackNode = handle;
+  root.callbackPriority = lane;
+}
+
+void processRootSchedule(ReactRuntime& runtime) {
+  RootSchedulerState& state = getState(runtime);
+  if (state.isProcessingRootSchedule) {
     return;
   }
 
+  state.isProcessingRootSchedule = true;
+  state.mightHavePendingSyncWork = false;
+
+  while (state.didScheduleRootProcessing) {
+    state.didScheduleRootProcessing = false;
+
+    Lanes syncTransitionLanes = NoLanes;
+    if (state.currentEventTransitionLane != NoLane) {
+      if (runtime.shouldAttemptEagerTransition()) {
+        syncTransitionLanes = state.currentEventTransitionLane;
+      } else if (enableDefaultTransitionIndicator) {
+        syncTransitionLanes = DefaultLane;
+      }
+    }
+
+    const int currentTime = static_cast<int>(runtime.now());
+    FiberRoot* prev = nullptr;
+    FiberRoot* root = state.firstScheduledRoot;
+
+    while (root != nullptr) {
+      FiberRoot* const next = root->next;
+      const Lanes scheduledLanes = scheduleTaskForRootDuringMicrotask(runtime, *root, currentTime);
+
+      if (scheduledLanes == NoLanes) {
+        root->next = nullptr;
+        if (prev == nullptr) {
+          state.firstScheduledRoot = next;
+        } else {
+          prev->next = next;
+        }
+        if (next == nullptr) {
+          state.lastScheduledRoot = prev;
+        }
+      } else {
+        prev = root;
+
+        if ((includesSyncLane(scheduledLanes) || (enableGestureTransition && isGestureRender(scheduledLanes))) &&
+            !checkIfRootIsPrerendering(*root, scheduledLanes)) {
+          state.mightHavePendingSyncWork = true;
+        }
+      }
+
+      root = next;
+    }
+
+    state.lastScheduledRoot = prev;
+
+    if (!hasPendingCommitEffects(runtime)) {
+      flushSyncWorkAcrossRoots(runtime, syncTransitionLanes, false);
+    }
+  }
+
+  if (state.currentEventTransitionLane != NoLane) {
+    state.currentEventTransitionLane = NoLane;
+    startDefaultTransitionIndicatorIfNeeded(runtime);
+  }
+
+  state.isProcessingRootSchedule = false;
+}
+
+void ensureScheduleProcessing(ReactRuntime& runtime) {
+  RootSchedulerState& state = getState(runtime);
+  if (state.didScheduleRootProcessing) {
+    return;
+  }
+
+  state.didScheduleRootProcessing = true;
+  ensureScheduleIsScheduledInternal(runtime);
+}
+
+bool performWorkOnRoot(ReactRuntime& runtime, FiberRoot& root, Lanes lanes) {
   const Lanes previousPendingLanes = root.pendingLanes;
 
   RootExitStatus status;
@@ -113,7 +304,13 @@ void performScheduledWorkOnRoot(ReactRuntime& runtime, FiberRoot& root, Lane sch
 
       if (finishedWork != nullptr) {
         commitRoot(root, *finishedWork);
+
+        if (enableDefaultTransitionIndicator && includesLoadingIndicatorLanes(lanes)) {
+          markIndicatorHandled(runtime, root);
+        }
       }
+
+      cleanupDefaultTransitionIndicatorIfNeeded(runtime, root);
       break;
     }
     case RootExitStatus::Suspended:
@@ -136,80 +333,212 @@ void performScheduledWorkOnRoot(ReactRuntime& runtime, FiberRoot& root, Lane sch
   root.callbackNode = {};
   root.callbackPriority = NoLane;
 
-  if (getHighestPriorityPendingLanes(root) == NoLanes) {
-    removeRootFromSchedule(root);
-  } else {
-    ensureScheduleProcessing(runtime);
+  const bool hasRemainingWork = getHighestPriorityPendingLanes(root) != NoLanes;
+  if (!hasRemainingWork) {
+    removeRootFromSchedule(runtime, root);
   }
+
+  return hasRemainingWork;
 }
 
-void scheduleRootTask(ReactRuntime& runtime, FiberRoot& root, Lane lane) {
-  const SchedulerPriority priority = toSchedulerPriority(lane);
-  const TaskHandle handle = runtime.scheduleTask(priority, [&runtime, rootPtr = &root, lane]() {
-    performScheduledWorkOnRoot(runtime, *rootPtr, lane);
-  });
-
-  root.callbackNode = handle;
-  root.callbackPriority = lane;
-}
-
-void processRootSchedule(ReactRuntime& runtime) {
-  if (isProcessingRootSchedule) {
+void flushSyncWorkAcrossRoots(ReactRuntime& runtime, Lanes syncTransitionLanes, bool onlyLegacy) {
+  RootSchedulerState& state = getState(runtime);
+  if (state.isFlushingWork) {
     return;
   }
 
-  isProcessingRootSchedule = true;
+  if (!state.mightHavePendingSyncWork && syncTransitionLanes == NoLanes) {
+    return;
+  }
 
-  while (didScheduleRootProcessing) {
-    didScheduleRootProcessing = false;
+  bool didPerformSomeWork = false;
+  bool shouldProcessSchedule = false;
 
-    FiberRoot* root = firstScheduledRoot;
+  state.isFlushingWork = true;
+  do {
+    didPerformSomeWork = false;
+    FiberRoot* root = state.firstScheduledRoot;
     while (root != nullptr) {
       FiberRoot* const next = root->next;
-      const Lanes nextLanes = getHighestPriorityPendingLanes(*root);
 
-      if (nextLanes == NoLanes) {
-        if (root->callbackNode) {
-          runtime.cancelTask(root->callbackNode);
-          root->callbackNode = {};
-        }
-        root->callbackPriority = NoLane;
-        removeRootFromSchedule(*root);
+      if (onlyLegacy && (disableLegacyMode || root->tag != RootTag::LegacyRoot)) {
+        root = next;
+        continue;
+      }
+
+      Lanes nextLanes = NoLanes;
+      if (syncTransitionLanes != NoLanes) {
+        nextLanes = getNextLanesToFlushSync(*root, syncTransitionLanes);
       } else {
-        const Lane nextLane = getHighestPriorityLane(nextLanes);
-        if (!root->callbackNode || root->callbackPriority != nextLane) {
-          if (root->callbackNode) {
-            runtime.cancelTask(root->callbackNode);
-            root->callbackNode = {};
+        FiberRoot* const workInProgressRoot = getWorkInProgressRoot(runtime);
+        const Lanes workInProgressRenderLanes =
+            workInProgressRoot == root ? getWorkInProgressRootRenderLanes(runtime) : NoLanes;
+        const bool rootHasPendingCommit =
+            root->cancelPendingCommit != nullptr || root->timeoutHandle != noTimeout;
+        nextLanes = getNextLanes(*root, workInProgressRenderLanes, rootHasPendingCommit);
+      }
+
+      if (nextLanes != NoLanes) {
+        const bool shouldFlushSync =
+            syncTransitionLanes != NoLanes ||
+            ((!checkIfRootIsPrerendering(*root, nextLanes)) &&
+             (includesSyncLane(nextLanes) || (enableGestureTransition && isGestureRender(nextLanes))));
+
+        if (shouldFlushSync) {
+          didPerformSomeWork = true;
+          const bool hasRemainingWork = performWorkOnRoot(runtime, *root, nextLanes);
+          if (hasRemainingWork) {
+            shouldProcessSchedule = true;
           }
-          scheduleRootTask(runtime, *root, nextLane);
         }
       }
 
       root = next;
     }
-  }
+  } while (didPerformSomeWork);
 
-  isProcessingRootSchedule = false;
+  state.isFlushingWork = false;
+  state.mightHavePendingSyncWork = false;
+
+  if (shouldProcessSchedule) {
+    ensureScheduleProcessing(runtime);
+  }
 }
 
-void ensureScheduleProcessing(ReactRuntime& runtime) {
-  if (didScheduleRootProcessing) {
+Lanes scheduleTaskForRootDuringMicrotask(ReactRuntime& runtime, FiberRoot& root, int currentTime) {
+  markStarvedLanesAsExpired(root, currentTime);
+
+  const FiberRoot* const rootWithPendingPassiveEffects = getRootWithPendingPassiveEffects(runtime);
+  const Lanes pendingPassiveEffectsLanes = getPendingPassiveEffectsLanes(runtime);
+  FiberRoot* const workInProgressRoot = getWorkInProgressRoot(runtime);
+  const Lanes workInProgressRenderLanes =
+      workInProgressRoot == &root ? getWorkInProgressRootRenderLanes(runtime) : NoLanes;
+  const bool rootHasPendingCommit = root.cancelPendingCommit != nullptr || root.timeoutHandle != noTimeout;
+
+  Lanes nextLanes = NoLanes;
+  if (enableYieldingBeforePassive && rootWithPendingPassiveEffects == &root) {
+    nextLanes = pendingPassiveEffectsLanes;
+  } else {
+    nextLanes = getNextLanes(root, workInProgressRenderLanes, rootHasPendingCommit);
+  }
+
+  const TaskHandle existingCallbackNode = root.callbackNode;
+  const Lane existingCallbackPriority = root.callbackPriority;
+
+  if (nextLanes == NoLanes ||
+      (workInProgressRoot == &root && isWorkLoopSuspendedOnData(runtime)) ||
+      root.cancelPendingCommit != nullptr) {
+    if (existingCallbackNode) {
+      runtime.cancelTask(existingCallbackNode);
+    }
+    root.callbackNode = {};
+    root.callbackPriority = NoLane;
+    return NoLanes;
+  }
+
+  if (includesSyncLane(nextLanes) && !checkIfRootIsPrerendering(root, nextLanes)) {
+    if (existingCallbackNode) {
+      runtime.cancelTask(existingCallbackNode);
+    }
+    root.callbackNode = {};
+    root.callbackPriority = SyncLane;
+    return nextLanes;
+  }
+
+  const Lane newCallbackPriority = getHighestPriorityLane(nextLanes);
+  if (existingCallbackNode && existingCallbackPriority == newCallbackPriority) {
+    return nextLanes;
+  }
+
+  if (existingCallbackNode) {
+    runtime.cancelTask(existingCallbackNode);
+  }
+
+  scheduleRootTask(runtime, root, newCallbackPriority);
+  return nextLanes;
+}
+
+void ensureScheduleIsScheduledInternal(ReactRuntime& runtime) {
+  RootSchedulerState& state = getState(runtime);
+  if (state.didScheduleMicrotask) {
     return;
   }
 
-  didScheduleRootProcessing = true;
+  state.didScheduleMicrotask = true;
+  scheduleImmediateRootScheduleTask(runtime);
+}
 
-  if (!isProcessingRootSchedule) {
+void scheduleImmediateRootScheduleTask(ReactRuntime& runtime) {
+  runtime.scheduleTask(SchedulerPriority::ImmediatePriority, [&runtime]() {
+    RootSchedulerState& state = getState(runtime);
+    state.didScheduleMicrotask = false;
+    state.didScheduleMicrotaskAct = false;
     processRootSchedule(runtime);
-  }
+  });
 }
 
 } // namespace
 
 void ensureRootIsScheduled(ReactRuntime& runtime, FiberRoot& root) {
-  addRootToSchedule(root);
+  addRootToSchedule(runtime, root);
+  getState(runtime).mightHavePendingSyncWork = true;
   ensureScheduleProcessing(runtime);
+}
+
+void flushSyncWorkOnAllRoots(ReactRuntime& runtime, Lanes syncTransitionLanes) {
+  flushSyncWorkAcrossRoots(runtime, syncTransitionLanes, false);
+}
+
+void flushSyncWorkOnLegacyRootsOnly(ReactRuntime& runtime) {
+  if (!disableLegacyMode) {
+    flushSyncWorkAcrossRoots(runtime, NoLanes, true);
+  }
+}
+
+Lane requestTransitionLane(ReactRuntime& runtime, const Transition* transition) {
+  (void)transition;
+  RootSchedulerState& state = getState(runtime);
+  if (state.currentEventTransitionLane == NoLane) {
+  const Lane actionScopeLane = peekEntangledActionLane(runtime);
+    state.currentEventTransitionLane =
+        actionScopeLane != NoLane ? actionScopeLane : claimNextTransitionLane();
+  }
+  return state.currentEventTransitionLane;
+}
+
+bool didCurrentEventScheduleTransition(ReactRuntime& runtime) {
+  return getState(runtime).currentEventTransitionLane != NoLane;
+}
+
+void markIndicatorHandled(ReactRuntime& runtime, FiberRoot& root) {
+  if (!enableDefaultTransitionIndicator) {
+    return;
+  }
+
+  RootSchedulerState& state = getState(runtime);
+  if (state.currentEventTransitionLane != NoLane) {
+    root.indicatorLanes &= ~state.currentEventTransitionLane;
+  }
+  markIsomorphicIndicatorHandled(runtime);
+}
+
+void ensureScheduleIsScheduled(ReactRuntime& runtime) {
+  ensureScheduleIsScheduledInternal(runtime);
+}
+
+void registerRootDefaultIndicator(
+  ReactRuntime& runtime,
+  FiberRoot& root,
+  std::function<std::function<void()>()> onDefaultTransitionIndicator) {
+  if (!enableDefaultTransitionIndicator) {
+    root.onDefaultTransitionIndicator = {};
+    return;
+  }
+
+  root.onDefaultTransitionIndicator = std::move(onDefaultTransitionIndicator);
+  if (root.onDefaultTransitionIndicator) {
+    registerDefaultIndicator(runtime, &root, root.onDefaultTransitionIndicator);
+  }
 }
 
 } // namespace react

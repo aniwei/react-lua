@@ -968,4 +968,6 @@ src/CMakeFiles/react_cpp_src.dir/react-reconciler/ReactFiberWorkLoop.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/forward_list \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberThrow.h \
   /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberRootScheduler.h \
-  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.h
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/runtime/ReactRuntime.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberAsyncAction.h \
+  /Users/weiyanhai/Desktop/workspace/react-lua/packages/ReactCpp/src/react-reconciler/ReactFiberRootSchedulerState.h

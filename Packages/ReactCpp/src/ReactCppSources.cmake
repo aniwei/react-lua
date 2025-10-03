@@ -1,0 +1,31 @@
+set(_REACT_CPP_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
+
+set(REACT_CPP_SOURCE_FILES
+    ${_REACT_CPP_SRC_DIR}/react-dom/client/ReactDOMComponent.cpp
+    ${_REACT_CPP_SRC_DIR}/react-dom/client/ReactDOMDiffProperties.cpp
+    ${_REACT_CPP_SRC_DIR}/react-dom/client/ReactDOMInstance.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberConcurrentUpdates.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactCapturedValue.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiber.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberAsyncAction.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberErrorLogger.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberHiddenContext.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberClassUpdateQueue.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberStack.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberSuspenseContext.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberThenable.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberThrow.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberRootScheduler.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactWakeable.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactUpdateQueue.cpp
+    ${_REACT_CPP_SRC_DIR}/react-reconciler/ReactFiberWorkLoop.cpp
+    ${_REACT_CPP_SRC_DIR}/runtime/ReactHostInterface.cpp
+    ${_REACT_CPP_SRC_DIR}/runtime/ReactJSXRuntime.cpp
+    ${_REACT_CPP_SRC_DIR}/runtime/ReactRuntime.cpp
+    ${_REACT_CPP_SRC_DIR}/runtime/ReactWasmBridge.cpp
+    ${_REACT_CPP_SRC_DIR}/shared/ReactOwnerStackReset.cpp
+    ${_REACT_CPP_SRC_DIR}/shared/ReactSharedInternals.cpp
+    ${_REACT_CPP_SRC_DIR}/shared/ReactSymbols.cpp
+    ${_REACT_CPP_SRC_DIR}/../../jsi/jsi/jsi.cpp
+    ${_REACT_CPP_SRC_DIR}/../../jsi/jsi/jsilib-posix.cpp
+)

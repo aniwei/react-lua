@@ -11,6 +11,8 @@ namespace jsi = facebook::jsi;
 
 namespace react {
 
+class ReactRuntime;
+
 struct Update;
 
 enum class UpdateTag : uint8_t {
@@ -48,8 +50,8 @@ std::shared_ptr<UpdateQueue> createUpdateQueue(jsi::Runtime& rt, const jsi::Valu
 std::shared_ptr<Update> createUpdate(Lane lane, jsi::Value payload = jsi::Value::undefined());
 void enqueueUpdate(UpdateQueue& queue, const std::shared_ptr<Update>& update);
 void appendPendingUpdates(UpdateQueue& queue);
-const jsi::Value& processUpdateQueue(UpdateQueue& queue);
-void suspendIfUpdateReadFromEntangledAsyncAction();
+const jsi::Value& processUpdateQueue(ReactRuntime& runtime, UpdateQueue& queue);
+void suspendIfUpdateReadFromEntangledAsyncAction(ReactRuntime& runtime);
 void resetHasForceUpdateBeforeProcessing();
 bool checkHasForceUpdateAfterProcessing();
 void deferHiddenCallbacks(UpdateQueue& queue);

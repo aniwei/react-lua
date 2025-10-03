@@ -2,9 +2,13 @@
 
 #include "react-reconciler/ReactFiberLane.h"
 
+#include <functional>
 #include <memory>
 
 namespace react {
+
+class ReactRuntime;
+struct Transition;
 
 struct AsyncActionThenable {
   enum class Status {
@@ -18,10 +22,27 @@ struct AsyncActionThenable {
 
 using AsyncActionThenablePtr = std::shared_ptr<AsyncActionThenable>;
 
-[[nodiscard]] Lane peekEntangledActionLane();
-[[nodiscard]] AsyncActionThenablePtr peekEntangledActionThenable();
+[[nodiscard]] Lane peekEntangledActionLane(ReactRuntime& runtime);
+[[nodiscard]] AsyncActionThenablePtr peekEntangledActionThenable(ReactRuntime& runtime);
 
-void setEntangledActionForTesting(Lane lane, AsyncActionThenablePtr thenable);
-void clearEntangledActionForTesting();
+AsyncActionThenablePtr entangleAsyncAction(
+  ReactRuntime& runtime,
+  const Transition* transition,
+  AsyncActionThenablePtr thenable);
+
+void setEntangledActionForTesting(
+  ReactRuntime& runtime,
+  Lane lane,
+  AsyncActionThenablePtr thenable);
+void clearEntangledActionForTesting(ReactRuntime& runtime);
+
+void registerDefaultIndicator(
+  ReactRuntime& runtime,
+  FiberRoot* root,
+  std::function<std::function<void()>()> onDefaultTransitionIndicator);
+void startIsomorphicDefaultIndicatorIfNeeded(ReactRuntime& runtime);
+[[nodiscard]] bool hasOngoingIsomorphicIndicator(ReactRuntime& runtime);
+[[nodiscard]] std::function<void()> retainIsomorphicIndicator(ReactRuntime& runtime);
+void markIsomorphicIndicatorHandled(ReactRuntime& runtime);
 
 } // namespace react
